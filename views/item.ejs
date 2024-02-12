@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Catalog</title>
+</head>
+<body>
+    <h1>Item Catalog</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>CODE</th>
+                <th>CLASSIFICATION ID</th>
+                <th>MATERIAL NAME</th>
+                <th>TOTAL AMOUNT</th>
+                <th>CODE STATUS</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (item && item.length > 0) { %>
+                <% item.forEach(item => { %>
+                    <tr>
+                        <td><%= item.code %></td>
+                        <td><%= item.classification_id %></td>
+                        <td><%= item.material_name %></td>
+                        <td><%= item.total_amount %></td>
+                        <td><%= item.code_status %></td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="5">No items found</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+
+    <!-- Add button for adding a new item -->
+    <button onclick="window.location.href='/add-item'">Add Item</button>
+</body>
+</html>

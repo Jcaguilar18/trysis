@@ -1,0 +1,174 @@
+ /* body {
+    background-image: linear-gradient(to right, #3b2f36 0%, #3b2f36 40%, white 40%, white 100%);
+} */
+
+* {
+	margin: 0;
+	padding: 0;
+}
+
+.login-website {
+  width: 100%;
+  overflow: hidden;
+  position: relative; 
+  display: flex;
+  align-items: flex-start;
+  background-color: #ffffff;
+}
+
+.login-website .left-half {
+    align-items: center;
+    background-color: #3b2f36;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    height: 100vh; 
+    width: 39%;
+}
+
+.login-website .left-half .trisys-logo {
+    margin-top: 8rem;
+    margin-bottom: 1.6rem;
+    width: 25rem;
+    height: 10rem;
+    object-fit: contain;
+    vertical-align: top;
+    flex-shrink: 0;
+        }
+
+.login-website .left-half .trisys-logo-text {
+         margin-right: 3.5rem;
+         max-width: 42.8rem;
+         text-align: center;
+         font-size: 1.8rem;
+         font-weight: 400;
+         line-height: 1.2373046875;
+         color: #ffffff;
+         font-family: Inter, 'Source Sans Pro';
+        flex-shrink: 0;
+}
+
+.login-website .right-half {
+        width: 89.7rem;
+        height: 100vh;
+        position: relative;
+        border: solid 0.1rem #000000;
+        box-sizing: border-box;
+        box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-image: url('../assets/engineering-picture-bg.png');
+        flex-shrink: 0;
+    }
+
+    
+    .login-website .right-half .login-box {
+      width: 49rem;
+      height: 30rem;
+      position: absolute;
+      left: 4rem;
+      top: 9rem;
+      background-color: rgba(59, 47, 54, 0.9); 
+  }
+
+.login-website .right-half .user-icon {
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    left: 8.9rem;
+    top: 14rem;
+    object-fit: contain;
+    vertical-align: top;
+  }
+
+  .login-website .right-half .user-id-text {
+    width: 12.9rem;
+    height: 4.9rem;
+    position: absolute;
+    left: 14.9rem;
+    top: 14rem;
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.2373046875;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+  }
+
+  .login-website .right-half .user-id-input {
+    width: 22rem;
+    height: 3rem;
+    position: absolute;
+    left: 29rem;
+    top: 14.5rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .login-website .right-half .password-icon {
+    width: 4rem;
+    height: 4rem;
+    position: absolute;
+    left: 8.9rem;
+    top: 22rem;
+    object-fit: contain;
+    vertical-align: top;
+  }
+
+  .login-website .right-half .password-text {
+    width: 12.9rem;
+    height: 4.9rem;
+    position: absolute;
+    left: 14.9rem;
+    top: 22rem;
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.2373046875;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+  }
+
+   .login-website .right-half .password-input {
+    width: 22rem;
+    height: 3rem;
+    position: absolute;
+    left: 29rem;
+    top: 22rem;
+    background-color: #ffffff;
+    border-radius: 0.5rem;
+    font-size: 2rem;
+  }
+
+  .login-website .right-half .login-button {
+    width: 22rem;
+    height: 4.4rem;
+    position: absolute;
+    left: 29rem;
+    top: 28rem;
+    font-size: 3rem;
+    font-weight: 400;
+    line-height: 1.2373046875;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0302ea;
+    border-radius: 3rem;
+    cursor: pointer;
+    outline: none;
+  }
+
+
+  
+
+
+
+
+
+    

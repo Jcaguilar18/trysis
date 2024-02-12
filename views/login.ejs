@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Login Page</title>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Averia+Sans+Libre%3A400"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400"/>
+        <link rel="stylesheet" href="./styles/login_page.css"/>
+    </head>
+    <body>
+         <div class="login-website">
+            <div class="left-half">
+                <img class="trisys-logo" src="./assets/trisys-logo.png"/>
+                <p class="trisys-logo-text">
+                    Trisys Electrical &amp; Industrial Sales Inc.
+                    <br/>
+                    Inventory Management System
+                </p>
+            </div>
+            <div class="right-half">
+                
+                    
+                <div class="login-box">
+                   
+                    
+                  <form action="/login" method="POST">
+                </div>
+                <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
+                    <h2 style="color: rgb(255, 0, 0);">User can't be found or is not active</h2>
+                <% } %>
+                
+                <p class="user-id-text">User ID</p>
+                <p class="password-text">Password</p>
+                <input class="user-id-input" type="text" name="username">
+                <input class="password-input" type="password" name="password">  
+                <img class="user-icon" src="./assets/person-icon.png"/>
+                <img class="password-icon" src="./assets/password-icon.png"/>
+                <button class="login-button">Login</button>
+              </form>
+            </div>
+        </div>
+    </body>
+</html>

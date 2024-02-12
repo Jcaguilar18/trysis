@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Item</title>
+</head>
+<body>
+    <h1>Add Item</h1>
+    <form action="/add-item" method="POST">
+        <label for="code">Code:</label>
+        <input type="text" id="code" name="code" required><br><br>
+        <label for="classificationId">Classification ID:</label>
+        <input type="text" id="classificationId" name="classificationId" required><br><br>
+        <label for="materialName">Material Name:</label>
+        <input type="text" id="materialName" name="materialName" required><br><br>
+        <label for="totalAmount">Total Amount:</label>
+        <input type="text" id="totalAmount" name="totalAmount" required><br><br>
+        <label for="codeStatus">Code Status:</label>
+        <input type="text" id="codeStatus" name="codeStatus" required><br><br>
+        <button type="submit">Add</button>
+    </form>
+</body>
+</html>

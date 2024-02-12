@@ -1,0 +1,70 @@
+<!-- manage.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Accounts</title>
+    <!-- Add any necessary styling for your table or icon here -->
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <%- include('sidebar') %>
+    <h1>Manage Accounts</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>User ID</th>
+                <th>Username</th>
+                <th>Password</th>
+                <th>Role</th>
+                <th>Status</th>
+                <th>Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td><%= user.userid %></td>
+                    <td><%= user.username %></td>
+                    <td><%= user.password %></td>
+                    <td><%= user.role %></td>
+                    <td><%= user.status %></td>
+                    <td><span class="edit-icon" onclick="editUser('<%= user.username %>')">&#9998;</span></td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+    <a href="/register">Make new account</a>
+    <script>
+        
+
+        // Add any JavaScript for handling edit actions here
+        function editUser(username) {
+            // Implement your edit logic here
+            console.log('Edit user with username:', username);
+        }
+    </script>
+</body>
+</html>

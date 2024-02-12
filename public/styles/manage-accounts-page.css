@@ -1,0 +1,288 @@
+
+html {
+	font-size:62.5%;
+}
+* {
+	margin: 0;
+	padding: 0;
+}
+ul, li {
+	list-style: none;
+}
+input {
+	border: none;
+}
+body {
+  width: 192rem;
+}.manage-accounts-page-xER {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+.manage-accounts-page-xER .auto-group-ahyo-mhf {
+  box-sizing: border-box;
+  padding: 2.4rem 6rem 2.4rem 4.1rem;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  background-color: #3b2f36;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ahyo-mhf .trisys-logo-Buo {
+  margin-right: 98.4rem;
+  width: 32.8rem;
+  height: 9.5rem;
+  object-fit: cover;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ahyo-mhf .current-user-text-grZ {
+  margin-right: 1.7rem;
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ahyo-mhf .profile-picture-xp5 {
+  width: 12.9rem;
+  height: 10.1rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd {
+  width: 100%;
+  height: 93.1rem;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM {
+  box-sizing: border-box;
+  padding: 5.2rem 4.8rem 5.1rem 3.336rem;
+  width: 47.3rem;
+  height: 100%;
+  background-color: #545454;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-usn9-7qP {
+  margin: 0rem 10.1rem 5.202rem 1.364rem;
+  width: calc(100% - 11.464rem);
+  display: flex;
+  align-items: flex-start;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-usn9-7qP .dashboardicon-1-cGM {
+  margin: 0.002rem 5.1rem 0rem 0rem;
+  width: 5.5rem;
+  height: 4.6953rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-usn9-7qP .dashboard-icon-text-uWM {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-1z65-Rjb {
+  margin: 0rem 7.4rem 5.4rem 0.264rem;
+  width: calc(100% - 7.664rem);
+  display: flex;
+  align-items: flex-end;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-1z65-Rjb .itemcatalogicon-1-Z57 {
+  margin: 0rem 4.9rem 0.1rem 0rem;
+  width: 6.6rem;
+  height: 6.1rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-1z65-Rjb .item-catalog-icon-text-4Xf {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-vuiq-BMP {
+  margin: 0rem 4.8rem 4.6rem 0rem;
+  width: calc(100% - 4.8rem);
+  display: flex;
+  align-items: flex-end;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-vuiq-BMP .managestock-icon-1-iMK {
+  margin: 0rem 4.736rem 0.9rem 0rem;
+  width: 7.2281rem;
+  height: 6.8rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-vuiq-BMP .manage-stock-icon-text-dDP {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-gca9-mKb {
+  margin: 0rem 1.5rem 5.996rem 0.264rem;
+  width: calc(100% - 1.764rem);
+  display: flex;
+  align-items: flex-end;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-gca9-mKb .generatereporticon-1-6Ms {
+  margin-right: 3.9279rem;
+  width: 7.5721rem;
+  height: 6.3rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-gca9-mKb .generate-report-icon-text-DxH {
+  margin-bottom: 0.1rem;
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-vx8d-YUm {
+  margin: 0rem 20rem 5.2rem 0.839rem;
+  width: calc(100% - 20.839rem);
+  display: flex;
+  align-items: flex-end;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-vx8d-YUm .logsicon-1-sX3 {
+  margin: 0rem 5.375rem 0.796rem 0rem;
+  width: 5.25rem;
+  height: 3.9083rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-vx8d-YUm .logs-icon-text-zLm {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-mh5o-iGm {
+  margin: 0rem 0rem 16.1rem 0.964rem;
+  width: calc(100% - 0.964rem);
+  display: flex;
+  align-items: flex-end;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-mh5o-iGm .settingsicon-1-r85 {
+  margin: 0rem 4.1rem 0.5rem 0rem;
+  width: 5.6998rem;
+  height: 4.9rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-mh5o-iGm .manage-accounts-icon-text-mF3 {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-s39f-tqT {
+  margin: 0rem 17.3rem 0rem 1.256rem;
+  width: calc(100% - 18.5563rem);
+  display: flex;
+  align-items: flex-end;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-s39f-tqT .logouticon-1-zNh {
+  margin: 0rem 4.592rem 0.1rem 0rem;
+  width: 4.9155rem;
+  height: 5.2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-srmf-1nM .auto-group-s39f-tqT .logout-iccon-text-Hsb {
+  font-size: 3.2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-y21b-DFT {
+  width: 144.7rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-y21b-DFT .auto-group-yktp-kWH {
+  box-sizing: border-box;
+  padding: 5.2rem 6.5rem 4.3rem 6.5rem;
+  width: 100%;
+  font-size: 9.6rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #a6a6a6;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-y21b-DFT .auto-group-reof-D8y {
+  box-sizing: border-box;
+  padding: 5rem 4.4rem 0rem 6.5rem;
+  width: 100%;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-y21b-DFT .auto-group-reof-D8y .auto-group-nubb-iLd {
+  margin: 0rem 1.8rem 5.1rem 0rem;
+  width: 25.5rem;
+  height: 10rem;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #354069;
+  border-radius: 3rem;
+  flex-shrink: 0;
+}
+.manage-accounts-page-xER .auto-group-ksx1-UGd .auto-group-y21b-DFT .auto-group-reof-D8y .accounts-table-xkm {
+  width: 100%;
+  height: 48.9rem;
+  background-color: #9cb2c2;
+  flex-shrink: 0;
+}
