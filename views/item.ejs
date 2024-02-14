@@ -5,40 +5,165 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Item Catalog</title>
     <%- include('sidebar') %>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
+    <!-- Labels at the top -->
+    <div style="display: flex; justify-content: space-between;">
+        <h2>INVENTORY MANAGER</h2>
+        <p id="currentDate"></p> <!-- Dynamic date will be inserted here -->
+    </div>
+
+    <!-- Category buttons -->
+    <div>
+        <button onclick="filterTable('')">All</button>
+        <button onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
+        <button onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
+        <button onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+    </div>
+
     <h1>Item Catalog</h1>
     
-    <table>
+    <table id="itemTable">
         <thead>
             <tr>
                 <th>CODE</th>
-                <th>CLASSIFICATION ID</th>
-                <th>MATERIAL NAME</th>
-                <th>TOTAL AMOUNT</th>
-                <th>CODE STATUS</th>
+                <th>DESCRIPTION</th>
+                <th>ACTION</th>
             </tr>
         </thead>
         <tbody>
             <% if (item && item.length > 0) { %>
                 <% item.forEach(item => { %>
-                    <tr>
+                    <tr class="<%= item.classification_id %>"> <!-- Add classification id as class to each row -->
                         <td><%= item.code %></td>
-                        <td><%= item.classification_id %></td>
                         <td><%= item.material_name %></td>
-                        <td><%= item.total_amount %></td>
-                        <td><%= item.code_status %></td>
+                        <td>
+                            <button onclick="openModal()" style="font-family: FontAwesome;"></button> <!-- Open the modal when this button is clicked -->
+                            <button onclick="documentFunction()" style="font-family: FontAwesome;"></button>
+                        </td>
                     </tr>
                 <% }); %>
             <% } else { %>
                 <tr>
-                    <td colspan="5">No items found</td>
+                    <td colspan="4">No items found</td>
                 </tr>
             <% } %>
         </tbody>
     </table>
 
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">×</span>
+            <p>Edit Cluster Information</p>
+            <!-- Add your form or other elements here -->
+            <table>
+                <tr>
+                    <th>CODE</th>
+                    <th>DESCRIPTION</th>
+                    <th>TOGGLE</th>
+                </tr>
+                <!-- Add your rows here -->
+            </table>
+            <button onclick="discardChanges()">Discard</button>
+            <button onclick="saveChanges()">Save</button>
+        </div>
+
+    </div>
+
     <!-- Add button for adding a new item -->
     <button onclick="window.location.href='/add-item'">Add Item</button>
+
+    <script>
+        // Display the current date
+        document.getElementById('currentDate').textContent = new Date().toLocaleString();
+
+        // Filter the table based on classification id
+        function filterTable(id) {
+            $('#itemTable tbody tr').each(function() {
+                var rowId = $(this).attr('class');
+                if (id === '' || id.toString() === rowId) {
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
+        }
+
+        // Get the modal
+        var modal = document.getElementById("myModal");
+
+        // Get the <span> element that closes the modal
+        var span = document.getElementsByClassName("close")[0];
+
+        // When the user clicks on <span> (x), close the modal
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        // When the user clicks anywhere outside of the modal, close it
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        // Function to open the modal
+        function openModal() {
+            modal.style.display = "block";
+        }
+
+        // Functions to handle the discard and save buttons
+        function discardChanges() {
+            // Add your code here to discard changes
+        }
+
+        function saveChanges() {
+            // Add your code here to save changes
+        }
+    </script>
 </body>
 </html>
