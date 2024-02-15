@@ -90,6 +90,11 @@ app.get("/add-item", (req, res) => {
   res.render("add-item.ejs");
 });
 
+
+app.get("/add-cluster", (req, res) => {
+  res.render("add-cluster.ejs");
+});
+
 // Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
   try {
@@ -109,6 +114,27 @@ app.post("/add-item", async (req, res) => {
       res.status(500).send("Internal Server Error");
   }
 });
+
+
+app.post("/add-cluster", async (req, res) => {
+  try {
+      // Extract data from the request body
+      const { clustercode, description, classification_id } = req.body;
+
+      // Insert the item into the database
+      await db.query(
+          "INSERT INTO cluster (clustercode, description, classification_id) VALUES ($1, $2, $3)",
+          [clustercode, description, classification_id]
+      );
+
+      // Redirect back to the original page after adding the item
+      res.redirect("/item");
+  } catch (error) {
+      console.error("Error adding item:", error);
+      res.status(500).send("Internal Server Error");
+  }
+});
+
 
 
 app.get("/logout", (req, res) => {
