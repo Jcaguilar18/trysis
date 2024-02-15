@@ -52,9 +52,12 @@ app.get("/item", async (req, res) => {
   var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
   var roleOf = roleOfQueryResult.rows[0]?.role;
   var itemOfQueryResult = await db.query("SELECT * FROM item ");
+  var clusterquery = await db.query("SELECT * FROM cluster");
+  const cluster = clusterquery.rows;
       const item= itemOfQueryResult.rows;
-      console.log(item);
-      res.render("item.ejs", {item, roleOf});
+      //console.log(item);
+      console.log(cluster);
+      res.render("item.ejs", {item, roleOf,cluster});
 });
 
 app.get("/manage", async (req, res) => {
