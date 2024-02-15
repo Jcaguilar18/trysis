@@ -119,12 +119,12 @@ app.post("/add-item", async (req, res) => {
 app.post("/add-cluster", async (req, res) => {
   try {
       // Extract data from the request body
-      const { clustercode, description, classification_id } = req.body;
+      const { clustercode, description, classificationid } = req.body;
 
       // Insert the item into the database
       await db.query(
           "INSERT INTO cluster (clustercode, description, classification_id) VALUES ($1, $2, $3)",
-          [clustercode, description, classification_id]
+          [clustercode, description, classificationid]
       );
 
       // Redirect back to the original page after adding the item
