@@ -113,8 +113,9 @@
                     <% if (item && item.length > 0) { %>
                         <% item.forEach(item => { %>
                             <tr class="item-row" data-clustercode="<%= item.clustercode %>"> <!-- Add data-clustercode attribute -->
-                                <td><%= item.code %></td>
-                                <td><%= item.material_name %></td>
+                                <td contenteditable="true"><%= item.code %></td>
+                                <td contenteditable="true"><%= item.material_name %></td>
+
                             </tr>
                         <% }); %>
                     <% } else { %>
@@ -126,8 +127,9 @@
             </table>
             <button onclick="discardChanges()">Discard</button>
             <button onclick="saveChanges()">Save</button>
+            <button onclick="window.location.href='/add-cluster'">Add Cluster</button>
         </div>
-        <button onclick="window.location.href='/add-cluster'">Add Cluster</button>
+       
     </div>
 
         <!-- Add button for adding a new item -->
