@@ -45,6 +45,11 @@
                 text-decoration: none;
                 cursor: pointer;
             }
+
+
+
+
+
         </style>
     </head>
     <body>
@@ -82,7 +87,7 @@
                             <td><%= cluster.description %></td>
                             <td>
                                 <button onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                                <button onclick="documentFunction()" style="font-family: FontAwesome;"></button>
+                                <button onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
                             </td>
                         </tr>
                     <% }); %>
@@ -132,7 +137,7 @@
        
     </div>
 
-        <!-- Add button for adding a new item -->
+        
      
 
         <script>
@@ -156,6 +161,8 @@ function filterTable(id) {
 // Get the modal
 var modal = document.getElementById("myModal");
 
+
+
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
 
@@ -166,10 +173,12 @@ span.onclick = function() {
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
+    if (event.target == modal2) {
+        modal2.style.display = "none";
     }
 }
+
+
 
 // Function to open the modal and filter items based on the clustercode
 function openModal(clustercode) {
@@ -187,6 +196,20 @@ function openModal(clustercode) {
     // Show the modal
     modal.style.display = "block";
 }
+// function documentFunction(clustercode){
+//     var items = $('#myModal2 tbody tr').filter(function() {
+//         return $(this).data('clustercode') === clustercode;
+//     });
+
+//     // Hide all items
+//     $('#myModal2 tbody tr').hide();
+
+//     // Show only the items with the same clustercode
+//     items.show();
+
+//     // Show the modal
+//     modal.style.display = "block"; 
+// }
 
 // Functions to handle the discard and save buttons
 function discardChanges() {
