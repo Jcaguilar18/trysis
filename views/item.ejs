@@ -113,7 +113,7 @@
                     <% if (item && item.length > 0) { %>
                         <% item.forEach(item => { %>
                             <tr class="item-row" data-clustercode="<%= item.clustercode %>"> <!-- Add data-clustercode attribute -->
-                                <td contenteditable="true"><%= item.code %></td>
+                                <td contenteditable="true"><%= item.clustercode %></td>
                                 <td contenteditable="true"><%= item.material_name %></td>
 
                             </tr>
@@ -127,7 +127,8 @@
             </table>
             <button onclick="discardChanges()">Discard</button>
             <button onclick="saveChanges()">Save</button>
-            <button onclick="window.location.href='/add-item'">Add Item</button>
+           
+            <button onclick="additemFunction('<%= cluster.clustercode %>')">Add Item</button>
         </div>
        
     </div>
@@ -207,6 +208,12 @@ function documentFunction(clustercode){
     // Redirect to the URL
     window.location.href = url;
 
+}
+function additemFunction(clustercode){
+    var url = "/add-item?clustercode=" + clustercode;
+
+// Redirect to the URL
+window.location.href = url;
 }
 
 // Functions to handle the discard and save buttons

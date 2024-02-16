@@ -87,21 +87,21 @@ app.get("/manage", async (req, res) => {
 
 // Route to render the form for adding an item
 app.get("/add-item", (req, res) => {
-  res.render("add-item.ejs");
+  const clcode = req.query.clustercode;
+  res.render("add-item.ejs", {clcode});
 });
+
+
 
 app.get("/bin", async (req, res) => {
   var clustercode = req.query.clustercode;
-  console.log(clustercode);
-
+  //console.log(clustercode);
   var itemOfQueryResult = await db.query("SELECT * FROM item WHERE clustercode = $1 ",[clustercode]);
-
-
   const items= itemOfQueryResult.rows;
-
-
   res.render("bin.ejs", {items});
 });
+
+
 
 app.get("/add-cluster", (req, res) => {
   res.render("add-cluster.ejs");
@@ -111,12 +111,14 @@ app.get("/add-cluster", (req, res) => {
 app.post("/add-item", async (req, res) => {
   try {
       // Extract data from the request body
-      const { code, classificationId, materialName, clustercode} = req.body;
-
+      const {materialName, clcode} = req.body;
+      var container =   await db.query("SELECT * FROM item WHERE WHERE clustercode = $1",[ clcode ]);
+      const container1 = container.rows[0];
+      const { code, classification_id, material_name1, total_amount, clustercode, year, month, beginning_inventory, total_incoming, total_outgoing, available, price } = container1;
       // Insert the item into the database
       await db.query(
-          "INSERT INTO item (code, classification_id, material_name, total_amount, clustercode) VALUES ($1, $2, $3, $4)",
-          [code, classificationId, materialName, clustercode]
+          "INSERT INTO item (classification_id, material_name, clustercode) VALUES ( $2, $3, $4)",
+          [ classification_id,materialName,clcode ]
       );
 
       // Redirect back to the original page after adding the item
