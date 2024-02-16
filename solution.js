@@ -90,6 +90,18 @@ app.get("/add-item", (req, res) => {
   res.render("add-item.ejs");
 });
 
+app.get("/bin", async (req, res) => {
+  var clustercode = req.query.clustercode;
+  console.log(clustercode);
+
+  var itemOfQueryResult = await db.query("SELECT * FROM item WHERE clustercode = $1 ",[clustercode]);
+
+
+  const items= itemOfQueryResult.rows;
+
+
+  res.render("bin.ejs", {items});
+});
 
 app.get("/add-cluster", (req, res) => {
   res.render("add-cluster.ejs");
@@ -99,12 +111,12 @@ app.get("/add-cluster", (req, res) => {
 app.post("/add-item", async (req, res) => {
   try {
       // Extract data from the request body
-      const { code, classificationId, materialName, totalAmount, codeStatus } = req.body;
+      const { code, classificationId, materialName, clustercode} = req.body;
 
       // Insert the item into the database
       await db.query(
-          "INSERT INTO item (code, classification_id, material_name, total_amount, code_status) VALUES ($1, $2, $3, $4, $5)",
-          [code, classificationId, materialName, totalAmount, codeStatus]
+          "INSERT INTO item (code, classification_id, material_name, total_amount, clustercode) VALUES ($1, $2, $3, $4)",
+          [code, classificationId, materialName, clustercode]
       );
 
       // Redirect back to the original page after adding the item
