@@ -1,16 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-</head>
 
-<body>
-  <%- include('sidebar') %>
-    <h1>Dashboard</h1>
+<html>
 
-<%= console.log(roleOf) %>
-   
-</body>
+    <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>Manage Accounts Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
+    <link rel="stylesheet" href="./styles/dashboard.css"/>
+    </head>
+
+    <body>
+        <div class="web-page">
+            <div class="top-bar">
+                <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+                <p class="current-user-text">INVENTORY MANAGER</p>
+                <img class="profile-picture" src="./assets/profile-picture-7bK.png"/>
+              </div>
+              <div class="right-side">
+                <%- include('sidebar') %>
+              </div>
+        </div>
+    </body>
+
 </html>
