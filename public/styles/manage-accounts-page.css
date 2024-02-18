@@ -1,3 +1,4 @@
+
 * {
 	margin: 0;
 	padding: 0;
@@ -57,7 +58,7 @@ body {
     flex-shrink: 0;
   }
 
-  .web-page .right-side {
+  .web-page .bottom-page-part {
     width: 100%;
     height: calc(100vh - 5rem);
     display: flex;
@@ -66,11 +67,67 @@ body {
     background-color: aqua;
   }
 
-   .web-page .right-side .side-bar {
-    box-sizing: border-box;
-    padding: 5.2rem 4.8rem 5.1rem 3.336rem;
-    width: 6rem;
-    height: calc(100vh - 5rem);
-    background-color: #545454;
+  .web-page .bottom-page-part .manage-accounts-header {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
     flex-shrink: 0;
   }
+
+  .web-page .bottom-page-part .manage-accounts-header .manage-accounts-text-bar {
+    box-sizing: border-box;
+    padding: 2rem 3rem 2rem 25rem;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+    background-color: #a6a6a6;
+    flex-shrink: 0;
+  }
+
+  .web-page .bottom-page-part .manage-accounts-header .table-area {
+    box-sizing: border-box;
+    padding: 2rem 4.4rem 2rem 6.5rem;
+    width: 100%;
+    align-items: flex-end;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  .web-page .bottom-page-part .manage-accounts-header .table-area .new-user-button {
+    margin: 0rem 1.8rem 5.1rem 0rem;
+    width: 11rem;
+    height: 5rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.2125;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #354069;
+    border-radius: 3rem;
+    flex-shrink: 0;
+    text-decoration: none;
+  }
+
+  .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
+    width: 100%;
+    height: 20rem;
+    background-color: #9cb2c2;
+    flex-shrink: 0;
+    overflow: auto;
+  }
+
+
+
+
+  
+
