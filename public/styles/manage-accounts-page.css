@@ -100,7 +100,7 @@ body {
   }
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .new-user-button {
-    margin: 0rem 1.8rem 5.1rem 0rem;
+    margin: 0rem 1.8rem 2rem 0rem;
     width: 11rem;
     height: 5rem;
     font-size: 1.5rem;
@@ -120,7 +120,7 @@ body {
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
     width: 100%;
-    height: 20rem;
+    height: 25rem;
     background-color: #9cb2c2;
     flex-shrink: 0;
     overflow: auto;
