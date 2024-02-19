@@ -27,7 +27,7 @@
                   <form action="/login" method="POST">
                 </div>
                 <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
-                    <h2 style="color: rgb(255, 0, 0);">User can't be found or is not active</h2>
+                    <p class="wrong-credentials-text">Enter the Correct Credentials</p>
                 <% } %>
                 
                 <p class="user-id-text">User ID</p>
@@ -39,6 +39,7 @@
                 <button class="login-button">Login</button>
               </form>
             </div>
+            
         </div>
     </body>
 </html>
