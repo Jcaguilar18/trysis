@@ -36,31 +36,134 @@
     font-size: 36px;
     margin-left: 50px;
   }
+
   
   @media screen and (max-height: 450px) {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
+  .dashboard-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.item-catalog-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.managestock-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.generate-report-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.generate-report-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+ .logs-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.settings-icon {
+  margin: 0rem 1rem 1.3rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.logout-icon {
+  margin: 0rem 1rem 0rem 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
 </style>
 
 <div id="mySidenav" class="sidenav" onmouseleave="closeNav()">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="/dashboard">Dashboard</a>
-  <a href="/item">Item Catalog</a>
-  <a href="#">Manage Stock</a>
-  <a href="#">Generate Report</a>
-  <a href="#">Logs</a>
+
+  <a href="/dashboard">
+    <img class="dashboard-icon" src="./assets/dashboardicon-1-CWy.png"/>
+    <span>Dashboard</span>
+  </a>
+
+  <a href="/item">
+    <img class="item-catalog-icon" src="./assets/itemcatalogicon-1-FJd.png"/>
+    <span>Item Catalog</span>
+  </a>
+  
+  <a href="#">
+    <img class="managestock-icon" src="./assets/managestock-icon-1-Sey.png"/>
+    <span>Manage Stock</span>
+  </a>
+
+  <a href="#">
+    <img class="generate-report-icon" src="./assets/generatereporticon-1-sL1.png"/>
+    <span>Generate Report</span>
+  </a>
+
+  <a href="#">
+    <img class="logs-icon" src="./assets/logsicon-1-PTB.png"/>
+    <span>Logs</span>
+  </a>
+
   <%if (roleOf == "manager"){ %>
-  <a href="/manage">Manage Accounts</a>
+  <a href="/manage">
+    <img class="settings-icon" src="./assets/settingsicon-1-cdT.png"/>
+    <span>Manage Accounts</span>
+  </a>
   <% }%>
-  <a href="/logout">Logout</a>
+
+  <a href="/logout">
+    <img class="logout-icon" src="./assets/logouticon-1-W8V.png"/>
+    <span>Logout</span>
+  </a>
+
 </div>
 
 <div id="hoverArea" style="position: fixed; top: 0; left: 0; height: 100%; width: 50px;" onmouseover="openNav()"></div>
 
 <script>
 function openNav() {
-  document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("mySidenav").style.width = "310px";
 }
 
 function closeNav() {
