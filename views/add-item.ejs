@@ -8,17 +8,13 @@
 <body>
     <h1>Add Item</h1>
     <form action="/add-item" method="POST">
-        <label for="code">Code:</label>
-        <input type="text" id="code" name="code" required><br><br>
-        <label for="classificationId">Classification ID:</label>
-        <input type="text" id="classificationId" name="classificationId" required><br><br>
+        <input type="hidden" value={clcode} name="clustercode">
+
+
         <label for="materialName">Material Name:</label>
         <input type="text" id="materialName" name="materialName" required><br><br>
-        <label for="totalAmount">Total Amount:</label>
-        <input type="text" id="totalAmount" name="totalAmount" required><br><br>
-        <label for="clustercode">Cluster:</label>
-        <input type="text" id="clustercode" name="clustercode" required><br><br>
         <button type="submit">Add</button>
     </form>
+    <p><%-console.log(clcode) %></p>
 </body>
 </html>
