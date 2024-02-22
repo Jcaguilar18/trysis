@@ -4,17 +4,17 @@
   }
   
   .sidenav {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 1;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.5s;
-    padding-top: 60px;
-  }
+  height: calc(100% - 50px); /* Adjust the height to reach the bottom of the page */
+  width: 100px; /* Set the initial width to the width of the icons */
+  position: fixed;
+  z-index: 1;
+  top: 80px; /* Position the sidebar just below the top bar */
+  left: 0;
+  background-color: #545454;
+  overflow-x: hidden;
+  transition: 0.5s;
+  padding-top: 10px; /* Adjust the padding-top if necessary */
+}
   
   .sidenav a {
     padding: 8px 8px 8px 32px;
@@ -115,46 +115,48 @@
   flex-shrink: 0;
 }
 
+.hide-text {
+  display: none;
+}
+
 </style>
 
-<div id="mySidenav" class="sidenav" onmouseleave="closeNav()">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-
+<div id="mySidenav" class="sidenav" onmouseleave="closeNav()" onmouseover="openNav()">
   <a href="/dashboard">
     <img class="dashboard-icon" src="./assets/dashboardicon-1-CWy.png"/>
-    <span>Dashboard</span>
+    <span class="sidenav-text hide-text">Dashboard</span>
   </a>
 
   <a href="/item">
     <img class="item-catalog-icon" src="./assets/itemcatalogicon-1-FJd.png"/>
-    <span>Item Catalog</span>
+    <span class="sidenav-text hide-text">Item Catalog</span>
   </a>
   
   <a href="#">
     <img class="managestock-icon" src="./assets/managestock-icon-1-Sey.png"/>
-    <span>Manage Stock</span>
+    <span class="sidenav-text hide-text">Manage Stock</span>
   </a>
 
   <a href="#">
     <img class="generate-report-icon" src="./assets/generatereporticon-1-sL1.png"/>
-    <span>Generate Report</span>
+    <span class="sidenav-text hide-text">Generate Report</span>
   </a>
 
   <a href="#">
     <img class="logs-icon" src="./assets/logsicon-1-PTB.png"/>
-    <span>Logs</span>
+    <span class="sidenav-text hide-text">Logs</span>
   </a>
 
   <%if (roleOf == "manager"){ %>
   <a href="/manage">
     <img class="settings-icon" src="./assets/settingsicon-1-cdT.png"/>
-    <span>Manage Accounts</span>
+    <span class="sidenav-text hide-text">Manage Accounts</span>
   </a>
   <% }%>
 
   <a href="/logout">
     <img class="logout-icon" src="./assets/logouticon-1-W8V.png"/>
-    <span>Logout</span>
+    <span class="sidenav-text hide-text">Logout</span>
   </a>
 
 </div>
@@ -164,9 +166,17 @@
 <script>
 function openNav() {
   document.getElementById("mySidenav").style.width = "310px";
+  var elements = document.getElementsByClassName('sidenav-text');
+  for(var i = 0; i < elements.length; i++){
+    elements[i].classList.remove('hide-text');
+  }
 }
 
 function closeNav() {
-  document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("mySidenav").style.width = "100px";
+  var elements = document.getElementsByClassName('sidenav-text');
+  for(var i = 0; i < elements.length; i++){
+    elements[i].classList.add('hide-text');
+  }
 }
 </script>
