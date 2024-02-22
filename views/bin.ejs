@@ -32,11 +32,7 @@
                 <tr>
                     <th>CODE</th>
                     <th>ITEM DESCRIPTION</th>
-                    <th>YEAR</th>
-                    <th>MONTH</th>
-                    <th>BEGINNING INVENTORY</th>
-                    <th>TOTAL INCOMING</th>
-                    <th>TOTAL OUTGOING</th>
+                    <th>Material</th>
                     <th>AVAILABLE</th>
                     <th>PRICE</th>
                     <th>TOTAL AMOUNT</th>
@@ -46,15 +42,11 @@
                 <% items.forEach(item => { %>
                     <tr>
                         <td><%= item.clustercode %></td>
-                        <td><%= item.description %></td>
-                        <td><%= item.year %></td>
-                        <td><%= item.month %></td>
-                        <td><%= item.beginning_inventory %></td>
-                        <td><%= item.total_incoming %></td>
-                        <td><%= item.total_outgoing %></td>
+                        <td><%= item.cluster_description %></td>
+                        <td><%= item.material_name %></td>
                         <td><%= item.available %></td>
                         <td><%= item.price %></td>
-                        <td><%= item.total_amount %></td>
+                        <td><%= item.price * item.available %></td>
                     </tr>
                 <% }); %>
             </tbody>

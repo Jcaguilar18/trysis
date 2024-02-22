@@ -95,8 +95,12 @@ app.get("/add-item", (req, res) => {
 
 app.get("/bin", async (req, res) => {
   var clustercode = req.query.clustercode;
-  //console.log(clustercode);
-  var itemOfQueryResult = await db.query("SELECT * FROM item WHERE clustercode = $1 ",[clustercode]);
+  var itemOfQueryResult = await db.query(`
+    SELECT item.*, cluster.description as cluster_description 
+    FROM item 
+    INNER JOIN cluster ON item.clustercode = cluster.clustercode 
+    WHERE item.clustercode = $1`, [clustercode]);
+
   const items= itemOfQueryResult.rows;
   res.render("bin.ejs", {items});
 });
