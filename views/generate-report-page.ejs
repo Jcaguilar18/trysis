@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Generate Report Page</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
+  <link rel="stylesheet" href="./styles/generate-report-page.css"/>
+</head>
+<body>
+<div class="web-page">
+  <div class="top-bar">
+    <img class="trisys-logo" src="./assets/trisys-logo-Rf3.png"/>
+    <p class="current-user-text">INVENTORY MANAGER</p>
+    <img class="profile-picture" src="./assets/profile-picture-b57.png"/>
+  </div>
+  <div class="bottom-page-part">
+    <%- include('sidebar') %>
+    <div class="below-top-bar">
+      <div class="inner-frame">
+        <p class="generate-report-title">Generate Report</p>
+        <div class="upper-inner">
+          <div class="buttons-frame">
+            <input type="radio" id="north" name="direction" class="button-north">
+            <input type="radio" id="south" name="direction" class="button-south">
+          </div>
+          <div class="button-associated-texts">
+            <p class="final-report-text">Final Report</p>
+            <p class="bin-card-report-text">BIN Card Report</p>
+          </div>
+          <div class="date-frame">
+            <div class="date-text-area">
+              <p class="from-text">From:</p>
+              <p class="date-upper-text">Date:</p>
+              <p class="to-text">To:</p>
+              <p class="date-lower-text">Date:</p>
+            </div>
+            <div class="textfield-areas">
+              <div class="upper-textfield">
+              </div>
+              <div class="lower-textfield">
+              </div>
+            </div>
+            <div class="set-date-buttons-area">
+              <div class="upper-set-date-button">Set Date</div>
+              <div class="lower-set-date-button">Set Date</div>
+            </div>
+          </div>
+        </div>
+        <p class="preview-final-report-text">Preview Final Report:</p>
+        <div class="preview-area">
+        </div>
+      </div>
+      <div class="right-corner-side">
+        <p class="search-text">Search</p>
+        <p class="download-text">Download</p>
+      </div>
+    </div>
+  </div>
+</div>
+</body>

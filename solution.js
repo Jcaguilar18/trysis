@@ -168,12 +168,6 @@ app.get("/dashboard", async (req, res) => {
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
       req.session.roleOf = roleOf;
-
-      
-      
-      
-       
-      
       res.render("dashboard.ejs", { roleOf: roleOf.rows[0].role });
       
     } catch (err) {
@@ -185,6 +179,26 @@ app.get("/dashboard", async (req, res) => {
   }
 });
 
+app.get("/generate-report-page", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
+  if (req.isAuthenticated()) {
+    try {
+      const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
+      req.session.username = req.user.username;
+      req.session.roleOf = roleOf;
+      res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role });
+      
+    } catch (err) {
+      console.log(err);
+      res.redirect("/login");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
 
 app.post(
   "/login", 
