@@ -75,8 +75,10 @@ app.get("/manage", async (req, res) => {
       
       var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
       var roleOf = roleOfQueryResult.rows[0]?.role;
+      console.log("Start: testing in /manage");
       console.log(roleOf);
       console.log(req.session.username);////////////////////////////////////////////// important code take note!
+      console.log("end of testing: /manage")
    
 
       // Render the "manage.ejs" template with the user data
@@ -109,6 +111,7 @@ app.get("/stock", async (req, res) => {
     const items = itemOfQueryResult.rows;
       console.log("testStock uname");
     console.log(req.session.username);
+    console.log("end /stock");
      
     res.render("stock.ejs", {items, roleOf, cluster});
   } catch (error) {
