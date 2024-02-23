@@ -34,6 +34,8 @@ const db = new pg.Client({
   password: process.env.PG_PASSWORD,
   port: process.env.PG_PORT,
 });
+
+
 db.connect();
 
 app.get("/", (req, res) => {
@@ -56,7 +58,8 @@ app.get("/item", async (req, res) => {
   const cluster = clusterquery.rows;
       const item= itemOfQueryResult.rows;
       //console.log(item);
-      console.log(cluster);
+      //console.log(cluster);
+      //console.log(roleOf);
       res.render("item.ejs", {item, roleOf,cluster});
 });
 
@@ -90,6 +93,31 @@ app.get("/add-item", (req, res) => {
   const clcode = req.query.clustercode;
   res.render("add-item.ejs", {clcode});
 });
+
+app.get("/stock", async (req, res) => {
+  try {
+    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOf = roleOfQueryResult.rows[0]?.role;
+    
+    var clusterquery = await db.query("SELECT * FROM cluster");
+    const cluster = clusterquery.rows;
+
+    var itemOfQueryResult = await db.query(`
+      SELECT item.*, cluster.description as cluster_description 
+      FROM item 
+      INNER JOIN cluster ON item.clustercode = cluster.clustercode`);
+    const items = itemOfQueryResult.rows;
+      console.log("testStock uname");
+    console.log(req.session.username);
+     
+    res.render("stock.ejs", {items, roleOf, cluster});
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    res.status(500).send('An error occurred');
+  }
+});
+
+
 
 
 
@@ -182,7 +210,7 @@ app.get("/dashboard", async (req, res) => {
       req.session.roleOf = roleOf;
 
       
-      
+      //console.log('Accessed session username:', req.session.username);
       
        
       
