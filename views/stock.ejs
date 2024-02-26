@@ -54,9 +54,9 @@
             </tr>
         </thead>
         <tbody>
-            <% items.forEach(item => { %>
+            <% items.forEach((item, index) => { %>
                 <tr class="<%= item.classification_id %>">
-                    <td><%= item.no %></td>
+                    <td><%= index + 1 %></td>
                     <td><%= item.clustercode %></td>
                     <td><%= item.cluster_description %></td>
                     <td><%= item.material_name %></td>
