@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Stock</title>
     <style>
-        .inventory-table {
+         .inventory-table {
             width: 100%;
             border-collapse: collapse;
         }
@@ -29,14 +29,14 @@
     <h1>Manage Stock</h1>
     <div>
         <button onclick="filterTable('')">All</button>
-        <button onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
-        <button onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
-        <button onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+        <button onclick="filterTable(1)">Fabrication</button> 
+        <button onclick="filterTable(2)">Fire Protection</button> 
+        <button onclick="filterTable(3)">Electrical</button> 
     </div>
 
     <div>
-        MONTH: <select id='month'></select>
-        DAY: <select id='day'></select>
+        <span id="currentMonth"></span>
+        <span id="currentDay"></span>
     </div>
     <table id = "itemTable" class="inventory-table">
         <thead>
@@ -96,7 +96,7 @@
         
         function filterTable(id) {
     var rows = document.getElementById('itemTable').getElementsByTagName('tr');
-    for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+    for (var i = 1; i < rows.length; i++) { 
         var rowId = rows[i].className;
         if (id === '' || id.toString() === rowId) {
             rows[i].style.display = "";
@@ -105,8 +105,16 @@
         }
     }
 }
+function populateMonthAndDay() {
+            var currentDate = new Date();
+            var month = currentDate.toLocaleString('en-US', { month: 'long' });
+            var day = currentDate.getDate();
+            document.getElementById('currentMonth').textContent = 'Month: ' + month;
+            document.getElementById('currentDay').textContent = 'Day: ' + day;
+        }
 
-
+    
+        populateMonthAndDay();
     </script>
 </body>
 </html>
