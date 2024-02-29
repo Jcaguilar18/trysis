@@ -1,157 +1,96 @@
 
-html {
-	font-size:62.5%;
-}
 * {
 	margin: 0;
 	padding: 0;
 }
-ul, li {
-	list-style: none;
-}
-input {
-	border: none;
-}
+
 body {
-  width: 192rem;
-}.generate-report-page-PaV {
-  width: 100%;
-  overflow: hidden;
-  position: relative;
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
-}
-.generate-report-page-PaV .auto-group-tbur-8Y5 {
+    width: 100%;
+  }
+
+.web-page {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+  }
+
+  .web-page .top-bar {
+    box-sizing: border-box;
+    padding: 0rem 0rem 0rem 0rem;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    background-color: #3b2f36;
+    flex-shrink: 0;
+    height: 5rem;
+  }
+
+  .web-page .top-bar .trisys-logo {
+    margin-right: 63rem;
+    width: 11rem;
+    height: 11rem;
+    object-fit: contain;
+    vertical-align: top;
+    flex-shrink: 0;
+    padding-left: 2rem;
+  }
+
+  .web-page .top-bar .current-user-text {
+    margin-right: 1.7rem;
+    font-size: 1rem;
+    line-height: 1;
+    color: #ffffff;
+    font-family: Inter, 'Source Sans Pro';
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: normal;
+  }
+
+  .web-page .top-bar .profile-picture {
+    width: 4rem;
+    height: 4rem;
+    object-fit: contain;
+    vertical-align: top;
+    flex-shrink: 0;
+  }
+
+  .web-page .bottom-page-part {
+    width: 100%;
+    height: calc(100vh - 5rem);
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    /* background-color: aqua; */
+  }
+
+.web-page .bottom-page-part .below-top-bar {
   box-sizing: border-box;
-  padding: 2.4rem 6rem 2.4rem 4.1rem;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  background-color: #3b2f36;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-tbur-8Y5 .trisys-logo-TaM {
-  margin-right: 98.4rem;
-  width: 32.8rem;
-  height: 9.5rem;
-  object-fit: cover;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-tbur-8Y5 .current-user-text-zKP {
-  margin-right: 1.7rem;
-  font-size: 3.2rem;
-  font-weight: 700;
-  line-height: 1.2125;
-  color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-tbur-8Y5 .profile-picture-iWH {
-  width: 12.9rem;
-  height: 10.1rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw {
-  margin-right: 11.1rem;
-  width: calc(100% - 11.1rem);
-  height: 94.5rem;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV {
-  box-sizing: border-box;
-  padding: 5.202rem 3.928rem 6.6rem 35.536rem;
-  width: 47.3rem;
-  height: 100%;
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  background-color: #545454;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .dashboardicon-1-Hho {
-  margin: 0rem 0.972rem 5.202rem 0rem;
-  width: 5.5rem;
-  height: 4.6953rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .itemcatalogicon-1-nuT {
-  margin: 0rem 0.972rem 5.5rem 0rem;
-  width: 6.6rem;
-  height: 6.1rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .managestock-icon-1-Jso {
-  margin: 0rem 0.608rem 5.5rem 0rem;
-  width: 7.2281rem;
-  height: 6.8rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .generatereporticon-1-q73 {
-  margin-bottom: 5.9958rem;
-  width: 7.5721rem;
-  height: 6.3rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .logsicon-1-N6y {
-  margin: 0rem 1.747rem 5.996rem 0rem;
-  width: 5.25rem;
-  height: 3.9083rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .settingsicon-1-Ufo {
-  margin: 0rem 1.172rem 16.6rem 0rem;
-  width: 5.6998rem;
-  height: 4.9rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-z32m-aYV .logouticon-1-zu3 {
-  margin-right: 1.6644rem;
-  width: 4.9155rem;
-  height: 5.2rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 {
-  box-sizing: border-box;
-  padding: 5.7rem 0rem 4.8rem 5.4rem;
+  padding: 2rem 0rem 4.8rem 11.4rem;
   height: 100%;
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  /* background-color: blue; */
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf {
-  margin-right: 4.6rem;
-  width: 138.1rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame {
+  margin-right: 2rem;
+  width: 72rem;
   height: 100%;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  background-color: white;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .generate-report-title-NPo {
-  margin: 0rem 81.5rem 0.9rem 0rem;
-  font-size: 7rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .generate-report-title {
+  margin: 0rem 55rem 0.9rem 0rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
@@ -159,79 +98,92 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F {
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner {
   margin-bottom: 1.1rem;
   width: 100%;
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
+  /* background-color: red; */
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-9oi5-2DT {
-  margin: 0rem 6.7rem 0.6rem 0rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame {
+  margin: 0rem 1.7rem 0.6rem 0rem;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  /* background-color: green; */
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-9oi5-2DT .button-north-ZDP {
-  margin-bottom: 8.4rem;
-  width: 11.3rem;
-  height: 9.7rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame .button-north {
+  margin-top: 2rem;
+  margin-bottom: 3rem;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-9oi5-2DT .button-south-tWZ {
-  width: 11.3rem;
-  height: 9.7rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame .button-south {
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-ww3b-E4d {
-  margin-right: 4.5rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts {
+  margin-right: 7rem;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  /* background-color: orange; */ 
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-ww3b-E4d .final-report-yY1 {
-  margin-bottom: 9rem;
-  max-width: 13.3rem;
-  font-size: 4rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts .final-report-text {
+  margin-bottom: 5rem;
+  max-width: 8rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  line-height: 1.2125;
+  line-height: 0.9;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-ww3b-E4d .bin-card-report-hU1 {
-  max-width: 17.1rem;
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts .bin-card-report-text {
+  max-width: 10rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  line-height: 1.2125;
+  line-height: 0.9;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 {
-  margin-bottom: 1rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame {
+  margin-bottom: 0.8rem;
   box-sizing: border-box;
-  padding: 1.5rem 6.8rem 2.9rem 4.3rem;
+  padding: 1rem 1rem 1rem 1rem;
   display: flex;
   align-items: center;
   background-color: #3b2f36;
   border-radius: 3rem;
   flex-shrink: 0;
+  /* background-color: yellow; */
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-svzd-khB {
-  margin: 0rem 2.9rem 1.7rem 0rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area {
+  margin: 0rem 1.2rem 1.7rem 0rem;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  /* background-color: pink; */
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-svzd-khB .from--5UZ {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .from-text {
   margin: 0rem 0rem 0.2rem 0.3rem;
-  font-size: 4rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffbd59;
@@ -239,9 +191,9 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-svzd-khB .date-north-o9f {
-  margin: 0rem 0rem 5.4rem 0.3rem;
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .date-upper-text {
+  margin: 0rem 0rem 1.3rem 0.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
@@ -249,9 +201,9 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-svzd-khB .to--7w3 {
-  margin: 0rem 0rem 0.9rem 0.3rem;
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .to-text {
+  margin: 0rem 0rem 0.2rem 0.3rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffbd59;
@@ -259,8 +211,8 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-svzd-khB .date-south-FXT {
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .date-lower-text {
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
@@ -268,39 +220,42 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-jqrh-Nry {
-  margin: 3.6rem 7.7rem 0rem 0rem;
-  width: 39.8rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas {
+  margin: 1rem 1rem 0rem 0rem;
+  width: 23rem;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-jqrh-Nry .from-bar-K1X {
-  margin-bottom: 11.2rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .upper-textfield {
+  margin-bottom: 3rem;
   width: 100%;
-  height: 5rem;
+  height: 3rem;
   background-color: #ffffff;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-jqrh-Nry .south-bar-Fvm {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .lower-textfield {
   width: 100%;
-  height: 5rem;
+  height: 3rem;
   background-color: #ffffff;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-gx77-1f3 {
-  margin-top: 2.8rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area {
+  margin-top: 0.7rem;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  color: brown;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-gx77-1f3 .auto-group-atmt-NEh {
-  margin: 0rem 1.6rem 7.2rem 0rem;
-  width: 23.9rem;
-  height: 8.9rem;
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .upper-set-date-button {
+  margin: 0rem 0.3rem 2rem 0rem;
+  width: 15rem;
+  height: 5rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
@@ -309,17 +264,17 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 0.5rem #000000;
+  border: solid 0.3rem #000000;
   box-sizing: border-box;
   background-color: #e1e1e1;
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .auto-group-zp8z-t7F .auto-group-5dh7-ED3 .auto-group-gx77-1f3 .auto-group-vrih-1Hf {
-  margin-left: 1.6rem;
-  width: 23.9rem;
-  height: 8.9rem;
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .lower-set-date-button {
+  margin-left: 1rem;
+  width: 15rem;
+  height: 5rem;
+  font-size: 1rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
@@ -328,15 +283,16 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: solid 0.5rem #000000;
+  border: solid 0.3rem #000000;
   box-sizing: border-box;
   background-color: #e1e1e1;
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .preview-bQH {
-  margin: 0rem 21.4rem 1.2rem 0rem;
-  font-size: 4rem;
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .preview-final-report-text {
+  margin: 0rem 3rem 1.2rem 0rem;
+  font-size: 1.4rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
@@ -344,24 +300,25 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-fqur-quf .preview-page-Wn9 {
-  margin-left: 39.6rem;
-  width: 98.5rem;
-  height: 34.2rem;
+.web-page .bottom-page-part .below-top-bar .inner-frame .preview-area {
+  margin-left: 10rem;
+  width: 40rem;
+  height: 13rem;
   background-color: #3b2f36;
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-afxt-Ey3 {
+
+.web-page .bottom-page-part .below-top-bar .right-corner-side {
   margin: 14.6rem 0rem 28.7rem 0rem;
   height: calc(100% - 43.3rem);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-afxt-Ey3 .search-xu3 {
-  margin-bottom: 31.4rem;
-  font-size: 4rem;
+.web-page .bottom-page-part .below-top-bar .right-corner-side .search-text {
+  margin-bottom: 14rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   text-decoration-line: underline;
@@ -370,8 +327,8 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.generate-report-page-PaV .auto-group-gmgr-ePw .auto-group-jnc5-iq3 .auto-group-afxt-Ey3 .download-Ve5 {
-  font-size: 3.6rem;
+.web-page .bottom-page-part .below-top-bar .right-corner-side .download-text {
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
@@ -379,3 +336,6 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+
+
