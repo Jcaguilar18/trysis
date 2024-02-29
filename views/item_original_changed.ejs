@@ -9,92 +9,64 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./styles/item-catalog-page.css"/>
 </head>
-<style>
-    /* The Modal (background) */
-    .modal {
-        display: none; /* Hidden by default */
-        position: fixed; /* Stay in place */
-        z-index: 1; /* Sit on top */
-        left: 0;
-        top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
-        overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-    }
-  
-    /* Modal Content/Box */
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto; /* 15% from the top and centered */
-        padding: 20px;
-        border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
-    }
-  
-    /* The Close Button */
-    .close {
-        color: #aaa;
-        float: right;
-        font-size: 28px;
-        font-weight: bold;
-    }
-  
-    .close:hover,
-    .close:focus {
-        color: black;
-        text-decoration: none;
-        cursor: pointer;
-    }
-  </style>
+
 <body>
-    <!-- Labels at the top -->
-    <div style="display: flex; justify-content: space-between;">
-        <h2>INVENTORY MANAGER</h2>
-        <p id="currentDate"></p> <!-- Dynamic date will be inserted here -->
-    </div>
 
-    <!-- Category buttons -->
-    <div>
-        <button onclick="filterTable('')">All</button>
-        <button onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
-        <button onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
-        <button onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
-    </div>
+    <div class="web-page">
+        <div class="top-bar">
+            <img class="trisys-logo" src="./assets/trisys-logo.png"/>
+            <p class="current-user-text">INVENTORY MANAGER</p>
+            <img class="profile-picture" src="./assets/profile-picture.png"/>
+          </div>
+          <div class="bottom-page-part">
+            <div class="upper-part">
+                <img class="item-icon" src="./assets/group.png"/>
+                <p class="item-catalog-text">Item Catalog </p>
+                <p class="date-text">January 31, 2023     6:05 PM</p>
+              </div>
+              <!-- Category buttons -->
+              <div class="middle-buttons-area">
+                <button class="all-text" onclick="filterTable('')">All</button>
+                <button class="fabrication-text-selection" onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
+                <button class="fire-protection-text-selection" onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
+                <button class="electrical-text-selection" onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+                <div class="search-bar">
+                  <img class="search-icon" src="./assets/searchicon-1.png"/>
+                </div>
+                <img class="on-off-switch-button" src="./assets/onoffswitch-1.png"/>
+                <img class="atoz-icon" src="./assets/atoz.png"/>
+              </div>
 
-    <h1>Item Catalog</h1>
-    
-    <table id="itemTable">
-        <thead>
-            <tr>
-                <th>CODE</th>
-                <th>DESCRIPTION</th>
-                <th>ACTION</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% if (cluster && cluster.length > 0) { %>
-                <% cluster.forEach(cluster => { %>
-                    
-                    <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
+              <table id="itemTable" class="item-catalog-table">
+                <thead>
+                  <tr>
+                    <th>CODE</th>
+                    <th>DESCRIPTION</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (cluster && cluster.length > 0) { %>
+                    <% cluster.forEach(cluster => { %>
+                      <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
                         <!-- Add data-clustercode attribute -->
                         <td><%= cluster.clustercode %></td>
                         <td><%= cluster.description %></td>
                         <td>
-                            <button onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                            <button onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <button onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <button onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
                         </td>
+                      </tr>
+                    <% }); %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="4">No items found</td>
                     </tr>
-                <% }); %>
-            <% } else { %>
-                <tr>
-                    <td colspan="4">No items found</td>
-                </tr>
-            <% } %>
-        </tbody>
-    </table>
-    <button onclick="window.location.href='/add-cluster'">Add Cluster</button>
+                  <% } %>
+                </tbody>
+              </table>
+          </div>
+    </div>
     <!-- The Modal -->
     <div id="myModal" class="modal">
 
@@ -140,8 +112,6 @@
  
 
     <script>
-       // Display the current date
-document.getElementById('currentDate').textContent = new Date().toLocaleString();
 
 // Filter the table based on classification id
 // Filter the table based on classification id

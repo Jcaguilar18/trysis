@@ -76,7 +76,7 @@ button:hover {
   align-items: flex-start;
   flex-direction: column;
   flex-shrink: 0;
-  background-color: aqua;
+  background-color: #FDFFF0;
 }
 
 .web-page .bottom-page-part .upper-part {
@@ -84,7 +84,6 @@ button:hover {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  background-color: red;
 }
 .web-page .bottom-page-part .upper-part .item-icon {
   margin: 0rem 1rem 0.192rem 15rem;
@@ -223,40 +222,56 @@ button:hover {
   flex-shrink: 0;
 }
 
-           /* The Modal (background) */
-            .modal {
-              display: none; /* Hidden by default */
-              position: fixed; /* Stay in place */
-              z-index: 1; /* Sit on top */
-              left: 0;
-              top: 0;
-              width: 100%; /* Full width */
-              height: 100%; /* Full height */
-              overflow: auto; /* Enable scroll if needed */
-              background-color: rgb(0,0,0); /* Fallback color */
-              background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-          }
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+  
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+  
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+  
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
 
-          /* Modal Content/Box */
-          .modal-content {
-              background-color: #fefefe;
-              margin: 15% auto; /* 15% from the top and centered */
-              padding: 20px;
-              border: 1px solid #888;
-              width: 80%; /* Could be more or less, depending on screen size */
-          }
-
-          /* The Close Button */
-          .close {
-              color: #aaa;
-              float: right;
-              font-size: 28px;
-              font-weight: bold;
-          }
-
-          .close:hover,
-          .close:focus {
-              color: black;
-              text-decoration: none;
-              cursor: pointer;
-          }
+    #itemTable {
+      width: 100%; /* Make the table take up the full width of its container */
+      border-collapse: collapse; /* Collapse borders to avoid double borders */
+    }
+    
+    #itemTable th, #itemTable td {
+      text-align: left; /* Align text to the left */
+      padding: 8px; /* Add some padding */
+      border: 2px solid #000; /* Make borders a bit thicker */
+    }
+    
+    #itemTable th {
+      background-color: #3B2F36; /* Change the background color of the header cells */
+      color: #fff; /* Change the color of the text in the header cells to white */
+    }

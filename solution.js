@@ -60,7 +60,7 @@ app.get("/item", async (req, res) => {
       //console.log(item);
       //console.log(cluster);
       //console.log(roleOf);
-      res.render("item_original.ejs", {item, roleOf,cluster});
+      res.render("item_original_changed.ejs", {item, roleOf,cluster});
 });
 
 app.get("/manage", async (req, res) => {
