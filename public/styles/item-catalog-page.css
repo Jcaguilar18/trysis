@@ -8,6 +8,17 @@ body {
   width: 100%;
 }
 
+/* button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+} */
+
+button:hover {
+  cursor: pointer;
+}
+
 .web-page {
   width: 100%;
     overflow: hidden;
@@ -110,9 +121,14 @@ body {
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  background-color: green;
+  background-color: white;
 }
 .web-page .bottom-page-part .middle-buttons-area .all-text {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
   margin: 0rem 3.6rem 0.8rem 12rem;
   font-size: 1.5rem;
   font-weight: 400;
@@ -123,9 +139,13 @@ body {
   flex-shrink: 0;
 }
 .web-page .bottom-page-part .middle-buttons-area .fabrication-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
   margin: 0rem 2.8rem 0.8rem 0rem;
   font-size: 1.5rem;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.2125;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
@@ -133,6 +153,10 @@ body {
   flex-shrink: 0;
 }
 .web-page .bottom-page-part .middle-buttons-area .fire-protection-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
   margin: 0rem 3rem 0.8rem 0rem;
   font-size: 1.5rem;
   font-weight: 400;
@@ -143,6 +167,10 @@ body {
   flex-shrink: 0;
 }
 .web-page .bottom-page-part .middle-buttons-area .electrical-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
   margin: 0rem 3rem 0.8rem 0rem;
   font-size: 1.5rem;
   font-weight: 400;
