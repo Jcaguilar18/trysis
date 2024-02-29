@@ -64,7 +64,7 @@ body {
     display: flex;
     align-items: flex-start;
     flex-shrink: 0;
-    background-color: aqua;
+    /* background-color: aqua; */
   }
 
 .web-page .bottom-page-part .below-top-bar {
@@ -74,21 +74,23 @@ body {
   display: flex;
   align-items: center;
   flex-shrink: 0;
+  /* background-color: blue; */
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame {
-  margin-right: 4.6rem;
-  width: 138.1rem;
+  margin-right: 2rem;
+  width: 72rem;
   height: 100%;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  background-color: white;
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .generate-report-title {
-  margin: 0rem 120rem 0.9rem 0rem;
-  font-size: 2.2rem;
+  margin: 0rem 55rem 0.9rem 0rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
@@ -103,30 +105,237 @@ body {
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
+  /* background-color: red; */
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame {
-  margin: 0rem 3.5rem 0.6rem 0rem;
+  margin: 0rem 1.7rem 0.6rem 0rem;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+  /* background-color: green; */
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame .button-north {
   margin-top: 2rem;
   margin-bottom: 3rem;
-  width: 6rem;
-  height: 6rem;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame .button-south {
-  width: 6rem;
-  height: 6rem;
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts {
+  margin-right: 7rem;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  /* background-color: orange; */ 
+}
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts .final-report-text {
+  margin-bottom: 5rem;
+  max-width: 8rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 0.9;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts .bin-card-report-text {
+  max-width: 10rem;
+  font-size: 1.7rem;
+  font-weight: 700;
+  line-height: 0.9;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame {
+  margin-bottom: 0.8rem;
+  box-sizing: border-box;
+  padding: 1rem 1rem 1rem 1rem;
+  display: flex;
+  align-items: center;
+  background-color: #3b2f36;
+  border-radius: 3rem;
+  flex-shrink: 0;
+  /* background-color: yellow; */
+}
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area {
+  margin: 0rem 1.2rem 1.7rem 0rem;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  /* background-color: pink; */
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .from-text {
+  margin: 0rem 0rem 0.2rem 0.3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffbd59;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .date-upper-text {
+  margin: 0rem 0rem 1.3rem 0.3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .to-text {
+  margin: 0rem 0rem 0.2rem 0.3rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffbd59;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .date-text-area .date-lower-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas {
+  margin: 1rem 1rem 0rem 0rem;
+  width: 23rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .upper-textfield {
+  margin-bottom: 3rem;
+  width: 100%;
+  height: 3rem;
+  background-color: #ffffff;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .lower-textfield {
+  width: 100%;
+  height: 3rem;
+  background-color: #ffffff;
+  flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area {
+  margin-top: 0.7rem;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  color: brown;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .upper-set-date-button {
+  margin: 0rem 0.3rem 2rem 0rem;
+  width: 15rem;
+  height: 5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 0.3rem #000000;
+  box-sizing: border-box;
+  background-color: #e1e1e1;
+  border-radius: 3rem;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .lower-set-date-button {
+  margin-left: 1rem;
+  width: 15rem;
+  height: 5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: solid 0.3rem #000000;
+  box-sizing: border-box;
+  background-color: #e1e1e1;
+  border-radius: 3rem;
+  flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .below-top-bar .inner-frame .preview-final-report-text {
+  margin: 0rem 3rem 1.2rem 0rem;
+  font-size: 1.4rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .inner-frame .preview-area {
+  margin-left: 10rem;
+  width: 40rem;
+  height: 13rem;
+  background-color: #3b2f36;
+  border-radius: 3rem;
+  flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .below-top-bar .right-corner-side {
+  margin: 14.6rem 0rem 28.7rem 0rem;
+  height: calc(100% - 43.3rem);
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .right-corner-side .search-text {
+  margin-bottom: 14rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  text-decoration-line: underline;
+  color: #1d1ba2;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .below-top-bar .right-corner-side .download-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+
 
