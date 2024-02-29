@@ -145,30 +145,31 @@ app.get("/add-cluster", (req, res) => {
 // Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
   try {
-      // Extract data from the request body
-      const {materialName, clcode} = req.body;
-      console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
-      var container =   await db.query("SELECT * FROM item WHERE clustercode = $1",[ clcode ]);
-      const container1 = container.rows[0];
-      //console.log(container1);
-      console.log(clcode);
-      console.log(materialName);
-      const { classification_id } = container1;
-      // Insert the item into the database
-      
-      console.log(clcode);
-      await db.query(
-          "INSERT INTO item (classification_id, material_name, clustercode) VALUES ( $1, $2, $3)",
-          [ classification_id,materialName,clcode]
-      );
+    // Extract data from the request body
+    const { materialName, clcode, price, available } = req.body;
 
-      // Redirect back to the original page after adding the item
-      res.redirect("/item");
+    // Get the classification_id based on the clustercode
+    const container = await db.query("SELECT * FROM item WHERE clustercode = $1", [clcode]);
+    const container1 = container.rows[0];
+    const { classification_id } = container1;
+
+    // Get the current date
+    const currentDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+
+    // Insert the item into the database along with the current date
+    await db.query(
+      "INSERT INTO item (classification_id, material_name, clustercode, item_date, price, available) VALUES ($1, $2, $3, $4, $5, $6)",
+      [classification_id, materialName, clcode, currentDate, price, available]
+    );
+
+    // Redirect back to the original page after adding the item
+    res.redirect("/item");
   } catch (error) {
-      console.error("Error adding item:", error);
-      res.status(500).send("Internal Server Error");
+    console.error("Error adding item:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 app.post("/add-cluster", async (req, res) => {

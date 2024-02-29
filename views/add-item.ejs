@@ -8,13 +8,18 @@
 <body>
     <h1>Add Item</h1>
     <form action="/add-item" method="POST">
-        <input type="hidden" value={clcode} name="clustercode">
-
+        <label for="clcode">Cluster Code:</label>
+        <input type="text" id="clcode" name="clcode" required><br><br>
+    
 
         <label for="materialName">Material Name:</label>
         <input type="text" id="materialName" name="materialName" required><br><br>
+        <label for="available">available:</label>
+        <input type="text" id="available" name="available" required><br><br>
+
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required><br><br>
         <button type="submit">Add</button>
     </form>
-    <p><%-console.log(clcode) %></p>
 </body>
 </html>
