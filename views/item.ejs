@@ -107,23 +107,26 @@
                     <tr>
                         <th>CODE</th>
                         <th>DESCRIPTION</th>
+                        <th>TOTAL AMOUNT</th>
                     </tr>
                 </thead>
                 <tbody>
                     <% if (item && item.length > 0) { %>
                         <% item.forEach(item => { %>
-                            <tr class="item-row" data-clustercode="<%= item.clustercode %>"> <!-- Add data-clustercode attribute -->
+                            <tr class="item-row" data-clustercode="<%= item.clustercode %>">
                                 <td contenteditable="true"><%= item.clustercode %></td>
                                 <td contenteditable="true"><%= item.material_name %></td>
 
+                                <td><%= (item.price * item.available).toFixed(2) %></td> <!-- Calculate Total Amount -->
                             </tr>
                         <% }); %>
                     <% } else { %>
                         <tr>
-                            <td colspan="2">No items found</td>
+                            <td colspan="5">No items found</td>
                         </tr>
                     <% } %>
                 </tbody>
+            </table>
             </table>
             <button onclick="discardChanges()">Discard</button>
             <button onclick="saveChanges()">Save</button>

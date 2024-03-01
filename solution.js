@@ -258,6 +258,79 @@ app.post(
   })
 );
 
+
+// app.post('/addstock', async (req, res) => {
+//   try{
+//   const { no, clustercode, incoming, outgoing,itemDescription } = req.body;
+//   console.log('Item No:', no);
+//   console.log('Cluster Code:', clustercode);
+//   console.log('Item Description:', itemDescription);
+//   console.log('Incoming Value:', incoming);
+//   console.log('Outgoing Value:', outgoing);
+
+
+
+
+
+//   res.send('Stock updated successfully!');
+// }
+// catch{
+
+// }
+// });
+
+app.post('/addstock', async (req, res) => {
+  const { no, clustercode, incoming, outgoing, itemDescription } = req.body;
+
+  try {
+    // Check if the item with the given itemDescription exists in the database
+    const checkResult = await db.query("SELECT * FROM item WHERE material_name = $1", [itemDescription]);
+console.log("entered");
+    if (checkResult.rows.length === 0) {
+      res.status(400).send('Item not found');
+      return;
+    }
+
+    // Parse incoming and outgoing as integers
+    const parsedIncoming = parseInt(incoming, 10);
+    const parsedOutgoing = parseInt(outgoing, 10);
+
+    // Check if parsing is successful
+    if (isNaN(parsedIncoming) || isNaN(parsedOutgoing)) {
+      res.status(400).send('Invalid incoming or outgoing value');
+      return;
+    }
+
+    // Fetch the available value from the item table
+    const fetchAvailableQuery = `SELECT available FROM item WHERE material_name = $1`;
+    const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
+    const available = fetchAvailableResult.rows[0].available;
+
+    // Calculate new available value
+    const newAvailable = available + parsedIncoming - parsedOutgoing;
+
+    // Update the item table
+    const updateQuery = `
+      UPDATE item
+      SET beginning_inventory = $1,
+          available = $2,
+          total_outgoing = total_outgoing + $3,
+          total_incoming = total_incoming + $4
+      WHERE material_name = $5
+    `;
+    await db.query(updateQuery, [newAvailable, newAvailable, parsedOutgoing, parsedIncoming, itemDescription]);
+
+    //res.send('Stock updated successfully!');
+    res.redirect("/stock");
+  } catch (err) {
+    console.error('Error updating stock:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
 app.post("/register", async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
