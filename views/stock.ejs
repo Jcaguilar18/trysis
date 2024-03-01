@@ -61,14 +61,14 @@
                     <td><%= item.material_name %></td>
                     <td><%= item.beginning %></td>
                     <td>
-                        <button onclick="decreaseValue(this.parentElement.parentElement, 'incoming<%= item.no %>')">-</button>
-                        <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>">
-                        <button onclick="increaseValue(this.parentElement.parentElement, 'incoming<%= item.no %>')">+</button>
+                        <button onclick="decreaseValue(this.parentNode.parentNode)">-</button>
+                        <input type="number" class="incoming" value="<%= item.incoming %>">
+                        <button onclick="increaseValue(this.parentNode.parentNode)">+</button>
                     </td>
                     <td>
-                        <button onclick="decreaseValue(this.parentElement.parentElement, 'outgoing<%= item.no %>')">-</button>
-                        <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>">
-                        <button onclick="increaseValue(this.parentElement.parentElement, 'outgoing<%= item.no %>')">+</button>
+                        <button onclick="decreaseValue(this.parentNode.parentNode)">-</button>
+                        <input type="number" class="outgoing" value="<%= item.outgoing %>">
+                        <button onclick="increaseValue(this.parentNode.parentNode)">+</button>
                     </td>
                     
                     <td><%= item.available %></td>
@@ -76,7 +76,7 @@
                     <td><%= (item.price * item.available).toFixed(2) %></td>
                     <td>
                         <!-- Add this line for the Save button -->
-                        <button onclick="saveRowData('<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
+                        <button onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
                     </td>
                 </tr>
             <% }); %>
@@ -84,19 +84,21 @@
         </tbody>
     </table>
     <script>
-      function increaseValue(row, field) {
-    let value = parseInt(row.querySelector('#' + field).value, 10);
+      function increaseValue(row) {
+    let input = row.querySelector('.incoming') || row.querySelector('.outgoing');
+    let value = parseInt(input.value, 10);
     value = isNaN(value) ? 0 : value;
     value++;
-    row.querySelector('#' + field).value = value;
+    input.value = value;
 }
 
-function decreaseValue(row, field) {
-    let value = parseInt(row.querySelector('#' + field).value, 10);
+function decreaseValue(row) {
+    let input = row.querySelector('.incoming') || row.querySelector('.outgoing');
+    let value = parseInt(input.value, 10);
     value = isNaN(value) ? 0 : value;
     value < 1 ? value = 1 : '';
     value--;
-    row.querySelector('#' + field).value = value;
+    input.value = value;
 }
 
         
@@ -122,7 +124,7 @@ function decreaseValue(row, field) {
     
         populateMonthAndDay();
 
-        function saveRowData(itemNo, clusterCode, itemDescription) {
+        function saveRowData(row, itemNo, clusterCode, itemDescription) {
             // Create a form dynamically
             var form = document.createElement("form");
             form.setAttribute("method", "post");
@@ -141,8 +143,8 @@ function decreaseValue(row, field) {
             form.appendChild(createInput("no", itemNo));
             form.appendChild(createInput("clustercode", clusterCode));
             form.appendChild(createInput("itemDescription", itemDescription)); // Use the parameter directly
-            form.appendChild(createInput("incoming", document.getElementById('incoming' + itemNo).value));
-            form.appendChild(createInput("outgoing", document.getElementById('outgoing' + itemNo).value));
+            form.appendChild(createInput("incoming", row.querySelector('.incoming').value));
+            form.appendChild(createInput("outgoing", row.querySelector('.outgoing').value));
 
             // Append the form to the document and submit
             document.body.appendChild(form);
