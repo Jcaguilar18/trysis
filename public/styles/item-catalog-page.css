@@ -238,7 +238,7 @@ button:hover {
   
     /* Modal Content/Box */
     .modal-content {
-        background-color: #fefefe;
+        background-color: #3b2f36;
         margin: 15% auto; /* 15% from the top and centered */
         padding: 20px;
         border: 1px solid #888;
@@ -275,3 +275,170 @@ button:hover {
       background-color: #3B2F36; /* Change the background color of the header cells */
       color: #fff; /* Change the color of the text in the header cells to white */
     }
+
+/*****************************************************************************************/
+
+.title-section-modal {
+  margin: 0rem 68.7rem 2rem 0rem;
+  width: calc(100% - 68.7rem);
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.title-section-modal .pencil-icon {
+  margin: 0.006rem 3.3rem 0rem 0rem;
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.title-section-modal .edit-cluster-text {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.table-section {
+  margin-bottom: 4.3938rem;
+  box-sizing: border-box;
+  padding: 1.8rem 0.8rem 1rem 0.8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #3b2f36;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.table-section .header {
+  margin: 0rem 89.2rem 0.434rem 0.7rem;
+  width: calc(100% - 89.9rem);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.table-section .header .code-text {
+  margin-right: 19rem;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.table-section .header .description-text {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.table-section .entry {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.table-section .entry .code {
+  margin-right: 13.5rem;
+  width: 7rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+
+.table-section .entry .description {
+  margin: 0.566rem 0rem 0rem 0rem;
+  box-sizing: border-box;
+  padding: 1rem; /* Adjust padding to fit the text inside */
+  width: 35rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+  text-align: left; /* Add this to align the text to the left */
+}
+
+.table-section .entry .gear {
+  margin-bottom: 0.234rem;
+  margin-right: 4rem; /* Add this to move the gear icon to the left */
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.lower-section {
+  margin-left: 10rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.lower-section .add-cluster-icon {
+  margin: 0rem 4.481rem 0.594rem 0rem;
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+ 
+.lower-section .discard-button {
+  margin-right: 3.8rem;
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a6a6a6;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+  
+.lower-section .save-button {
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00bf63;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}

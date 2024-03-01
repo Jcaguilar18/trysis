@@ -1,0 +1,269 @@
+
+.web-page-modal {
+  box-sizing: border-box;
+  padding: 5.5rem 12.5rem 9.9rem 18.2rem;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  align-items: flex-end;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
+
+.web-page-modal .add-cluster-section {
+  box-sizing: border-box;
+  padding: 4.1rem 6.1rem 2.5rem 6rem;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  background-color: #3b2f36;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .title-section-modal {
+  margin: 0rem 68.7rem 6rem 0rem;
+  width: calc(100% - 68.7rem);
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .title-section-modal .pencil-icon {
+  margin: 0.006rem 3.3rem 0rem 0rem;
+  width: 7.3rem;
+  height: 6.0936rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .title-section-modal .edit-cluster-text {
+  font-size: 6rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section {
+  margin-bottom: 4.3938rem;
+  box-sizing: border-box;
+  padding: 1.8rem 0.8rem 14.634rem 0.8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #3b2f36;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .header {
+  margin: 0rem 89.2rem 0.434rem 0.7rem;
+  width: calc(100% - 89.9rem);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .header .code-text {
+  margin-right: 19rem;
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .header .description-text {
+  font-size: 4rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .first-entry {
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .first-entry .code-one {
+  margin-right: 13.5rem;
+  width: 17.6rem;
+  height: 6.3rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .first-entry .description-one {
+  margin: 0.566rem 4.3rem 0rem 0rem;
+  box-sizing: border-box;
+  padding: 0.7rem 4rem;
+  width: 85.4rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .first-entry .gear-one {
+  margin-bottom: 0.234rem;
+  width: 8rem;
+  height: 6.6319rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .second-entry {
+  margin-bottom: 1.134rem;
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .second-entry .code-two {
+  margin-right: 13.6rem;
+  width: 17.6rem;
+  height: 6.3rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .second-entry .description-two {
+  margin: 0rem 4.9rem 0.366rem 0rem;
+  box-sizing: border-box;
+  padding: 0.8rem 3.5rem 0.6rem 3.5rem;
+  width: 85.4rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .second-entry .gear-two {
+  margin-top: 0.034rem;
+  width: 8rem;
+  height: 6.6319rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .third-entry {
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .third-entry .code-three {
+  margin-right: 13.5rem;
+  width: 17.6rem;
+  height: 6.3rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .third-entry .description-three {
+  margin: 0rem 5.9rem 0.966rem 0rem;
+  box-sizing: border-box;
+  padding: 0.6rem 3.8rem 0.8rem 3.8rem;
+  width: 85.4rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .table-section .third-entry .gear-three {
+  margin-top: 0.634rem;
+  width: 8rem;
+  height: 6.6319rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .lower-section {
+  margin-left: 61.5813rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .lower-section .add-cluster-icon {
+  margin: 0rem 4.481rem 0.594rem 0rem;
+  width: 9.5375rem;
+  height: 8.3125rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .lower-section .discard-button {
+  margin-right: 3.8rem;
+  width: 20rem;
+  height: 7.4rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a6a6a6;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.web-page-modal .add-cluster-section .lower-section .save-button {
+  width: 13.8rem;
+  height: 7.4rem;
+  font-size: 4rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00bf63;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}

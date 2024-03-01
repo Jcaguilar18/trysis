@@ -70,39 +70,39 @@
     <!-- The Modal -->
     <div id="myModal" class="modal">
 
-        <!-- Modal content -->
-        <div class="modal-content">
-            <span class="close">×</span>
-            <p>Edit Cluster Information</p>
-        <!-- Add your form or other elements here -->
-        <table id="modalItemTable">
-            <thead>
-                <tr>
-                    <th>CODE</th>
-                    <th>DESCRIPTION</th>
-                </tr>
-            </thead>
-            <tbody>
-                <% if (item && item.length > 0) { %>
-                    <% item.forEach(item => { %>
-                        <tr class="item-row" data-clustercode="<%= item.clustercode %>"> <!-- Add data-clustercode attribute -->
-                            <td contenteditable="true"><%= item.clustercode %></td>
-                            <td contenteditable="true"><%= item.material_name %></td>
-
-                        </tr>
-                    <% }); %>
-                <% } else { %>
-                    <tr>
-                        <td colspan="2">No items found</td>
-                    </tr>
-                <% } %>
-            </tbody>
-        </table>
-        <button onclick="discardChanges()">Discard</button>
-        <button onclick="saveChanges()">Save</button>
-       
-        <button onclick="additemFunction('<%= cluster.clustercode %>')">Add Item</button>
+<!-- Modal content -->
+<div class="modal-content">
+    <span class="close">×</span>
+    <div class="add-cluster-section">
+        <div class="title-section-modal">
+            <img class="pencil-icon" src="./assets/pencilicon-1.png"/>
+            <p class="edit-cluster-text">Edit Cluster Information</p>
+        </div>
+        <div class="table-section">
+            <div class="header">
+                <p class="code-text">CODE</p>
+                <p class="description-text">DESCRIPTION</p>
+            </div>
+            <% if (item && item.length > 0) { %>
+                <% item.forEach(item => { %>
+                    <div class="entry">
+                        <div class="code"><%= item.clustercode %></div>
+                        <div class="description"><%= item.material_name %></div>
+                        <img class="gear" src="./assets/changinggear-1.png"/>
+                    </div>
+                <% }); %>
+            <% } else { %>
+                <div>No items found</div>
+            <% } %>
+        </div>
+        <div class="lower-section">
+            <img class="add-cluster-icon" src="./assets/additionicon-1.png"/>
+            <button onclick="discardChanges()" class="discard-button">Discard</button>
+            <button onclick="saveChanges()" class="save-button">Save</button>
+            <!---<button onclick="additemFunction('<%= cluster.clustercode %>')" class="add-item-button">Add Item</button> -->
+        </div>
     </div>
+</div>
    
 </div>
 
