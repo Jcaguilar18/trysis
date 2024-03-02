@@ -244,6 +244,7 @@ button:hover {
   background-color: #9cb2c2;
   flex-shrink: 0;
   display: flex;
+  overflow: auto;
 }
 
 .web-page .bottom-page-part .lower-section {
