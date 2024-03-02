@@ -4,80 +4,87 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Stock</title>
-    <style>
-        .inventory-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .inventory-table th, .inventory-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .inventory-table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles/manage-stock-page.css"/>
 </head>
 <body>
-    <!-- <%- include('sidebar') %> -->
-    <h1>Manage Stock</h1>
-    <div>
-        <button onclick="filterTable('')">All</button>
-        <button onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
-        <button onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
-        <button onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+    <div class="web-page">
+        <div class="top-bar">
+            <img class="trisys-logo" src="./assets/trisys-logo.png"/>
+            <p class="current-user-text">INVENTORY MANAGER</p>
+            <img class="profile-picture" src="./assets/profile-picture.png"/>
+          </div>
+          <div class="bottom-page-part">
+            <div class="upper-part">
+                <img class="item-icon" src="./assets/group.png"/>
+                <p class="manage-stock-text">Manage Stock</p>
+                <p class="date-text">January 31, 2023     6:05 PM</p>
+              </div>
+              <!-- Category buttons -->
+              <div class="middle-buttons-area">
+                <button class="all-text" onclick="filterTable('')">All</button>
+                <button class="fabrication-text" onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
+                <button class="fire-protection-text" onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
+                <button class="electrical-text" onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+                <img class="search-bar" src="./assets/auto-group-9jcb.png"/>
+                <img class="on-off-switch" src="./assets/onoffswitch-1.png"/>
+                <img class="a-to-z-icon" src="./assets/atoz.png"/>
+              </div>
+              <div class="upper-table-part">
+                <p class="month-text">MONTH: MARCH</p>
+                <p class="day-text">DAY: 1</p>
+              </div>
+              <div class="table-section">
+                <table id = "itemTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>CODE</th>
+                            <th>MATERIAL</th>
+                            <th>ITEM DESCRIPTION</th>
+                            <th>BEGINNING</th>
+                            <th>INCOMING</th>
+                            <th>OUTGOING</th>
+                            <th>AVAILABLE</th>
+                            <th>PRICE</th>
+                            <th>TOTAL AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% items.forEach((item, index) => { %>
+                            <tr class="<%= item.classification_id %>">
+                                <td><%= index + 1 %></td>
+                                <td><%= item.clustercode %></td>
+                                <td><%= item.cluster_description %></td>
+                                <td><%= item.material_name %></td>
+                                <td><%= item.beginning %></td>
+                                <td>
+                                    <button onclick="decreaseValue('incoming<%= item.no %>')">-</button>
+                                    <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>">
+                                    <button onclick="increaseValue('incoming<%= item.no %>')">+</button>
+                                </td>
+                                <td>
+                                    <button onclick="decreaseValue('outgoing<%= item.no %>')">-</button>
+                                    <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>">
+                                    <button onclick="increaseValue('outgoing<%= item.no %>')">+</button>
+                                </td>
+                                <td><%= item.available %></td>
+                                <td><%= item.price %></td>
+                                <td><%= item.price * item.available %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                </div>
+                <div class="lower-section">
+                    <div class="showing-area-text-area">
+                      <p class="showing-area-text">Showing 1-10 | Out of 1574</p>
+                    </div>
+                    <img class="up-arrow" src="./assets/auto-group-titq.png"/>
+                    <img class="down-arrow" src="./assets/auto-group-titq.png"/>
+                  </div>
+          </div>
     </div>
-
-    <div>
-        MONTH: <select id='month'></select>
-        DAY: <select id='day'></select>
-    </div>
-    <table id = "itemTable" class="inventory-table">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>CODE</th>
-                <th>MATERIAL</th>
-                <th>ITEM DESCRIPTION</th>
-                <th>BEGINNING</th>
-                <th>INCOMING</th>
-                <th>OUTGOING</th>
-                <th>AVAILABLE</th>
-                <th>PRICE</th>
-                <th>TOTAL AMOUNT</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% items.forEach((item, index) => { %>
-                <tr class="<%= item.classification_id %>">
-                    <td><%= index + 1 %></td>
-                    <td><%= item.clustercode %></td>
-                    <td><%= item.cluster_description %></td>
-                    <td><%= item.material_name %></td>
-                    <td><%= item.beginning %></td>
-                    <td>
-                        <button onclick="decreaseValue('incoming<%= item.no %>')">-</button>
-                        <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>">
-                        <button onclick="increaseValue('incoming<%= item.no %>')">+</button>
-                    </td>
-                    <td>
-                        <button onclick="decreaseValue('outgoing<%= item.no %>')">-</button>
-                        <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>">
-                        <button onclick="increaseValue('outgoing<%= item.no %>')">+</button>
-                    </td>
-                    <td><%= item.available %></td>
-                    <td><%= item.price %></td>
-                    <td><%= item.price * item.available %></td>
-                </tr>
-            <% }); %>
-        </tbody>
-    </table>
+    <%- include('sidebar') %>
     <script>
         function increaseValue(id) {
             let value = parseInt(document.getElementById(id).value, 10);
