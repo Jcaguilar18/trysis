@@ -65,7 +65,7 @@ app.get("/item", async (req, res) => {
 
 app.get("/manage", async (req, res) => {
   try {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
   
@@ -119,9 +119,6 @@ app.get("/stock", async (req, res) => {
     res.status(500).send('An error occurred');
   }
 });
-
-
-
 
 
 app.get("/bin", async (req, res) => {
