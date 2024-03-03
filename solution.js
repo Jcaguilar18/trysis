@@ -120,6 +120,32 @@ app.get("/stock", async (req, res) => {
   }
 });
 
+app.get("/logs/:page?", async (req, res) => {
+  try {
+    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOf = roleOfQueryResult.rows[0]?.role;
+
+    var page = req.params.page || 1;
+    var offset = (page - 1) * 5;
+
+    var countQuery = await db.query("SELECT COUNT(*) FROM inventory");
+    var totalRecords = countQuery.rows[0].count;
+    var totalPages = Math.ceil(totalRecords / 5);
+    
+    var logsquery = await db.query("SELECT * FROM inventory ORDER BY changeid LIMIT 5 OFFSET $1", [offset]);
+    const logs = logsquery.rows;
+
+    console.log("testStock uname");
+    console.log(req.session.username);
+    console.log("end /logs");
+     
+    res.render("logs.ejs", {logs, roleOf, page, totalPages});
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    res.status(500).send('An error occurred');
+  }
+});
+
 
 app.get("/bin", async (req, res) => {
   var clustercode = req.query.clustercode;
