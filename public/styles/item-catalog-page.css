@@ -225,8 +225,9 @@ button:hover {
   vertical-align: top;
   flex-shrink: 0;
 }
+
 .web-page .bottom-page-part .item-catalog-table {
-  margin: 0rem 6.3rem 0rem 9rem;
+  margin: 0rem 5rem 0rem 9rem;
   width: calc(100% - 10.4rem);
   height: 25rem;
   background-color: #9cb2c2;
