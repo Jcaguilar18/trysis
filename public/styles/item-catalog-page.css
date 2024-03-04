@@ -190,6 +190,16 @@ button:hover {
   border-radius: 3rem;
   flex-shrink: 0;
 }
+.web-page .bottom-page-part .middle-buttons-area .search-bar .search-input {
+  outline: none;
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: calc(100% - 2.4rem);
+  height: 1.2rem;
+  border: none;
+  background-color: transparent;
+}
 .web-page .bottom-page-part .middle-buttons-area .search-bar .search-icon {
   position: absolute;
   right: 10px;
