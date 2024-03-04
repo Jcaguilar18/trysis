@@ -17,7 +17,12 @@
             <div class="upper-part">
                 <img class="item-icon" src="./assets/group.png"/>
                 <p class="manage-stock-text">Manage Stock</p>
-                <p class="date-text">January 31, 2023     6:05 PM</p>
+                <% 
+                var date = new Date();
+                var options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                var formattedDate = date.toLocaleDateString('en-US', options);
+                %>
+                <p class="date-text"><%= formattedDate %></p>
               </div>
               <!-- Category buttons -->
               <div class="middle-buttons-area">
