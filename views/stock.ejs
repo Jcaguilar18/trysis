@@ -38,8 +38,18 @@
                 <img class="a-to-z-icon" src="./assets/atoz.png"/>
               </div>
               <div class="upper-table-part">
-                <p class="month-text">MONTH: MARCH</p>
-                <p class="day-text">DAY: 1</p>
+                <div class="date-field">
+                  <p class="month-text">MONTH</p>
+                  <select id="month" class="month-dropdown">
+                    <option value="January">January</option>
+                    <option value="February">February</option>
+                    <!-- Add the rest of the months here -->
+                  </select>
+                </div>
+                <div class="date-field">
+                  <p class="day-text">DAY</p>
+                  <input id="day" type="number" min="1" max="31" class="day-input"/>
+                </div>
               </div>
               <div class="table-section">
                 <table id = "itemTable">
