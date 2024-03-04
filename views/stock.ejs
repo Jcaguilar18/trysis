@@ -4,152 +4,116 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Stock</title>
-    <style>
-         .inventory-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .inventory-table th, .inventory-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .inventory-table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles/manage-stock-page.css"/>
 </head>
 <body>
-    <h1>Manage Stock</h1>
-    <div>
-        <button onclick="filterTable('')">All</button>
-        <button onclick="filterTable(1)">Fabrication</button> 
-        <button onclick="filterTable(2)">Fire Protection</button> 
-        <button onclick="filterTable(3)">Electrical</button> 
+    <div class="web-page">
+        <div class="top-bar">
+            <img class="trisys-logo" src="./assets/trisys-logo.png"/>
+            <p class="current-user-text">INVENTORY MANAGER</p>
+            <img class="profile-picture" src="./assets/profile-picture.png"/>
+          </div>
+          <div class="bottom-page-part">
+            <div class="upper-part">
+                <img class="item-icon" src="./assets/group.png"/>
+                <p class="manage-stock-text">Manage Stock</p>
+                <p class="date-text">January 31, 2023     6:05 PM</p>
+              </div>
+              <!-- Category buttons -->
+              <div class="middle-buttons-area">
+                <button class="all-text" onclick="filterTable('')">All</button>
+                <button class="fabrication-text" onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
+                <button class="fire-protection-text" onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
+                <button class="electrical-text" onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+                <img class="search-bar" src="./assets/auto-group-9jcb.png"/>
+                <img class="on-off-switch" src="./assets/onoffswitch-1.png"/>
+                <img class="a-to-z-icon" src="./assets/atoz.png"/>
+              </div>
+              <div class="upper-table-part">
+                <p class="month-text">MONTH: MARCH</p>
+                <p class="day-text">DAY: 1</p>
+              </div>
+              <div class="table-section">
+                <table id = "itemTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>CODE</th>
+                            <th>MATERIAL</th>
+                            <th>ITEM DESCRIPTION</th>
+                            <th>BEGINNING</th>
+                            <th>INCOMING</th>
+                            <th>OUTGOING</th>
+                            <th>AVAILABLE</th>
+                            <th>PRICE</th>
+                            <th>TOTAL AMOUNT</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% items.forEach((item, index) => { %>
+                            <tr class="<%= item.classification_id %>">
+                                <td><%= index + 1 %></td>
+                                <td><%= item.clustercode %></td>
+                                <td><%= item.cluster_description %></td>
+                                <td><%= item.material_name %></td>
+                                <td><%= item.beginning %></td>
+                                <td>
+                                    <button onclick="decreaseValue('incoming<%= item.no %>')">-</button>
+                                    <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>">
+                                    <button onclick="increaseValue('incoming<%= item.no %>')">+</button>
+                                </td>
+                                <td>
+                                    <button onclick="decreaseValue('outgoing<%= item.no %>')">-</button>
+                                    <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>">
+                                    <button onclick="increaseValue('outgoing<%= item.no %>')">+</button>
+                                </td>
+                                <td><%= item.available %></td>
+                                <td><%= item.price %></td>
+                                <td><%= item.price * item.available %></td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                </div>
+                <div class="lower-section">
+                    <div class="showing-area-text-area">
+                      <p class="showing-area-text">Showing 1-10 | Out of 1574</p>
+                    </div>
+                    <img class="up-arrow" src="./assets/auto-group-titq.png"/>
+                    <img class="down-arrow" src="./assets/auto-group-titq.png"/>
+                  </div>
+          </div>
     </div>
-
-    <div>
-        <span id="currentMonth"></span>
-        <span id="currentDay"></span>
-    </div>
-    <table id="itemTable" class="inventory-table">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>CODE</th>
-                <th>MATERIAL</th>
-                <th>ITEM DESCRIPTION</th>
-                <th>BEGINNING</th>
-                <th>INCOMING</th>
-                <th>OUTGOING</th>
-                <th>AVAILABLE</th>
-                <th>PRICE</th>
-                <th>TOTAL AMOUNT</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% items.forEach((item, index) => { %>
-                <tr class="<%= item.classification_id %>">
-                    <td><%= index + 1 %></td>
-                    <td><%= item.clustercode %></td>
-                    <td><%= item.cluster_description %></td>
-                    <td><%= item.material_name %></td>
-                    <td><%= item.beginning %></td>
-                    <td>
-                        <button onclick="decreaseValue(this.parentNode.parentNode)">-</button>
-                        <input type="number" class="incoming" value="<%= item.incoming %>">
-                        <button onclick="increaseValue(this.parentNode.parentNode)">+</button>
-                    </td>
-                    <td>
-                        <button onclick="decreaseValue(this.parentNode.parentNode)">-</button>
-                        <input type="number" class="outgoing" value="<%= item.outgoing %>">
-                        <button onclick="increaseValue(this.parentNode.parentNode)">+</button>
-                    </td>
-                    
-                    <td><%= item.available %></td>
-                    <td><%= item.price %></td>
-                    <td><%= (item.price * item.available).toFixed(2) %></td>
-                    <td>
-                        <!-- Add this line for the Save button -->
-                        <button onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
-                    </td>
-                </tr>
-            <% }); %>
-            
-        </tbody>
-    </table>
+    <%- include('sidebar') %>
     <script>
-      function increaseValue(row) {
-    let input = row.querySelector('.incoming') || row.querySelector('.outgoing');
-    let value = parseInt(input.value, 10);
-    value = isNaN(value) ? 0 : value;
-    value++;
-    input.value = value;
-}
+        function increaseValue(id) {
+            let value = parseInt(document.getElementById(id).value, 10);
+            value = isNaN(value) ? 0 : value;
+            value++;
+            document.getElementById(id).value = value;
+        }
 
-function decreaseValue(row) {
-    let input = row.querySelector('.incoming') || row.querySelector('.outgoing');
-    let value = parseInt(input.value, 10);
-    value = isNaN(value) ? 0 : value;
-    value < 1 ? value = 1 : '';
-    value--;
-    input.value = value;
-}
-
+        function decreaseValue(id) {
+            let value = parseInt(document.getElementById(id).value, 10);
+            value = isNaN(value) ? 0 : value;
+            value < 1 ? value = 1 : '';
+            value--;
+            document.getElementById(id).value = value;
+        }
         
         function filterTable(id) {
-            var rows = document.getElementById('itemTable').getElementsByTagName('tr');
-            for (var i = 1; i < rows.length; i++) { 
-                var rowId = rows[i].className;
-                if (id === '' || id.toString() === rowId) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
+    var rows = document.getElementById('itemTable').getElementsByTagName('tr');
+    for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+        var rowId = rows[i].className;
+        if (id === '' || id.toString() === rowId) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
         }
+    }
+}
 
-        function populateMonthAndDay() {
-            var currentDate = new Date();
-            var month = currentDate.toLocaleString('en-US', { month: 'long' });
-            var day = currentDate.getDate();
-            document.getElementById('currentMonth').textContent = 'Month: ' + month;
-            document.getElementById('currentDay').textContent = 'Day: ' + day;
-        }
-    
-        populateMonthAndDay();
 
-        function saveRowData(row, itemNo, clusterCode, itemDescription) {
-            // Create a form dynamically
-            var form = document.createElement("form");
-            form.setAttribute("method", "post");
-            form.setAttribute("action", "/addstock");
-
-            // Create input elements for the form to submit
-            function createInput(name, value) {
-                var input = document.createElement("input");
-                input.setAttribute("type", "hidden");
-                input.setAttribute("name", name);
-                input.setAttribute("value", value);
-                return input;
-            }
-
-            // Append inputs for 'no', 'clustercode', 'incoming', 'outgoing', and now 'itemDescription'
-            form.appendChild(createInput("no", itemNo));
-            form.appendChild(createInput("clustercode", clusterCode));
-            form.appendChild(createInput("itemDescription", itemDescription)); // Use the parameter directly
-            form.appendChild(createInput("incoming", row.querySelector('.incoming').value));
-            form.appendChild(createInput("outgoing", row.querySelector('.outgoing').value));
-
-            // Append the form to the document and submit
-            document.body.appendChild(form);
-            form.submit();
-        }
     </script>
 </body>
 </html>
