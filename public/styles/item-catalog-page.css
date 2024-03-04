@@ -114,13 +114,14 @@ button:hover {
   flex-shrink: 0;
 }
 .web-page .bottom-page-part .middle-buttons-area {
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   width: 100%;
-  height: 6.4667rem;
+  height: 4rem;
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  background-color: white;
+  background-color: white; 
+  /* background-color: pink; */
 }
 .web-page .bottom-page-part .middle-buttons-area .all-text {
   background: none;
