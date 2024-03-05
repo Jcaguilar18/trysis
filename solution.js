@@ -42,36 +42,10 @@ app.get("/", (req, res) => {
   res.render("login.ejs");
 });
 
-app.post('/login', (req, res) => {
-  const { username, password } = req.body;
-  // Query the database to find the user
-  db.query('SELECT * FROM users WHERE username = $1', [username], (err, result) => {
-    if (err) {
-      // handle error
-    } else if (result.rows.length > 0) {
-      const user = result.rows[0];
-      // Check if the user is active
-      if (user.status !== 'active') {
-        return res.render('login', { accstat: 'inactive' });
-      }
-      // Check the password
-      bcrypt.compare(password, user.password, (err, isMatch) => {
-        if (err) {
-          // handle error
-        } else if (isMatch) {
-          // Passwords match
-          // Here you would typically create a session and redirect the user
-        } else {
-          // Passwords don't match
-          res.render('login', { accstat: 'active' });
-        }
-      });
-    } else {
-      // No user found with that username
-      res.render('login', { accstat: 'active' });
-    }
-  });
+app.get("/login", (req, res) => {
+  res.render("login.ejs");
 });
+
 
 app.get("/register", (req, res) => {
   res.render("register.ejs");
@@ -420,6 +394,7 @@ app.post("/register", async (req, res) => {
     console.log(err);
   }
 });
+
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {
