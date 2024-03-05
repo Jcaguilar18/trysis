@@ -232,6 +232,7 @@ button:hover {
   height: 25rem;
   background-color: #9cb2c2;
   flex-shrink: 0;
+  overflow: auto;
 }
 
     /* The Modal (background) */
@@ -275,18 +276,42 @@ button:hover {
     #itemTable {
       width: 86rem; /* Make the table take up the full width of its container */
       border-collapse: collapse; /* Collapse borders to avoid double borders */
-    }
-    
-    #itemTable th, #itemTable td {
+  }
+  
+  #itemTable th, #itemTable td {
       text-align: left; /* Align text to the left */
       padding: 8px; /* Add some padding */
-      border: 2px solid #000; /* Make borders a bit thicker */
-    }
-    
-    #itemTable th {
+      border: none; /* Remove all borders */
+  }
+  
+  #itemTable th:first-child, #itemTable td:first-child {
+      border-left: 2px solid #000; /* Add left border to the first cell */
+  }
+  
+  #itemTable th:last-child, #itemTable td:last-child {
+      border-right: 2px solid #000; /* Add right border to the last cell */
+  }
+  
+  #itemTable tr:first-child th {
+      border-top: 2px solid #000; /* Add top border to the first row */
+  }
+  
+  #itemTable tr:last-child td {
+      border-bottom: 2px solid #000; /* Add bottom border to the last row */
+  }
+  
+  #itemTable th {
       background-color: #3B2F36; /* Change the background color of the header cells */
       color: #fff; /* Change the color of the text in the header cells to white */
-    }
+  }
+
+  #itemTable tr:nth-child(odd) {
+    background-color: #fff; /* White for odd rows */
+}
+
+#itemTable tr:nth-child(even) {
+    background-color: #E1E1E1; /* #E1E1E1 for even rows */
+}
 
 /*****************************************************************************************/
 
@@ -296,7 +321,6 @@ button:hover {
   display: flex;
   align-items: flex-start;
   flex-shrink: 0;
-  background-color: #00bf63;
 }
 .title-section-modal .pencil-icon {
   margin: 0.006rem 0rem 0rem 4rem;
@@ -323,8 +347,7 @@ button:hover {
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* background-color: #3b2f36; */
-  background-color: pink;
+  background-color: #3b2f36; 
   border-radius: 2rem;
   flex-shrink: 0;
 }
@@ -384,7 +407,7 @@ button:hover {
   margin: 0.566rem 0rem 0rem 0rem;
   box-sizing: border-box;
   padding: 1rem; /* Adjust padding to fit the text inside */
-  width: 35rem;
+  width: 50rem;
   font-size: 1.2rem;
   font-weight: 300;
   line-height: 1;
@@ -456,4 +479,9 @@ button:hover {
   background-color: #00bf63;
   border-radius: 2rem;
   flex-shrink: 0;
+}
+
+.action-buttons {
+  font-size: 30px; /* Adjust as needed */
+  background-color: transparent;
 }
