@@ -60,7 +60,7 @@
                         <td><%= cluster.description %></td>
                         <td>
                           <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                          <button class="action-buttons" onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <button class="action-buttons" onclick="documentFunction('<%= item.clustercode %>')" style="font-family: FontAwesome;"></button>
                         </td>
                       </tr>
                     <% }); %>
@@ -74,8 +74,8 @@
           </div>
     </div>
 
-    <!-- The Modal -->
-    <div id="myModal" class="modal">
+<!-- The Modal -->
+<div id="myModal" class="modal">
 <!-- Modal content -->
 <div class="modal-content">
     <span class="close">×</span>
@@ -111,6 +111,43 @@
 </div>  
 </div>
 
+<!-- The 2nd Modal -->
+<div id="myModal2" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+      <span class="close">×</span>
+      <div class="add-cluster-section">
+          <div class="title-section-modal">
+              <img class="pencil-icon" src="./assets/pencilicon-1.png"/>
+              <p class="edit-cluster-text">Edit Cluster Information</p>
+          </div>
+          <div class="table-section">
+              <div class="header">
+                  <p class="code-text">CODE</p>
+                  <p class="description-text">DESCRIPTION</p>
+              </div>
+              <% if (item && item.length > 0) { %>
+                  <% item.forEach(item => { %>
+                      <div class="entry">
+                          <div class="code" contenteditable="true"><%= item.clustercode %></div>
+                          <div class="description" contenteditable="true"><%= item.material_name %></div>
+                          <img class="gear" src="./assets/changinggear-1.png"/>
+                      </div>
+                  <% }); %>
+              <% } else { %>
+                  <div>No items found</div>
+              <% } %>
+          </div>
+          <div class="lower-section">
+              <img class="add-cluster-icon" src="./assets/additionicon-1.png" onclick="additemFunction('yourClusterCode')" />
+              <button onclick="discardChanges()" class="discard-button">Discard</button>
+              <button onclick="saveChanges()" class="save-button">Save</button>
+              <!--- <button onclick="additemFunction('<%= cluster.clustercode %>')" class="add-item-button">Add Item</button> -->
+          </div>
+      </div>
+  </div>  
+  </div>
+
     <!-- -->
 
 
@@ -131,19 +168,28 @@ $('#itemTable tbody tr').each(function() {
 
 // Get the modal
 var modal = document.getElementById("myModal");
+var modal2 = document.getElementById("myModal2");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
+var span2 = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
 modal.style.display = "none";
 }
 
+span2.onclick = function() {
+modal2.style.display = "none";
+}
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
 if (event.target == modal) {
     modal.style.display = "none";
+}
+if (event.target == modal2) {
+    modal2.style.display = "none";
 }
 }
 
@@ -164,25 +210,33 @@ items.show();
 modal.style.display = "block";
 }
 
-function documentFunction(clustercode){
-// var items = $('#myModal tbody tr').filter(function() {
-//     return $(this).data('clustercode') === clustercode;
-// });
-
-// // Hide all items
-// $('#myModal tbody tr').hide();
-
-// // Show only the items with the same clustercode
-// items.show();
-
-// // Show the modal
-// modal.style.display = "block"; 
-var url = "/bin?clustercode=" + clustercode;
-
-// Redirect to the URL
-window.location.href = url;
-
+window.onclick = function(event) {
+if (event.target == modal) {
+    modal.style.display = "none";
 }
+if (event.target == modal2) {
+    modal2.style.display = "none";
+}
+}
+
+// Function to open the modal and filter items based on the clustercode
+function documentFunction(clustercode) {
+// Filter the items based on the clustercode
+var items = $('#myModal2 tbody tr').filter(function() {
+    return $(this).data('clustercode') === clustercode;
+});
+
+// Hide all items
+$('#myModal2 tbody tr').hide();
+
+// Show only the items with the same clustercode
+items.show();
+
+// Show the modal
+modal2.style.display = "block";
+}
+
+
 function additemFunction(clustercode){
 var url = "/add-item?clustercode=" + clustercode;
 
