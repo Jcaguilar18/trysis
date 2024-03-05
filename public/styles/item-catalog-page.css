@@ -1,166 +1,101 @@
 
-html {
-	font-size:62.5%;
-}
 * {
 	margin: 0;
 	padding: 0;
 }
-ul, li {
-	list-style: none;
-}
-input {
-	border: none;
-}
+
 body {
-  width: 192rem;
-}.item-catalog-page-sRP {
   width: 100%;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD {
+
+/* button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+} */
+
+button:hover {
+  cursor: pointer;
+}
+
+.web-page {
+  width: 100%;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.web-page .top-bar {
   box-sizing: border-box;
-  padding: 2.4rem 6rem 2.4rem 4.1rem;
+  padding: 0rem 0rem 0rem 0rem;
   width: 100%;
   display: flex;
   align-items: center;
   background-color: #3b2f36;
   flex-shrink: 0;
+  height: 5rem;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD .trisys-logo-igu {
-  margin-right: 98.4rem;
-  width: 32.8rem;
-  height: 9.5rem;
-  object-fit: cover;
+
+.web-page .top-bar .trisys-logo {
+  margin-right: 63rem;
+  width: 11rem;
+  height: 11rem;
+  object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
+  padding-left: 2rem;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD .current-user-text-FB3 {
+
+.web-page .top-bar .current-user-text {
   margin-right: 1.7rem;
-  font-size: 3.2rem;
-  font-weight: 700;
-  line-height: 1.2125;
+  font-size: 1rem;
+  line-height: 1;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex-shrink: 0;
+  font-weight: normal;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD .profile-picture-xbF {
-  width: 12.9rem;
-  height: 10.1rem;
+
+.web-page .top-bar .profile-picture {
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB {
-  margin-right: 9.6rem;
-  width: calc(100% - 9.6rem);
-  height: 93.1rem;
+
+.web-page .bottom-page-part {
+  width: 100%;
+  height: calc(100vh - 5rem);
   display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 {
-  box-sizing: border-box;
-  padding: 5.202rem 3.228rem 5.2rem 3.336rem;
-  width: 14.4rem;
-  height: 100%;
-  align-items: center;
-  display: flex;
+  align-items: flex-start;
   flex-direction: column;
-  background-color: #545454;
+  flex-shrink: 0;
+  background-color: #FDFFF0;
+}
+
+.web-page .bottom-page-part .upper-part {
+  margin: 1rem 6.3rem 0rem 0rem;
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .dashboardicon-1-Lbo {
-  margin: 0rem 0rem 5.202rem 0.392rem;
-  width: 5.5rem;
-  height: 4.6953rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .itemcatalogicon-1-rKF {
-  margin: 0rem 0.708rem 5.5rem 0rem;
-  width: 6.6rem;
-  height: 6.1rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .managestock-icon-1-AKw {
-  margin: 0rem 0.608rem 5.5rem 0rem;
-  width: 7.2281rem;
-  height: 6.8rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .generatereporticon-1-5xh {
-  margin: 0rem 0rem 5.996rem 0.264rem;
-  width: 7.5721rem;
-  height: 6.3rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .logsicon-1-D3K {
-  margin: 0rem 0.908rem 5.996rem 0rem;
-  width: 5.25rem;
+.web-page .bottom-page-part .upper-part .item-icon {
+  margin: 0rem 1rem 0.192rem 15rem;
+  width: 2rem;
   height: 3.9083rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .settingsicon-1-jXT {
-  margin: 0rem 0.208rem 16.6rem 0rem;
-  width: 5.6998rem;
-  height: 4.9rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .logouticon-1-4Jq {
-  margin-right: 0.4081rem;
-  width: 4.9155rem;
-  height: 5.2rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 {
-  box-sizing: border-box;
-  padding: 3.3rem 0rem 3.3rem 7.1rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF {
-  margin-right: 1.6rem;
-  width: 71.6rem;
-  height: 100%;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-algd-FPK {
-  margin: 0rem 19.5rem 3.4rem 0rem;
-  width: calc(100% - 19.5rem);
-  display: flex;
-  align-items: center;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-algd-FPK .group-AmB {
-  margin: 0rem 1.65rem 0.192rem 0rem;
-  width: 5.25rem;
-  height: 3.9083rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-algd-FPK .current-user-text-tSH {
-  font-size: 7rem;
+.web-page .bottom-page-part .upper-part .item-catalog-text {
+  margin-right: 50rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
@@ -168,14 +103,34 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h {
-  margin: 0rem 0rem 6.2rem 4.7rem;
+.web-page .bottom-page-part .upper-part .date-text {
+  margin-bottom: 2.7rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .middle-buttons-area {
+  margin-bottom: 1rem;
+  width: 100%;
+  height: 4rem;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  background-color: white; 
+  /* background-color: pink; */
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .all-9t1 {
-  margin-right: 3.6rem;
-  font-size: 3.2rem;
+.web-page .bottom-page-part .middle-buttons-area .all-text {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  margin: 0rem 3.6rem 0.8rem 12rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -183,19 +138,13 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .fabrication-tah {
-  margin-right: 2.8rem;
-  font-size: 3.2rem;
-  font-weight: 700;
-  line-height: 1.2125;
-  color: #000000;
-  font-family: Inter, 'Source Sans Pro';
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .fire-protection-pjF {
-  margin-right: 3rem;
-  font-size: 3.2rem;
+.web-page .bottom-page-part .middle-buttons-area .fabrication-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 0rem 2.8rem 0.8rem 0rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -203,8 +152,13 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .electrical-wos {
-  font-size: 3.2rem;
+.web-page .bottom-page-part .middle-buttons-area .fire-protection-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 0rem 3rem 0.8rem 0rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -212,23 +166,13 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .small-table-west-tUD {
-  margin: 0rem 10.2rem 0rem 8.3rem;
-  width: calc(100% - 18.5rem);
-  height: 64.5rem;
-  background-color: #9cb2c2;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj {
-  margin-top: 1.4rem;
-  width: 87.7rem;
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .date-8tM {
-  margin-bottom: 7.1rem;
-  font-size: 2.4rem;
+.web-page .bottom-page-part .middle-buttons-area .electrical-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 0rem 3rem 0.8rem 0rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -236,32 +180,277 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .auto-group-wddx-ftH {
-  margin: 0rem 11rem 5rem 12.2rem;
+.web-page .bottom-page-part .middle-buttons-area .search-bar {
+  position: relative;
+  margin: 0.483rem 4.9rem 0.483rem 0rem;
   box-sizing: border-box;
-  padding: 1.1rem 5.464rem 0.9rem 55.464rem;
-  width: calc(100% - 23.2rem);
+  padding: 1rem 29rem 1rem 2rem;
+  height: calc(100% - 4rem);
   background-color: #cacbce;
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .auto-group-wddx-ftH .searchicon-1-mwK {
-  width: 3.5722rem;
-  height: 3.5rem;
+.web-page .bottom-page-part .middle-buttons-area .search-bar .search-input {
+  outline: none;
+  position: absolute;
+  left: 10px;
+  top: 8px;
+  width: calc(100% - 2.4rem);
+  height: 1.2rem;
+  border: none;
+  background-color: transparent;
+}
+.web-page .bottom-page-part .middle-buttons-area .search-bar .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 8px; 
+  width: 1.2rem;
+  height: 1.2rem;
   object-fit: contain;
   vertical-align: top;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .small-table-north-7EV {
-  margin: 0rem 3.8rem 5.9rem 0rem;
-  width: 83.6rem;
-  height: 24rem;
-  background-color: #9db2c2;
+.web-page .bottom-page-part .middle-buttons-area .on-off-switch-button {
+  margin-right: 0.9rem;
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  vertical-align: top;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .small-table-south-S1s {
+.web-page .bottom-page-part .middle-buttons-area .atoz-icon {
+  margin-top: 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .item-catalog-table {
+  margin: 0rem 5rem 0rem 9rem;
+  width: calc(100% - 10.4rem);
+  height: 25rem;
+  background-color: #9cb2c2;
+  flex-shrink: 0;
+}
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+  
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #3b2f36;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+    }
+  
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+  
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #itemTable {
+      width: 86rem; /* Make the table take up the full width of its container */
+      border-collapse: collapse; /* Collapse borders to avoid double borders */
+    }
+    
+    #itemTable th, #itemTable td {
+      text-align: left; /* Align text to the left */
+      padding: 8px; /* Add some padding */
+      border: 2px solid #000; /* Make borders a bit thicker */
+    }
+    
+    #itemTable th {
+      background-color: #3B2F36; /* Change the background color of the header cells */
+      color: #fff; /* Change the color of the text in the header cells to white */
+    }
+
+/*****************************************************************************************/
+
+.title-section-modal {
+  margin: 0rem 68.7rem 2rem 0rem;
+  width: calc(100% - 68.7rem);
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.title-section-modal .pencil-icon {
+  margin: 0.006rem 3.3rem 0rem 0rem;
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.title-section-modal .edit-cluster-text {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.table-section {
+  margin-bottom: 4.3938rem;
+  box-sizing: border-box;
+  padding: 1.8rem 0.8rem 1rem 0.8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #3b2f36;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.table-section .header {
+  margin: 0rem 89.2rem 0.434rem 0.7rem;
+  width: calc(100% - 89.9rem);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.table-section .header .code-text {
+  margin-right: 19rem;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.table-section .header .description-text {
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.table-section .entry {
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.table-section .entry .code {
+  margin-right: 13.5rem;
+  width: 7rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+
+.table-section .entry .description {
+  margin: 0.566rem 0rem 0rem 0rem;
+  box-sizing: border-box;
+  padding: 1rem; /* Adjust padding to fit the text inside */
+  width: 35rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+  text-align: left; /* Add this to align the text to the left */
+}
+
+.table-section .entry .gear {
+  margin-bottom: 0.234rem;
+  margin-right: 4rem; /* Add this to move the gear icon to the left */
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.lower-section {
+  margin-left: 10rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.lower-section .add-cluster-icon {
+  margin: 0rem 4.481rem 0.594rem 0rem;
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+ 
+.lower-section .discard-button {
   margin-right: 3.8rem;
-  width: 83.9rem;
-  height: 34.6rem;
-  background-color: #9db2c2;
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a6a6a6;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+  
+.lower-section .save-button {
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00bf63;
+  border-radius: 2rem;
   flex-shrink: 0;
 }
