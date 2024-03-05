@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Login Page</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Averia+Sans+Libre%3A400"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400"/>
         <link rel="stylesheet" href="./styles/login_page.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
          <div class="login-website">
@@ -28,8 +29,7 @@
                 </div>
                 <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
                     <p class="wrong-credentials-text">Enter the Correct Credentials</p>
-                <% } %>
-                
+                <% } %> 
                 <p class="user-id-text">User ID</p>
                 <p class="password-text">Password</p>
                 <input class="user-id-input" type="text" name="username">
@@ -39,7 +39,6 @@
                 <button class="login-button">Login</button>
               </form>
             </div>
-            
         </div>
     </body>
 </html>
