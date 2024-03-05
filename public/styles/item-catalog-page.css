@@ -244,17 +244,17 @@ button:hover {
         width: 100%; /* Full width */
         height: 100%; /* Full height */
         overflow: auto; /* Enable scroll if needed */
-        background-color: rgb(0,0,0); /* Fallback color */
-        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        background-color: rgba(0,0,0,0.4); 
     }
   
     /* Modal Content/Box */
     .modal-content {
         background-color: #3b2f36;
-        margin: 15% auto; /* 15% from the top and centered */
+        margin: 5% 45% 10% 10%; /* top right bottom left */
         padding: 20px;
         border: 1px solid #888;
-        width: 80%; /* Could be more or less, depending on screen size */
+        width: 75%; /* Could be more or less, depending on screen size */
+        border-radius: 2rem;
     }
   
     /* The Close Button */
@@ -291,22 +291,24 @@ button:hover {
 /*****************************************************************************************/
 
 .title-section-modal {
-  margin: 0rem 68.7rem 2rem 0rem;
+  margin: 0rem 68.7rem 1rem 0rem;
   width: calc(100% - 68.7rem);
   display: flex;
   align-items: flex-start;
   flex-shrink: 0;
+  background-color: #00bf63;
 }
 .title-section-modal .pencil-icon {
-  margin: 0.006rem 3.3rem 0rem 0rem;
-  width: 3rem;
-  height: 3rem;
+  margin: 0.006rem 0rem 0rem 4rem;
+  width: 1.7rem;
+  height: 1.7rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
 .title-section-modal .edit-cluster-text {
-  font-size: 3rem;
+  margin: 0rem 0rem 0rem 1rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
@@ -315,13 +317,14 @@ button:hover {
   flex-shrink: 0;
 }
 .table-section {
-  margin-bottom: 4.3938rem;
+  margin-bottom: 1rem;
   box-sizing: border-box;
-  padding: 1.8rem 0.8rem 1rem 0.8rem;
+  padding: 1.8rem 1.8rem 1.8rem 1.8rem;
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: #3b2f36;
+  /* background-color: #3b2f36; */
+  background-color: pink;
   border-radius: 2rem;
   flex-shrink: 0;
 }
@@ -334,7 +337,7 @@ button:hover {
 }
 .table-section .header .code-text {
   margin-right: 19rem;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
@@ -343,7 +346,7 @@ button:hover {
   flex-shrink: 0;
 }
 .table-section .header .description-text {
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
@@ -353,17 +356,17 @@ button:hover {
 }
 
 .table-section .entry {
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
 }
 
 .table-section .entry .code {
-  margin-right: 13.5rem;
+  margin-right: 4rem;
   width: 7rem;
   height: 3rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 300;
   line-height: 1.2125;
   color: #000000;
@@ -382,7 +385,7 @@ button:hover {
   box-sizing: border-box;
   padding: 1rem; /* Adjust padding to fit the text inside */
   width: 35rem;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   font-weight: 300;
   line-height: 1;
   color: #000000;
@@ -396,7 +399,7 @@ button:hover {
 
 .table-section .entry .gear {
   margin-bottom: 0.234rem;
-  margin-right: 4rem; /* Add this to move the gear icon to the left */
+  margin-left: 4rem; /* Add this to move the gear icon to the left */
   width: 3rem;
   height: 3rem;
   object-fit: contain;
