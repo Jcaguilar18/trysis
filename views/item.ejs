@@ -73,6 +73,7 @@
               </table>
           </div>
     </div>
+
     <!-- The Modal -->
     <div id="myModal" class="modal">
 <!-- Modal content -->
@@ -88,11 +89,11 @@
                 <p class="code-text">CODE</p>
                 <p class="description-text">DESCRIPTION</p>
             </div>
-            <% if (item && item.length > 0) { %>
-                <% item.forEach(item => { %>
+            <% if (cluster && cluster.length > 0) { %>
+                <% cluster.forEach(cluster => { %>
                     <div class="entry">
-                        <div class="code" contenteditable="true"><%= item.clustercode %></div>
-                        <div class="description" contenteditable="true"><%= item.material_name %></div>
+                        <div class="code" contenteditable="true"><%= cluster.clustercode %></div>
+                        <div class="description" contenteditable="true"><%= cluster.description %></div>
                         <img class="gear" src="./assets/changinggear-1.png"/>
                     </div>
                 <% }); %>
@@ -113,11 +114,8 @@
     <!-- -->
 
 
- 
-
     <script>
 
-// Filter the table based on classification id
 // Filter the table based on classification id
 function filterTable(id) {
 $('#itemTable tbody tr').each(function() {
@@ -165,6 +163,7 @@ items.show();
 // Show the modal
 modal.style.display = "block";
 }
+
 function documentFunction(clustercode){
 // var items = $('#myModal tbody tr').filter(function() {
 //     return $(this).data('clustercode') === clustercode;
