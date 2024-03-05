@@ -313,6 +313,7 @@ button:hover {
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
+  transform: scaleY(-1); /* Add this line */
 }
 
 #itemTable {

@@ -23,9 +23,19 @@
     <div class="transaction-block">
       <div class="upper-portion">
         <div class="search-bar">
+          <input type="text" class="search-input" placeholder="Search...">
           <img class="search-icon" src="./assets/searchicon-3.png"/>
         </div>
-        <img class="settings-icon" src="./assets/settingsicon-1.png"/>
+        <div class="dropdown">
+          <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="myFunction()" class="dropbtn">
+          <div id="myDropdown" class="dropdown-content">
+            <a href="#">Normal</a>
+            <a href="#">Modified</a>
+            <a href="#">Removed</a>
+            <a href="#">Added</a>
+            <a href="#">Set Date</a>
+          </div>
+        </div>
       </div>
       <div id="transaction-table-area" class="transaction-table-area">
         <% logs.forEach(log => { %>
@@ -68,4 +78,10 @@
       </div>
   </div>
 </div>
+<script>
+  function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+</script>
 </body>
+</html>

@@ -114,36 +114,52 @@
 <!-- The 2nd Modal -->
 <div id="myModal2" class="modal">
   <!-- Modal content -->
-  <div class="modal-content">
+  <div class="modal-content2">
       <span class="close">×</span>
-      <div class="add-cluster-section">
-          <div class="title-section-modal">
-              <img class="pencil-icon" src="./assets/pencilicon-1.png"/>
-              <p class="edit-cluster-text">Edit Cluster Information</p>
-          </div>
-          <div class="table-section">
-              <div class="header">
-                  <p class="code-text">CODE</p>
-                  <p class="description-text">DESCRIPTION</p>
-              </div>
-              <% if (item && item.length > 0) { %>
-                  <% item.forEach(item => { %>
-                      <div class="entry">
-                          <div class="code" contenteditable="true"><%= item.clustercode %></div>
-                          <div class="description" contenteditable="true"><%= item.material_name %></div>
-                          <img class="gear" src="./assets/changinggear-1.png"/>
-                      </div>
-                  <% }); %>
-              <% } else { %>
-                  <div>No items found</div>
-              <% } %>
-          </div>
-          <div class="lower-section">
-              <img class="add-cluster-icon" src="./assets/additionicon-1.png" onclick="additemFunction('yourClusterCode')" />
-              <button onclick="discardChanges()" class="discard-button">Discard</button>
-              <button onclick="saveChanges()" class="save-button">Save</button>
-              <!--- <button onclick="additemFunction('<%= cluster.clustercode %>')" class="add-item-button">Add Item</button> -->
-          </div>
+      <div class="upper-section-modal">
+        <button onclick="window.location.href='/item'">Back</button>
+    </div>
+      <div class="upper-table-part">
+        <p class="upper-table-part-text">Code:</p>
+        <input type="text" id="code" name="code"> 
+        <p class="upper-table-part-text">Material:</p> 
+        <input type="text" id="material" name="material"> 
+        <button id="addItem">+ Add Item</button> 
+    </div>
+      <div class="modal-table-part">
+        <div class="inventory-table">
+          <table>
+            <thead>
+              <tr>
+                  <th>CODE</th>
+                  <th>ITEM DESCRIPTION</th>
+                  <th>Material</th>
+                  <th>AVAILABLE</th>
+                  <th>PRICE</th>
+                  <th>TOTAL AMOUNT</th>
+              </tr>
+          </thead>
+          <tbody>
+        <% if (item && item.length > 0) { %>
+          <% item.forEach(item => { %>
+            <tr>
+              <td><%= item.clustercode %></td>
+              <td><%= item.cluster_description %></td>
+              <td><%= item.material_name %></td>
+              <td><%= item.available %></td>
+              <td><%= item.price %></td>
+              <td><%= item.price * item.available %></td>
+            </tr>
+          <% }); %>
+      <% } else { %>
+          <div>No items found</div>
+      <% } %>
+    </tbody>
+    </table>
+        </div>
+      </div>
+      <div class="pagination-table-part">
+        
       </div>
   </div>  
   </div>
