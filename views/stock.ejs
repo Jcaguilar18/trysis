@@ -38,6 +38,8 @@
                 <img class="a-to-z-icon" src="./assets/atoz.png"/>
               </div>
               <div class="upper-table-part">
+                <!--TASK: Month & Day Sorting Function + Add a Function that Can Sort Through by Code-->
+                <!--TASK: Error Handling if date is wrong-->
                   <p class="month-text">MONTH:</p>
                   <select id="month" class="month-dropdown">
                     <option value="January">January</option>
@@ -52,7 +54,6 @@
                     <option value="February">October</option>
                     <option value="February">November</option>
                     <option value="February">December</option>
-                    <!-- Add the rest of the months here -->
                   </select>
                   <p class="day-text">DAY:</p>
                   <input id="day" type="number" min="1" max="31" class="day-input"/>
@@ -80,7 +81,10 @@
                                 <td><%= item.clustercode %></td>
                                 <td><%= item.cluster_description %></td>
                                 <td><%= item.material_name %></td>
-                                <td><%= item.beginning %></td>
+                                <!--TASK: Save the changes made here-->
+                                <td>
+                                    <input type="number" id="beginning<%= item.no %>" value="<%= item.beginning_inventory %>" class="input-field">
+                                </td>
                                 <td>
                                     <button onclick="decreaseValue('incoming<%= item.no %>')">
                                       <img src="./assets/Decrease_Button.png" alt="Decrease">
@@ -108,16 +112,13 @@
                 </table>
                 </div>
                 <div class="lower-section">
+                    <!--TASK: Make a Pagination function, maybe 10 records shown at a time-->
                     <div class="showing-area-text-area">
                       <p class="showing-area-text">Showing 1-10 | Out of 1574</p>
                     </div>
-                    <button onclick="yourFunction()">
-                        <img class="up-arrow" src="./assets/auto-group-titq.png"/>
-                    </button>
-                    
-                    <button onclick="yourFunction()">
+                    <!--TASK: Make this buttons work through pagination-->
+                        <img class="up-arrow" src="./assets/auto-group-titq.png"/> 
                         <img class="down-arrow" src="./assets/auto-group-titq.png"/>
-                    </button>
                   </div>
           </div>
     </div>

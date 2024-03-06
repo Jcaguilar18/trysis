@@ -24,6 +24,7 @@
         <p class="generate-report-title">Generate Report</p>
         <div class="upper-inner">
           <div class="buttons-frame">
+            <!-- Report Function & Make it Required for one to be picked before downloading-->
             <input type="radio" id="north" name="direction" class="button-north">
             <input type="radio" id="south" name="direction" class="button-south">
           </div>
@@ -39,11 +40,12 @@
               <p class="date-lower-text">Date:</p>
             </div>
             <div class="textfield-areas">
+              <!-- Set Date Function-->
               <div class="upper-textfield">
-                <input type="text" class="textfield-input">
+                <input type="date" id="upperDate" class="textfield-input">
               </div>
               <div class="lower-textfield">
-                <input type="text" class="textfield-input">
+                <input type="date" id="lowerDate" class="textfield-input">
               </div>
             </div>
             <div class="set-date-buttons-area">
@@ -54,12 +56,14 @@
         </div>
         <p class="preview-final-report-text">Preview Final Report:</p>
         <div class="preview-area">
+          <!-- Preview Feature-->
         </div>
       </div>
       <div class="right-corner-side">
         <p class="search-text">Search</p>
         <p class="download-text">Download</p>
         <select class="download-options">
+          <!-- Export Function and Download-->
             <option value="csv">Export to CSV</option>
             <option value="pdf">Export to PDF</option>
         </select>
@@ -67,4 +71,18 @@
     </div>
   </div>
 </div>
+
+<script>
+  window.onload = function() {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+  var yyyy = today.getFullYear();
+
+  today = yyyy + '-' + mm + '-' + dd;
+  document.getElementById("upperDate").value = today;
+  document.getElementById("lowerDate").value = today;
+};
+</script>
+
 </body>

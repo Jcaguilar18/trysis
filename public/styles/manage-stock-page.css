@@ -231,8 +231,8 @@ button:hover {
   left: 0;
   top: 0;
   background-color: #000000;
-  display: flex; /* Add this line */
-  align-items: center; /* Add this line */
+  display: flex; 
+  align-items: center; 
 }
 
 .web-page .bottom-page-part .upper-table-part .month-text{
@@ -248,7 +248,7 @@ button:hover {
 
 .month-dropdown{
   margin-top: 0.3rem;
-  margin-left: 1rem; /* Adjust as needed */
+  margin-left: 1rem; 
   height: 1rem;
 }
 
@@ -265,7 +265,7 @@ button:hover {
 
 .day-input{
   margin-top: 0.2rem;
-  margin-left: 1rem; /* Adjust as needed */
+  margin-left: 1rem; 
   height: 1rem;
 }
 
@@ -273,7 +273,7 @@ button:hover {
   margin: 0rem 2.7rem 0rem 9rem;
   width: 85rem;
   height: 24rem;
-  background-color: #9cb2c2;
+  background-color: white;
   flex-shrink: 0;
   display: flex;
   overflow: auto;
@@ -310,7 +310,7 @@ button:hover {
 }
 
 .web-page .bottom-page-part .lower-section .up-arrow {
-  margin: -2rem 0rem 0.1rem 0rem;
+  margin: -3rem 0rem 0.1rem 0rem;
   width: 3rem;
   height: 2rem;
   position: relative;
@@ -320,44 +320,45 @@ button:hover {
 }
 
 .web-page .bottom-page-part .lower-section .down-arrow {
-  margin-top: -2.2rem;
+  margin-top: -3.2rem;
   width: 2rem;
   height: 2rem;
   position: relative;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
-  transform: scaleY(-1); /* Add this line */
+  transform: scaleY(-1); 
 }
 
 #itemTable {
   width: 100%; /* Make the table take up the full width of its container */
   border-collapse: collapse; /* Collapse borders to avoid double borders */
   flex-grow: 1;
+  border: 2px solid #000; /* Add border */
 }
 
 #itemTable th, #itemTable td {
   text-align: center; /* Align text to the center */
-  padding: 4px; /* Add some padding */
+  padding: 4px; 
   border: none; /* Remove borders */
 }
 
 #itemTable th {
-  background-color: #3B2F36; /* Change the background color of the header cells */
-  color: #fff; /* Change the color of the text in the header cells to white */
+  background-color: #3B2F36; 
+  color: #fff; 
 }
 
 #itemTable .button-input-cell {
-  display: flex; /* Add this line */
-  align-items: center; /* Add this line */
-  justify-content: center; /* Add this line */
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
 }
 
 .input-field {
-  width: 50px; /* Adjust as needed */
+  width: 50px; 
 }
 
 button img {
-  width: 20px; /* Adjust as needed */
-  height: 20px; /* Adjust as needed */
+  width: 20px; 
+  height: 20px; 
 }

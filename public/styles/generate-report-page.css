@@ -245,6 +245,7 @@ body {
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area {
+  margin-left: 1rem;
   margin-top: 0.7rem;
   align-items: center;
   display: flex;
