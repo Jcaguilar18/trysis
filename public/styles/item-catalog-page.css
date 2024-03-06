@@ -1,166 +1,101 @@
 
-html {
-	font-size:62.5%;
-}
 * {
 	margin: 0;
 	padding: 0;
 }
-ul, li {
-	list-style: none;
-}
-input {
-	border: none;
-}
+
 body {
-  width: 192rem;
-}.item-catalog-page-sRP {
   width: 100%;
-  overflow: hidden;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  background-color: #ffffff;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD {
+
+/* button {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+} */
+
+button:hover {
+  cursor: pointer;
+}
+
+.web-page {
+  width: 100%;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+    background-color: white;
+}
+
+.web-page .top-bar {
   box-sizing: border-box;
-  padding: 2.4rem 6rem 2.4rem 4.1rem;
+  padding: 0rem 0rem 0rem 0rem;
   width: 100%;
   display: flex;
   align-items: center;
   background-color: #3b2f36;
   flex-shrink: 0;
+  height: 5rem;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD .trisys-logo-igu {
-  margin-right: 98.4rem;
-  width: 32.8rem;
-  height: 9.5rem;
-  object-fit: cover;
+
+.web-page .top-bar .trisys-logo {
+  margin-right: 63rem;
+  width: 11rem;
+  height: 11rem;
+  object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
+  padding-left: 2rem;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD .current-user-text-FB3 {
+
+.web-page .top-bar .current-user-text {
   margin-right: 1.7rem;
-  font-size: 3.2rem;
-  font-weight: 700;
-  line-height: 1.2125;
+  font-size: 1rem;
+  line-height: 1;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex-shrink: 0;
+  font-weight: normal;
 }
-.item-catalog-page-sRP .auto-group-jwwq-QgD .profile-picture-xbF {
-  width: 12.9rem;
-  height: 10.1rem;
+
+.web-page .top-bar .profile-picture {
+  width: 4rem;
+  height: 4rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB {
-  margin-right: 9.6rem;
-  width: calc(100% - 9.6rem);
-  height: 93.1rem;
+
+.web-page .bottom-page-part {
+  width: 100%;
+  height: calc(100vh - 5rem);
   display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 {
-  box-sizing: border-box;
-  padding: 5.202rem 3.228rem 5.2rem 3.336rem;
-  width: 14.4rem;
-  height: 100%;
-  align-items: center;
-  display: flex;
+  align-items: flex-start;
   flex-direction: column;
-  background-color: #545454;
+  flex-shrink: 0;
+  background-color: #FDFFF0;
+}
+
+.web-page .bottom-page-part .upper-part {
+  margin: 1rem 6.3rem 0rem 0rem;
+  display: flex;
+  align-items: center;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .dashboardicon-1-Lbo {
-  margin: 0rem 0rem 5.202rem 0.392rem;
-  width: 5.5rem;
-  height: 4.6953rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .itemcatalogicon-1-rKF {
-  margin: 0rem 0.708rem 5.5rem 0rem;
-  width: 6.6rem;
-  height: 6.1rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .managestock-icon-1-AKw {
-  margin: 0rem 0.608rem 5.5rem 0rem;
-  width: 7.2281rem;
-  height: 6.8rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .generatereporticon-1-5xh {
-  margin: 0rem 0rem 5.996rem 0.264rem;
-  width: 7.5721rem;
-  height: 6.3rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .logsicon-1-D3K {
-  margin: 0rem 0.908rem 5.996rem 0rem;
-  width: 5.25rem;
+.web-page .bottom-page-part .upper-part .item-icon {
+  margin: 0rem 1rem 0.192rem 15rem;
+  width: 2rem;
   height: 3.9083rem;
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .settingsicon-1-jXT {
-  margin: 0rem 0.208rem 16.6rem 0rem;
-  width: 5.6998rem;
-  height: 4.9rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-aj5k-2r1 .logouticon-1-4Jq {
-  margin-right: 0.4081rem;
-  width: 4.9155rem;
-  height: 5.2rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 {
-  box-sizing: border-box;
-  padding: 3.3rem 0rem 3.3rem 7.1rem;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF {
-  margin-right: 1.6rem;
-  width: 71.6rem;
-  height: 100%;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-algd-FPK {
-  margin: 0rem 19.5rem 3.4rem 0rem;
-  width: calc(100% - 19.5rem);
-  display: flex;
-  align-items: center;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-algd-FPK .group-AmB {
-  margin: 0rem 1.65rem 0.192rem 0rem;
-  width: 5.25rem;
-  height: 3.9083rem;
-  object-fit: contain;
-  vertical-align: top;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-algd-FPK .current-user-text-tSH {
-  font-size: 7rem;
+.web-page .bottom-page-part .upper-part .item-catalog-text {
+  margin-right: 50rem;
+  font-size: 2rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
@@ -168,14 +103,34 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h {
-  margin: 0rem 0rem 6.2rem 4.7rem;
+.web-page .bottom-page-part .upper-part .date-text {
+  margin-bottom: 2.7rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.web-page .bottom-page-part .middle-buttons-area {
+  margin-bottom: 1rem;
+  width: 100%;
+  height: 4rem;
   display: flex;
   align-items: center;
+  flex-shrink: 0;
+  background-color: white; 
+  /* background-color: pink; */
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .all-9t1 {
-  margin-right: 3.6rem;
-  font-size: 3.2rem;
+.web-page .bottom-page-part .middle-buttons-area .all-text {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+  margin: 0rem 3.6rem 0.8rem 12rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -183,19 +138,13 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .fabrication-tah {
-  margin-right: 2.8rem;
-  font-size: 3.2rem;
-  font-weight: 700;
-  line-height: 1.2125;
-  color: #000000;
-  font-family: Inter, 'Source Sans Pro';
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .fire-protection-pjF {
-  margin-right: 3rem;
-  font-size: 3.2rem;
+.web-page .bottom-page-part .middle-buttons-area .fabrication-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 0rem 2.8rem 0.8rem 0rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -203,8 +152,13 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .auto-group-9unr-22h .electrical-wos {
-  font-size: 3.2rem;
+.web-page .bottom-page-part .middle-buttons-area .fire-protection-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 0rem 3rem 0.8rem 0rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -212,23 +166,13 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-2wpb-uqF .small-table-west-tUD {
-  margin: 0rem 10.2rem 0rem 8.3rem;
-  width: calc(100% - 18.5rem);
-  height: 64.5rem;
-  background-color: #9cb2c2;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj {
-  margin-top: 1.4rem;
-  width: 87.7rem;
-  align-items: flex-end;
-  display: flex;
-  flex-direction: column;
-  flex-shrink: 0;
-}
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .date-8tM {
-  margin-bottom: 7.1rem;
-  font-size: 2.4rem;
+.web-page .bottom-page-part .middle-buttons-area .electrical-text-selection {
+  background: none;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  margin: 0rem 3rem 0.8rem 0rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
@@ -236,32 +180,458 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .auto-group-wddx-ftH {
-  margin: 0rem 11rem 5rem 12.2rem;
+.web-page .bottom-page-part .middle-buttons-area .search-bar {
+  position: relative;
+  margin: 0.483rem 4.9rem 0.483rem 0rem;
   box-sizing: border-box;
-  padding: 1.1rem 5.464rem 0.9rem 55.464rem;
-  width: calc(100% - 23.2rem);
+  padding: 1rem 29rem 1rem 2rem;
+  height: calc(100% - 4rem);
   background-color: #cacbce;
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .auto-group-wddx-ftH .searchicon-1-mwK {
-  width: 3.5722rem;
-  height: 3.5rem;
+.web-page .bottom-page-part .middle-buttons-area .search-bar .search-input {
+  outline: none;
+  position: absolute;
+  left: 10.2px;
+  top: 8px;
+  width: calc(100% - 3rem);
+  height: 1.2rem;
+  border: none;
+  background-color: transparent;
+}
+.web-page .bottom-page-part .middle-buttons-area .search-bar .search-icon {
+  position: absolute;
+  right: 10px;
+  top: 8px; 
+  width: 1.2rem;
+  height: 1.2rem;
   object-fit: contain;
   vertical-align: top;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .small-table-north-7EV {
-  margin: 0rem 3.8rem 5.9rem 0rem;
-  width: 83.6rem;
-  height: 24rem;
-  background-color: #9db2c2;
+.web-page .bottom-page-part .middle-buttons-area .on-off-switch-button {
+  margin-right: 0.9rem;
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  vertical-align: top;
   flex-shrink: 0;
 }
-.item-catalog-page-sRP .auto-group-yycd-VbB .auto-group-7w3j-aY5 .auto-group-ogtv-1oj .small-table-south-S1s {
-  margin-right: 3.8rem;
-  width: 83.9rem;
-  height: 34.6rem;
-  background-color: #9db2c2;
+.web-page .bottom-page-part .middle-buttons-area .atoz-icon {
+  margin-top: 0rem;
+  width: 2rem;
+  height: 2rem;
+  object-fit: cover;
+  vertical-align: top;
   flex-shrink: 0;
+}
+
+.web-page .bottom-page-part .item-catalog-table {
+  margin: 0rem 5rem 0rem 9rem;
+  width: calc(100% - 10.4rem);
+  height: 25rem;
+  background-color: #9cb2c2;
+  flex-shrink: 0;
+  overflow: auto;
+}
+
+    /* The Modal (background) */
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0,0,0,0.4); 
+    }
+  
+    /* Modal Content/Box */
+    .modal-content {
+        background-color: #3b2f36;
+        margin: 5% 45% 10% 10%; /* top right bottom left */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 75%; /* Could be more or less, depending on screen size */
+        border-radius: 2rem;
+    }
+  
+    /* The Close Button */
+    .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+  
+    .close:hover,
+    .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+    }
+
+    #itemTable {
+      width: 86rem; /* Make the table take up the full width of its container */
+      border-collapse: collapse; /* Collapse borders to avoid double borders */
+  }
+  
+  #itemTable th, #itemTable td {
+      text-align: left; /* Align text to the left */
+      padding: 8px; /* Add some padding */
+      border: none; /* Remove all borders */
+  }
+  
+  #itemTable th:first-child, #itemTable td:first-child {
+      border-left: 2px solid #000; /* Add left border to the first cell */
+  }
+  
+  #itemTable th:last-child, #itemTable td:last-child {
+      border-right: 2px solid #000; /* Add right border to the last cell */
+  }
+  
+  #itemTable tr:first-child th {
+      border-top: 2px solid #000; /* Add top border to the first row */
+  }
+  
+  #itemTable tr:last-child td {
+      border-bottom: 2px solid #000; /* Add bottom border to the last row */
+  }
+  
+  #itemTable th {
+      background-color: #3B2F36; /* Change the background color of the header cells */
+      color: #fff; /* Change the color of the text in the header cells to white */
+  }
+
+  #itemTable tr:nth-child(odd) {
+    background-color: #fff; /* White for odd rows */
+}
+
+#itemTable tr:nth-child(even) {
+    background-color: #E1E1E1; /* #E1E1E1 for even rows */
+}
+
+/******************************************************************************************/
+/*******************************Modal 1 CSS************************************************/
+/******************************************************************************************/
+
+.title-section-modal {
+  margin: 0rem 68.7rem 1rem 0rem;
+  width: calc(100% - 68.7rem);
+  display: flex;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+.title-section-modal .pencil-icon {
+  margin: 0.006rem 0rem 0rem 4rem;
+  width: 1.7rem;
+  height: 1.7rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+.title-section-modal .edit-cluster-text {
+  margin: 0rem 0rem 0rem 1rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.table-section {
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  padding: 1.8rem 1.8rem 1.8rem 1.8rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #3b2f36; 
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+.table-section .header {
+  margin: 0rem 89.2rem 0.434rem 0.7rem;
+  width: calc(100% - 89.9rem);
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.table-section .header .code-text {
+  margin-right: 19rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.table-section .header .description-text {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.table-section .entry {
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.table-section .entry .code {
+  margin-right: 4rem;
+  width: 7rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+
+.table-section .entry .description {
+  margin: 0.566rem 0rem 0rem 0rem;
+  box-sizing: border-box;
+  padding: 1rem; /* Adjust padding to fit the text inside */
+  width: 50rem;
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+  text-align: left; /* Add this to align the text to the left */
+}
+
+.table-section .entry .gear {
+  margin-bottom: 0.234rem;
+  margin-left: 4rem; /* Add this to move the gear icon to the left */
+  width: 3rem;
+  height: 3rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+
+.lower-section {
+  margin-left: 10rem;
+  display: flex;
+  align-items: flex-end;
+  flex-shrink: 0;
+}
+
+.lower-section .add-cluster-icon {
+  margin: 0rem 4.481rem 0.594rem 0rem;
+  width: 4rem;
+  height: 4rem;
+  object-fit: contain;
+  vertical-align: top;
+  flex-shrink: 0;
+}
+ 
+.lower-section .discard-button {
+  margin-right: 3.8rem;
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #a6a6a6;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+  
+.lower-section .save-button {
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #00bf63;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+
+.action-buttons {
+  font-size: 30px; /* Adjust as needed */
+  background-color: transparent;
+}
+
+
+/******************************************************************************************/
+/*******************************Modal 2 CSS************************************************/
+/******************************************************************************************/
+
+.modal-content2 {
+  background-color: #3b2f36;
+  margin: 5% 45% 0% 10%; /* top right bottom left */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 75%; /* Could be more or less, depending on screen size */
+  height: 35rem;
+  border-radius: 2rem;
+}
+
+.upper-section-modal{
+  margin-bottom: 1rem;
+  width: 9rem;
+  height: 3rem;
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #A6A6A6;
+  border-radius: 2rem;
+  flex-shrink: 0;
+}
+
+.upper-table-part {
+  width: 70rem;
+  height: 4rem;
+  left: 0;
+  top: 0;
+  background-color: #000000;
+  display: flex; /* Add this line */
+  justify-content: space-between; /* Add this line */
+}
+
+.modal-table-part {
+  width: 70rem;
+  height: 24rem;
+  left: 0;
+  top: 0;
+  background-color: white;
+  display: flex; /* Add this line */
+  justify-content: space-between; /* Add this line */
+  overflow: auto;
+}
+
+.pagination-table-part {
+  width: 70rem;
+  height: 3.5rem;
+  left: 0;
+  top: 0;
+  background-color: #3b2f36;
+  display: flex; /* Add this line */
+  justify-content: space-between; /* Add this line */
+}
+
+.upper-table-part-text {
+  margin-top: 1.1rem;
+  margin-left: 2.5rem; /* Change from left to margin-left */
+  font-size: 1.8rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+}
+
+.upper-table-part input {
+  height: 1.7rem;
+  width: 18rem;
+  margin-top: 1.3rem;
+  margin-right: 0rem;
+}
+
+.upper-table-part button {
+  background-color: #191919; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 0.7rem 1rem 0px 0px;
+  cursor: pointer;
+  height: 2.6rem;
+}
+
+.inventory-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.inventory-table .table-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.inventory-table .table-cell {
+  flex: 1;
+  padding: 8px;
+  border: 2px solid #000;
+}
+
+.inventory-table .header .table-cell {
+  background-color: #2C2C2C !important; /* Change header color to #2C2C2C */
+  color: white;
+}
+
+.inventory-table .table-row:nth-child(odd) .table-cell {
+  background-color: #E1E1E1; /* Change odd cell color to #E1E1E1 */
+  border: none; /* Remove borders */
+}
+
+.inventory-table .table-row:nth-child(even) .table-cell {
+  background-color: white; /* Change even cell color to white */
+  border: none; /* Remove borders */
+}
+
+.inventory-table .table-row:first-child .table-cell {
+  border-top: 2px solid #000; /* Add top border to the first row */
+}
+
+.inventory-table .table-row .table-cell:first-child {
+  border-left: 2px solid #000; /* Add left border to the first cell of each row */
+}
+
+.inventory-table .table-row .table-cell:last-child {
+  border-right: 2px solid #000; /* Add right border to the last cell of each row */
+}
+
+.inventory-table .table-row:last-child .table-cell {
+  border-bottom: 2px solid #000; /* Add bottom border to the last row */
+}
+
+.inventory-table .table-cell button img {
+  width: 20px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
 }

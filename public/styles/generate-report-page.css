@@ -229,21 +229,23 @@ body {
   flex-direction: column;
   flex-shrink: 0;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .upper-textfield {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .upper-textfield,
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .lower-textfield {
   margin-bottom: 3rem;
   width: 100%;
   height: 3rem;
   background-color: #ffffff;
   flex-shrink: 0;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .lower-textfield {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .textfield-input {
   width: 100%;
-  height: 3rem;
-  background-color: #ffffff;
-  flex-shrink: 0;
+  height: 100%;
+  border: none;
+  padding: 0.5rem;
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area {
+  margin-left: 1rem;
   margin-top: 0.7rem;
   align-items: center;
   display: flex;
@@ -336,6 +338,3 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-
-
-

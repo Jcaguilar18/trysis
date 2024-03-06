@@ -46,6 +46,7 @@ app.get("/login", (req, res) => {
   res.render("login.ejs");
 });
 
+
 app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
@@ -53,19 +54,19 @@ app.get("/register", (req, res) => {
 app.get("/item", async (req, res) => {
   var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
   var roleOf = roleOfQueryResult.rows[0]?.role;
-  var itemOfQueryResult = await db.query("SELECT * FROM item ");
+  var itemOfQueryResult = await db.query("SELECT * FROM item");
   var clusterquery = await db.query("SELECT * FROM cluster");
   const cluster = clusterquery.rows;
-      const item= itemOfQueryResult.rows;
+  const item= itemOfQueryResult.rows;
       //console.log(item);
       //console.log(cluster);
       //console.log(roleOf);
-      res.render("item.ejs", {item, roleOf,cluster});
+  res.render("item.ejs", {item, roleOf,cluster});
 });
 
 app.get("/manage", async (req, res) => {
   try {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
   
@@ -121,8 +122,31 @@ app.get("/stock", async (req, res) => {
   }
 });
 
+app.get("/logs/:page?", async (req, res) => {
+  try {
+    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOf = roleOfQueryResult.rows[0]?.role;
 
+    var page = req.params.page || 1;
+    var offset = (page - 1) * 5;
 
+    var countQuery = await db.query("SELECT COUNT(*) FROM inventory");
+    var totalRecords = countQuery.rows[0].count;
+    var totalPages = Math.ceil(totalRecords / 5);
+    
+    var logsquery = await db.query("SELECT * FROM inventory ORDER BY changeid LIMIT 5 OFFSET $1", [offset]);
+    const logs = logsquery.rows;
+
+    console.log("testStock uname");
+    console.log(req.session.username);
+    console.log("end /logs");
+     
+    res.render("logs.ejs", {logs, roleOf, page, totalPages});
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    res.status(500).send('An error occurred');
+  }
+});
 
 
 app.get("/bin", async (req, res) => {
@@ -373,6 +397,7 @@ app.post("/register", async (req, res) => {
     console.log(err);
   }
 });
+
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {

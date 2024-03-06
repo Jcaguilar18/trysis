@@ -64,7 +64,6 @@ body {
     display: flex;
     align-items: flex-start;
     flex-shrink: 0;
-    background-color: aqua;
   }
 
   .web-page .bottom-page-part .manage-accounts-header {
@@ -119,15 +118,50 @@ body {
   }
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
-    width: 100%;
-    height: 25rem;
-    background-color: #9cb2c2;
+    width: 80rem;
+    height: 20rem;
+    background-color: white;
     flex-shrink: 0;
     overflow: auto;
   }
+  
+  .center-text {
+    text-align: center;
+  }
+
+  /* Table header color */
+.users-table table thead th {
+  background-color: #CDD6FF;
+}
+
+/* Table border color */
+.users-table table, .users-table table th, .users-table table td {
+  border: 1px solid blue;
+}
+
+/* Alternating row colors */
+.users-table table tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+.users-table table tbody tr:nth-child(even) {
+  background-color: #EFF7FF;
+}
+
+.status-icon {
+  height: 20px; /* Adjust as needed */
+  width: 20px; /* Adjust as needed */
+  margin-right: 5px;
+}
+
+/* Add a class for the edit icon */
+.edit-icon {
+  height: 28px; /* Adjust as needed */
+  width: 28px; /* Adjust as needed */
+  cursor: pointer;
+}
 
 
 
 
   
-

@@ -5,8 +5,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Login Page</title>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Averia+Sans+Libre%3A400"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A400"/>
         <link rel="stylesheet" href="./styles/login_page.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
          <div class="login-website">
@@ -27,19 +28,18 @@
                   <form action="/login" method="POST">
                 </div>
                 <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
+                    <!--TASK: Make this work-->
                     <p class="wrong-credentials-text">Enter the Correct Credentials</p>
-                <% } %>
-                
+                <% } %> 
                 <p class="user-id-text">User ID</p>
                 <p class="password-text">Password</p>
-                <input class="user-id-input" type="text" name="username">
-                <input class="password-input" type="password" name="password">  
+                <input class="user-id-input" type="text" name="username" required>
+                <input class="password-input" type="password" name="password" required>  
                 <img class="user-icon" src="./assets/person-icon.png"/>
                 <img class="password-icon" src="./assets/password-icon.png"/>
                 <button class="login-button">Login</button>
               </form>
             </div>
-            
         </div>
     </body>
 </html>

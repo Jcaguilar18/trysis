@@ -4,27 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Stock</title>
-    <style>
-         .inventory-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .inventory-table th, .inventory-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .inventory-table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles/manage-stock-page.css"/>
 </head>
 <body>
+
     <!-- <%- include('sidebar') %> -->
     <h1>Manage Stock</h1>
     <div>
@@ -81,55 +64,20 @@
         </tbody>
     </table>
     <script>
-        
-        function filterTable(id) {
-            var rows = document.getElementById('itemTable').getElementsByTagName('tr');
-            for (var i = 1; i < rows.length; i++) { 
-                var rowId = rows[i].className;
-                if (id === '' || id.toString() === rowId) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-
-        function populateMonthAndDay() {
-            var currentDate = new Date();
-            var month = currentDate.toLocaleString('en-US', { month: 'long' });
-            var day = currentDate.getDate();
-            document.getElementById('currentMonth').textContent = 'Month: ' + month;
-            document.getElementById('currentDay').textContent = 'Day: ' + day;
-        }
     
-        populateMonthAndDay();
-
-        function saveRowData(row, itemNo, clusterCode, itemDescription) {
-            // Create a form dynamically
-            var form = document.createElement("form");
-            form.setAttribute("method", "post");
-            form.setAttribute("action", "/addstock");
-
-            // Create input elements for the form to submit
-            function createInput(name, value) {
-                var input = document.createElement("input");
-                input.setAttribute("type", "hidden");
-                input.setAttribute("name", name);
-                input.setAttribute("value", value);
-                return input;
-            }
-
-            // Append inputs for 'no', 'clustercode', 'incoming', 'outgoing', and now 'itemDescription'
-            form.appendChild(createInput("no", itemNo));
-            form.appendChild(createInput("clustercode", clusterCode));
-            form.appendChild(createInput("itemDescription", itemDescription)); // Use the parameter directly
-            form.appendChild(createInput("incoming", row.querySelector('.incoming').value));
-            form.appendChild(createInput("outgoing", row.querySelector('.outgoing').value));
-
-            // Append the form to the document and submit
-            document.body.appendChild(form);
-            form.submit();
+        function filterTable(id) {
+    var rows = document.getElementById('itemTable').getElementsByTagName('tr');
+    for (var i = 1; i < rows.length; i++) { // Start from 1 to skip the header row
+        var rowId = rows[i].className;
+        if (id === '' || id.toString() === rowId) {
+            rows[i].style.display = "";
+        } else {
+            rows[i].style.display = "none";
         }
+    }
+}
+
+
     </script>
 </body>
 </html>
