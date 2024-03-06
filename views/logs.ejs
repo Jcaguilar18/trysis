@@ -23,11 +23,24 @@
     <div class="transaction-block">
       <div class="upper-portion">
         <div class="search-bar">
+          <!--TASK: Search Feature by User Code? -->
+          <input type="text" class="search-input" placeholder="Search...">
           <img class="search-icon" src="./assets/searchicon-3.png"/>
         </div>
-        <img class="settings-icon" src="./assets/settingsicon-1.png"/>
+        <div class="dropdown">
+          <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="myFunction()" class="dropbtn">
+          <!--TASK: Sorting Functions for the Change Log Table-->
+          <div id="myDropdown" class="dropdown-content">
+            <a href="#">Normal</a>
+            <a href="#">Modified</a>
+            <a href="#">Removed</a>
+            <a href="#">Added</a>
+            <a href="#">Set Date</a>
+          </div>
+        </div>
       </div>
       <div id="transaction-table-area" class="transaction-table-area">
+        <!--TASK: Get entries from the Change Log Table and Change some static fields-->
         <% logs.forEach(log => { %>
           <div class="transaction-table-entry">
             <div class="leftmost-icon-portion">
@@ -40,7 +53,7 @@
             <div class="item-portion">
               <div class="upper-item-portion">
                 <p class="main-item"><%= log.main_item %></p>
-                <img class="change-icon" src="./assets/addition_transaction_icon.png"/>
+                <img class="change-icon" src="./assets/change_icon_transac.png"/>
               </div>
               <div class="lower-item-portion">
                 <p class="sub-item"><%= log.sub_item %></p>
@@ -55,6 +68,7 @@
           </div>
         <% }) %>
       </div>
+      <!--TASK: Pagination Function, Pafix or Change if Ever-->
       <div id="pagination-portion" class="pagination-portion">
         <% if (page > 1) { %>
           <a class="page-link" data-page="<%= Number(page) - 1 %>" href="#">Previous</a>
@@ -68,4 +82,10 @@
       </div>
   </div>
 </div>
+<script>
+  function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+</script>
 </body>
+</html>
