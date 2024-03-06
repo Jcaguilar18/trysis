@@ -82,14 +82,22 @@
                                 <td><%= item.material_name %></td>
                                 <td><%= item.beginning %></td>
                                 <td>
-                                    <button onclick="decreaseValue('incoming<%= item.no %>')">-</button>
+                                    <button onclick="decreaseValue('incoming<%= item.no %>')">
+                                      <img src="./assets/Decrease_Button.png" alt="Decrease">
+                                    </button>
                                     <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>" class="input-field">
-                                    <button onclick="increaseValue('incoming<%= item.no %>')">+</button>
+                                    <button onclick="increaseValue('incoming<%= item.no %>')">
+                                      <img src="./assets/Increase_Button.png" alt="Increase">
+                                    </button>
                                   </td>
                                 <td>
-                                    <button onclick="decreaseValue('outgoing<%= item.no %>')">-</button>
+                                    <button onclick="decreaseValue('outgoing<%= item.no %>')">
+                                        <img src="./assets/Decrease_Button.png" alt="Decrease">
+                                      </button>
                                     <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>" class="input-field">
-                                    <button onclick="increaseValue('outgoing<%= item.no %>')">+</button>
+                                    <button onclick="increaseValue('outgoing<%= item.no %>')">
+                                        <img src="./assets/Increase_Button.png" alt="Increase">
+                                      </button>
                                 </td>
                                 <td><%= item.available %></td>
                                 <td><%= item.price %></td>

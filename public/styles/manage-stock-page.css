@@ -337,9 +337,9 @@ button:hover {
 }
 
 #itemTable th, #itemTable td {
-  text-align: left; /* Align text to the left */
-  padding: 8px; /* Add some padding */
-  border: 2px solid #000; /* Make borders a bit thicker */
+  text-align: center; /* Align text to the center */
+  padding: 4px; /* Add some padding */
+  border: none; /* Remove borders */
 }
 
 #itemTable th {
@@ -350,8 +350,14 @@ button:hover {
 #itemTable .button-input-cell {
   display: flex; /* Add this line */
   align-items: center; /* Add this line */
+  justify-content: center; /* Add this line */
 }
 
 .input-field {
   width: 50px; /* Adjust as needed */
+}
+
+button img {
+  width: 20px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
 }
