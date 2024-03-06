@@ -4,7 +4,7 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Item Catalog</title>
-        <%- include('sidebar') %>
+        <!-- <%- include('sidebar') %> -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <style>
@@ -178,6 +178,7 @@ window.onclick = function(event) {
 }
 
 // Function to open the modal and filter items based on the clustercode
+// Function to open the modal and filter items based on the clustercode
 function openModal(clustercode) {
     // Filter the items based on the clustercode
     var items = $('#myModal tbody tr').filter(function() {
@@ -193,6 +194,7 @@ function openModal(clustercode) {
     // Show the modal
     modal.style.display = "block";
 }
+
 function documentFunction(clustercode){
     // var items = $('#myModal tbody tr').filter(function() {
     //     return $(this).data('clustercode') === clustercode;

@@ -94,6 +94,7 @@ app.get("/manage", async (req, res) => {
 app.get("/add-item", (req, res) => {
   const clcode = req.query.clustercode;
   res.render("add-item.ejs", {clcode});
+  console.log(clcode + "etooo");
 });
 
 app.get("/stock", async (req, res) => {
@@ -152,6 +153,8 @@ app.post("/add-item", async (req, res) => {
     const container = await db.query("SELECT * FROM item WHERE clustercode = $1", [clcode]);
     const container1 = container.rows[0];
     const { classification_id } = container1;
+    console.log(classification_id);
+    console.log(clcode);
 
     // Get the current date
     const currentDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
@@ -176,7 +179,7 @@ app.post("/add-cluster", async (req, res) => {
   try {
       // Extract data from the request body
       const { clustercode, description, classificationid } = req.body;
-
+console.log(classificationid);
       // Insert the item into the database
       await db.query(
           "INSERT INTO cluster (clustercode, description, classification_id) VALUES ($1, $2, $3)",
