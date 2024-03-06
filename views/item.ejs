@@ -29,13 +29,13 @@
                 %>
               <p class="date-text"><%= formattedDate %></p>
               </div>
-              <!-- Category buttons -->
               <div class="middle-buttons-area">
                 <button class="all-text" onclick="filterTable('')">All</button>
                 <button class="fabrication-text-selection" onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
                 <button class="fire-protection-text-selection" onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
                 <button class="electrical-text-selection" onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
                 <div class="search-bar">
+                  <!--TASK: Search Based on Code-->
                   <input class="search-input" type="text" placeholder="Search Code here..."/>
                   <img class="search-icon" src="./assets/searchicon-1.png"/>
                 </div>
@@ -55,11 +55,12 @@
                   <% if (cluster && cluster.length > 0) { %>
                     <% cluster.forEach(cluster => { %>
                       <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
-                        <!-- Add data-clustercode attribute -->
                         <td><%= cluster.clustercode %></td>
                         <td><%= cluster.description %></td>
                         <td>
+                          <!--TASK: Filter based on Classification Clicked-->
                           <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <!--TASK: Filter Items based on clustercode-->
                           <button class="action-buttons" onclick="documentFunction('<%= item.clustercode %>')" style="font-family: FontAwesome;"></button>
                         </td>
                       </tr>
@@ -74,9 +75,12 @@
           </div>
     </div>
 
-<!-- The Modal -->
+<!---------------------------------------------------------------------------------------------->
+                              <!-- Modals -->
+<!---------------------------------------------------------------------------------------------->
+
+<!-- openModal() -->
 <div id="myModal" class="modal">
-<!-- Modal content -->
 <div class="modal-content">
     <span class="close">×</span>
     <div class="add-cluster-section">
@@ -92,6 +96,7 @@
             <% if (cluster && cluster.length > 0) { %>
                 <% cluster.forEach(cluster => { %>
                     <div class="entry">
+                        <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
                         <div class="code" contenteditable="true"><%= cluster.clustercode %></div>
                         <div class="description" contenteditable="true"><%= cluster.description %></div>
                         <img class="gear" src="./assets/changinggear-1.png"/>
@@ -111,7 +116,7 @@
 </div>  
 </div>
 
-
+<!-- documentFunction() -->
 <div id="myModal2" class="modal">
   <div class="modal-content2">
     <span class="close">×</span>
@@ -120,8 +125,10 @@
     </div>
     <div class="upper-table-part">
       <p class="upper-table-part-text">Code:</p>
+      <!--TASK: Sort by Code-->
       <input type="text" id="code" name="code"> 
       <p class="upper-table-part-text">Material:</p> 
+      <!--TASK: Sort by Material Name-->
       <input type="text" id="material" name="material"> 
       <button id="addItem">+ Add Item</button> 
     </div>
@@ -130,6 +137,7 @@
         <div class="table-row header">
           <div class="table-cell">CODE</div>
           <div class="table-cell">ITEM DESCRIPTION</div>
+          <div class="table-cell"></div> <!-- Add an empty header for the new column -->
           <div class="table-cell">AVAILABLE</div>
           <div class="table-cell">PRICE</div>
           <div class="table-cell">TOTAL AMOUNT</div>
@@ -139,6 +147,12 @@
             <div class="table-row">
               <div class="table-cell"><%= item.clustercode %></div>
               <div class="table-cell"><%= item.material_name %></div>
+              <div class="table-cell">
+                <!--TASK: Create Edit Item Function (Total Amount is Note Editable)-->
+                <button onclick="editItem('<%= item.id %>')"><img src="./assets/edit_icon_pencil.png" alt="Edit"></button>
+                <!--TASK: Create Delete Item Function-->
+                <button onclick="deleteItem('<%= item.id %>')"><img src="./assets/trash_icon.png" alt="Delete"></button>
+              </div>
               <div class="table-cell"><%= item.available %></div>
               <div class="table-cell"><%= item.price %></div>
               <div class="table-cell"><%= item.price * item.available %></div>
@@ -150,15 +164,18 @@
       </div>
     </div>
     <div class="pagination-table-part">
-      
+      <!--TASK: Create Pagination Area Function (Refer to the Mockup) [Navigation + Showing Number of Pager Currently] -->
     </div>
   </div>  
 </div>
-    <!-- -->
 
 
-    <script>
+<!---------------------------------------------------------------------------------------------->
+                            <!--Script Area -->
+<!---------------------------------------------------------------------------------------------->
 
+
+<script>
 // Filter the table based on classification id
 function filterTable(id) {
 $('#itemTable tbody tr').each(function() {
@@ -170,7 +187,6 @@ $('#itemTable tbody tr').each(function() {
     }
 });
 }
-
 
 // Get the modal
 var modal = document.getElementById("myModal");
@@ -225,7 +241,6 @@ if (event.target == modal2) {
 }
 }
 
-// Function to open the modal and filter items based on the clustercode
 function documentFunction(clustercode) {
     // Filter the items based on the clustercode
     var items = $('#myModal2 tbody tr').filter(function() {
@@ -246,7 +261,7 @@ function documentFunction(clustercode) {
     // Set the value of the Code textfield in Modal2 to the current clustercode
 }
 
-
+// TASK: Make this function properly work.
 function additemFunction(clustercode){
 var url = "/add-item?clustercode=" + clustercode;
 
@@ -262,8 +277,7 @@ function discardChanges() {
 function saveChanges() {
 // Add your code here to save changes
 }
-
-
     </script>
+
 </body>
 </html>

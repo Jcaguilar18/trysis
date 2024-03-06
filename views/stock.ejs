@@ -31,25 +31,31 @@
                 <button class="fire-protection-text" onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
                 <button class="electrical-text" onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
                 <div class="search-bar">
-                    <input class="search-input" type="text"/>
+                    <input class="search-input" type="text" placeholder="Search Code here..."/>
                     <img class="search-icon" src="./assets/searchicon-1.png"/>
                 </div>
                 <img class="on-off-switch" src="./assets/onoffswitch-1.png"/>
                 <img class="a-to-z-icon" src="./assets/atoz.png"/>
               </div>
               <div class="upper-table-part">
-                <div class="date-field">
-                  <p class="month-text">MONTH</p>
+                  <p class="month-text">MONTH:</p>
                   <select id="month" class="month-dropdown">
                     <option value="January">January</option>
                     <option value="February">February</option>
+                    <option value="February">March</option>
+                    <option value="February">April</option>
+                    <option value="February">May</option>
+                    <option value="February">June</option>
+                    <option value="February">July</option>
+                    <option value="February">August</option>
+                    <option value="February">September</option>
+                    <option value="February">October</option>
+                    <option value="February">November</option>
+                    <option value="February">December</option>
                     <!-- Add the rest of the months here -->
                   </select>
-                </div>
-                <div class="date-field">
-                  <p class="day-text">DAY</p>
+                  <p class="day-text">DAY:</p>
                   <input id="day" type="number" min="1" max="31" class="day-input"/>
-                </div>
               </div>
               <div class="table-section">
                 <table id = "itemTable">
@@ -77,12 +83,12 @@
                                 <td><%= item.beginning %></td>
                                 <td>
                                     <button onclick="decreaseValue('incoming<%= item.no %>')">-</button>
-                                    <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>">
+                                    <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>" class="input-field">
                                     <button onclick="increaseValue('incoming<%= item.no %>')">+</button>
-                                </td>
+                                  </td>
                                 <td>
                                     <button onclick="decreaseValue('outgoing<%= item.no %>')">-</button>
-                                    <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>">
+                                    <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>" class="input-field">
                                     <button onclick="increaseValue('outgoing<%= item.no %>')">+</button>
                                 </td>
                                 <td><%= item.available %></td>

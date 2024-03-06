@@ -313,7 +313,9 @@ button:hover {
     background-color: #E1E1E1; /* #E1E1E1 for even rows */
 }
 
-/*****************************************************************************************/
+/******************************************************************************************/
+/*******************************Modal 1 CSS************************************************/
+/******************************************************************************************/
 
 .title-section-modal {
   margin: 0rem 68.7rem 1rem 0rem;
@@ -486,6 +488,9 @@ button:hover {
   background-color: transparent;
 }
 
+
+/******************************************************************************************/
+/*******************************Modal 2 CSS************************************************/
 /******************************************************************************************/
 
 .modal-content2 {
@@ -542,7 +547,7 @@ button:hover {
   height: 3.5rem;
   left: 0;
   top: 0;
-  background-color: orange;
+  background-color: #3b2f36;
   display: flex; /* Add this line */
   justify-content: space-between; /* Add this line */
 }
@@ -625,3 +630,9 @@ button:hover {
 .inventory-table .table-row:last-child .table-cell {
   border-bottom: 2px solid #000; /* Add bottom border to the last row */
 }
+
+.inventory-table .table-cell button img {
+  width: 20px; /* Adjust as needed */
+  height: 20px; /* Adjust as needed */
+}
+
