@@ -193,9 +193,9 @@ button:hover {
 .web-page .bottom-page-part .middle-buttons-area .search-bar .search-input {
   outline: none;
   position: absolute;
-  left: 10px;
+  left: 10.2px;
   top: 8px;
-  width: calc(100% - 2.4rem);
+  width: calc(100% - 3rem);
   height: 1.2rem;
   border: none;
   background-color: transparent;
@@ -531,7 +531,7 @@ button:hover {
   height: 24rem;
   left: 0;
   top: 0;
-  background-color: red;
+  background-color: white;
   display: flex; /* Add this line */
   justify-content: space-between; /* Add this line */
   overflow: auto;
@@ -579,21 +579,49 @@ button:hover {
   height: 2.6rem;
 }
 
-  .inventory-table {
+.inventory-table {
     width: 100%;
     border-collapse: collapse;
 }
 
-.inventory-table th, .inventory-table td {
-  text-align: left; /* Align text to the left */
-  padding: 8px; /* Add some padding */
-  border: 2px solid #000; /* Make borders a bit thicker */
+.inventory-table .table-row {
+  display: flex;
+  justify-content: space-between;
 }
 
-.inventory-table th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
+.inventory-table .table-cell {
+  flex: 1;
+  padding: 8px;
+  border: 2px solid #000;
+}
+
+.inventory-table .header .table-cell {
+  background-color: #2C2C2C !important; /* Change header color to #2C2C2C */
+  color: white;
+}
+
+.inventory-table .table-row:nth-child(odd) .table-cell {
+  background-color: #E1E1E1; /* Change odd cell color to #E1E1E1 */
+  border: none; /* Remove borders */
+}
+
+.inventory-table .table-row:nth-child(even) .table-cell {
+  background-color: white; /* Change even cell color to white */
+  border: none; /* Remove borders */
+}
+
+.inventory-table .table-row:first-child .table-cell {
+  border-top: 2px solid #000; /* Add top border to the first row */
+}
+
+.inventory-table .table-row .table-cell:first-child {
+  border-left: 2px solid #000; /* Add left border to the first cell of each row */
+}
+
+.inventory-table .table-row .table-cell:last-child {
+  border-right: 2px solid #000; /* Add right border to the last cell of each row */
+}
+
+.inventory-table .table-row:last-child .table-cell {
+  border-bottom: 2px solid #000; /* Add bottom border to the last row */
 }

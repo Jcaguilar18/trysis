@@ -64,7 +64,6 @@ body {
     display: flex;
     align-items: flex-start;
     flex-shrink: 0;
-    background-color: aqua;
   }
 
    .web-page .right-side .side-bar {
