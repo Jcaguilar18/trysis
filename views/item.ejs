@@ -176,16 +176,32 @@
 
 
 <script>
+  
 // Filter the table based on classification id
 function filterTable(id) {
-$('#itemTable tbody tr').each(function() {
-    var rowId = $(this).attr('class');
-    if (id === '' || id.toString() === rowId || id === $(this).data('classificationid')) {
-        $(this).show();
-    } else {
-        $(this).hide();
+    // Remove the active class from all buttons
+    $('.middle-buttons-area button').removeClass('active');
+
+    // Add the active class to the clicked button
+    if (id === '') {
+        $('.all-text').addClass('active');
+    } else if (id === 1) {
+        $('.fabrication-text-selection').addClass('active');
+    } else if (id === 2) {
+        $('.fire-protection-text-selection').addClass('active');
+    } else if (id === 3) {
+        $('.electrical-text-selection').addClass('active');
     }
-});
+
+    // Filter the table rows
+    $('#itemTable tbody tr').each(function() {
+        var rowId = $(this).attr('class');
+        if (id === '' || id.toString() === rowId || id === $(this).data('classificationid')) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
 }
 
 // Get the modal

@@ -4,10 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register</title>
+    <style>
+        body {
+            background: linear-gradient(to right, #add8e6, #87cefa);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+    form {
+         background-color: #3b2f36;
+         color: white;
+         padding: 20px;
+         border-radius: 8px;
+         width: 300px;
+         box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+        }
+
+    h1  {
+        text-align: center;
+        }
+
+.form-group {
+     display: flex;
+     flex-direction: column;
+     margin-bottom: 15px;
+        }
+
+    .form-control {
+     margin-top: 5px;
+    }
+
+    button {
+    background-color: white;
+    color: #3b2f36;
+    border: none;
+    padding: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    margin: auto;
+    cursor: pointer;
+    border-radius: 8px;
+    }
+    </style>
 </head>
 <body>
-    <h1>Register</h1>
     <form action="/register" method="POST">
+        <h1>Add User</h1>
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" name="username" required>
@@ -31,13 +78,13 @@
             <h2>Status</h2>
             <input type="radio" id="active" name="status" value="active" checked>
             <label for="active">Active</label><br>
-            <input type="radio" id="unactive" name="status" value="unactive">
+            <input type="radio" id="unactive" name="status" value="inactive">
             <label for="unactive">Inactive</label>
         </div>
 
         <br>
         <br>
-        <button type="submit" class="btn btn-dark">Register</button>
+        <button type="submit" class="btn btn-dark">Submit</button>
     </form>
 </body>
 </html>

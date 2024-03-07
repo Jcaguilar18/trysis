@@ -385,7 +385,7 @@ app.post("/register", async (req, res) => {
       
           req.login(user, (err) => {
             console.log("success");
-            res.redirect("/dashboard");
+            res.redirect("/manage");
           });
         }
       });

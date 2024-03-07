@@ -4,6 +4,10 @@
 	padding: 0;
 }
 
+.active {
+  font-weight: 700;
+}
+
 body {
   width: 100%;
 }
@@ -131,7 +135,6 @@ button:hover {
   cursor: pointer;
   margin: 0rem 3.6rem 0.8rem 12rem;
   font-size: 1.5rem;
-  font-weight: 400;
   line-height: 1.2125;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
@@ -145,7 +148,6 @@ button:hover {
   box-shadow: none;
   margin: 0rem 2.8rem 0.8rem 0rem;
   font-size: 1.5rem;
-  font-weight: 400;
   line-height: 1.2125;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
@@ -159,7 +161,6 @@ button:hover {
   box-shadow: none;
   margin: 0rem 3rem 0.8rem 0rem;
   font-size: 1.5rem;
-  font-weight: 400;
   line-height: 1.2125;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
@@ -173,7 +174,6 @@ button:hover {
   box-shadow: none;
   margin: 0rem 3rem 0.8rem 0rem;
   font-size: 1.5rem;
-  font-weight: 400;
   line-height: 1.2125;
   color: #000000;
   font-family: Inter, 'Source Sans Pro';
