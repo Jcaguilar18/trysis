@@ -58,7 +58,7 @@ app.get("/item", async (req, res) => {
   const cluster = clusterquery.rows;
       const item= itemOfQueryResult.rows;
       //console.log(item);
-      //console.log(cluster);
+      //console.log(cluster); 
       //console.log(roleOf);
       res.render("item.ejs", {item, roleOf,cluster});
 });
