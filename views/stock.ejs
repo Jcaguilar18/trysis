@@ -72,6 +72,7 @@
                             <th>AVAILABLE</th>
                             <th>PRICE</th>
                             <th>TOTAL AMOUNT</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -89,7 +90,7 @@
                                     <button onclick="decreaseValue('incoming<%= item.no %>')">
                                       <img src="./assets/Decrease_Button.png" alt="Decrease">
                                     </button>
-                                    <input type="number" id="incoming<%= item.no %>" value="<%= item.incoming %>" class="input-field">
+                                    <input type="number" id="incoming<%= item.no %>" value="0" class="input-field incoming">
                                     <button onclick="increaseValue('incoming<%= item.no %>')">
                                       <img src="./assets/Increase_Button.png" alt="Increase">
                                     </button>
@@ -98,14 +99,18 @@
                                     <button onclick="decreaseValue('outgoing<%= item.no %>')">
                                         <img src="./assets/Decrease_Button.png" alt="Decrease">
                                       </button>
-                                    <input type="number" id="outgoing<%= item.no %>" value="<%= item.outgoing %>" class="input-field">
+                                    <input type="number" id="outgoing<%= item.no %>" value="0" class="input-field incoming">
                                     <button onclick="increaseValue('outgoing<%= item.no %>')">
                                         <img src="./assets/Increase_Button.png" alt="Increase">
                                       </button>
                                 </td>
                                 <td><%= item.available %></td>
                                 <td><%= item.price %></td>
-                                <td><%= item.price * item.available %></td>
+                                <td><%= (item.price * item.available).toFixed(2) %></td>
+                                <td>
+                                    <!-- Add this line for the Save button -->
+                                    <button onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
+                                </td>
                             </tr>
                         <% }); %>
                     </tbody>
@@ -137,6 +142,43 @@
             value < 1 ? value = 1 : '';
             value--;
             document.getElementById(id).value = value;
+        }
+
+        function populateMonthAndDay() {
+            var currentDate = new Date();
+            var month = currentDate.toLocaleString('en-US', { month: 'long' });
+            var day = currentDate.getDate();
+            document.getElementById('currentMonth').textContent = 'Month: ' + month;
+            document.getElementById('currentDay').textContent = 'Day: ' + day;
+        }
+    
+        populateMonthAndDay();
+
+        function saveRowData(row, itemNo, clusterCode, itemDescription) {
+            // Create a form dynamically
+            var form = document.createElement("form");
+            form.setAttribute("method", "post");
+            form.setAttribute("action", "/addstock");
+
+            // Create input elements for the form to submit
+            function createInput(name, value) {
+                var input = document.createElement("input");
+                input.setAttribute("type", "hidden");
+                input.setAttribute("name", name);
+                input.setAttribute("value", value);
+                return input;
+            }
+
+            // Append inputs for 'no', 'clustercode', 'incoming', 'outgoing', and now 'itemDescription'
+            form.appendChild(createInput("no", itemNo));
+            form.appendChild(createInput("clustercode", clusterCode));
+            form.appendChild(createInput("itemDescription", itemDescription)); // Use the parameter directly
+            form.appendChild(createInput("incoming", row.querySelector('.incoming').value));
+            form.appendChild(createInput("outgoing", row.querySelector('.outgoing').value));
+
+            // Append the form to the document and submit
+            document.body.appendChild(form);
+            form.submit();
         }
         
         function filterTable(id) {
