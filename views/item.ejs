@@ -61,7 +61,7 @@
                           <!--TASK: Filter based on Classification Clicked-->
                           <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
                           <!--TASK: Filter Items based on clustercode-->
-                          <button class="action-buttons" onclick="documentFunction('<%= item.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <button class="action-buttons" onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
                         </td>
                       </tr>
                     <% }); %>
@@ -243,22 +243,18 @@ if (event.target == modal2) {
 
 function documentFunction(clustercode) {
     // Filter the items based on the clustercode
-    var items = $('#myModal2 tbody tr').filter(function() {
-        return $(this).data('clustercode') === clustercode;
+    var items = $('.modal-table-part .table-row').filter(function() {
+        return $(this).find('.table-cell:first-child').text().trim() === clustercode;
     });
 
     // Hide all items
-    $('#myModal2 tbody tr').hide();
+    $('.modal-table-part .table-row').hide();
 
     // Show only the items with the same clustercode
     items.show();
 
-    $('#code').val(clustercode);
-
     // Show the modal
     modal2.style.display = "block";
-
-    // Set the value of the Code textfield in Modal2 to the current clustercode
 }
 
 // TASK: Make this function properly work.
