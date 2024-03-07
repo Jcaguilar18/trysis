@@ -87,6 +87,13 @@
                                     <input type="number" id="beginning<%= item.no %>" value="<%= item.beginning_inventory %>" class="input-field">
                                 </td>
                                 <td>
+                                    <input type="number" class="incoming input-field" value="0"> <!-- Set default value to 0 -->
+                                </td>
+                                <td>
+                                    <input type="number" class="outgoing input-field" value="0"> <!-- Set default value to 0 -->
+                                </td>
+                                <!--
+                                <td>
                                     <button onclick="decreaseValue('incoming<%= item.no %>')">
                                       <img src="./assets/Decrease_Button.png" alt="Decrease">
                                     </button>
@@ -104,6 +111,7 @@
                                         <img src="./assets/Increase_Button.png" alt="Increase">
                                       </button>
                                 </td>
+                            -->
                                 <td><%= item.available %></td>
                                 <td><%= item.price %></td>
                                 <td><%= (item.price * item.available).toFixed(2) %></td>
