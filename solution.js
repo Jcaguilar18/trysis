@@ -7,6 +7,19 @@ import { Strategy } from "passport-local";
 import session from "express-session";
 import env from "dotenv";
 
+import cron from 'node-cron';
+
+// Schedule the task to run at 11:59 PM every day
+cron.schedule('22 23 * * *', async () => {
+  try {
+    // Copy data from items to report
+    await db.query('INSERT INTO report SELECT * FROM item');
+    console.log('Data copied from items to report successfully at 11:59 PM.');
+  } catch (error) {
+    console.error('Error copying data:', error);
+  }
+});
+
 const app = express();
 const port = 3000;
 const saltRounds = 10;
