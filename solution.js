@@ -10,15 +10,16 @@ import env from "dotenv";
 import cron from 'node-cron';
 
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('22 23 * * *', async () => {
+cron.schedule('24 10 * * *', async () => {
   try {
     // Copy data from items to report
-    await db.query('INSERT INTO report SELECT * FROM item');
+    await db.query('INSERT INTO report SELECT *, CURRENT_DATE AS item_date FROM item');
     console.log('Data copied from items to report successfully at 11:59 PM.');
   } catch (error) {
     console.error('Error copying data:', error);
   }
 });
+
 
 const app = express();
 const port = 3000;
@@ -58,6 +59,116 @@ app.get("/", (req, res) => {
 app.get("/login", (req, res) => {
   res.render("login.ejs");
 });
+
+// Assuming all necessary imports are at the top of your solution.js file
+
+
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import PDFDocument from "pdfkit";
+import { Parser } from "json2csv";
+import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
+
+// ... (other imports and configurations)
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// ... (rest of your express and db setup)
+
+// Helper function to generate CSV
+const generateCSV = (data) => {
+  const parser = new Parser();
+  return parser.parse(data);
+};
+
+const generatePDF = (data) => {
+  return new Promise((resolve, reject) => {
+    const doc = new PDFDocument();
+    const filePath = `report-${Date.now()}.pdf`;
+    const stream = fs.createWriteStream(filePath);
+
+    doc.pipe(stream);
+    
+    // Set up the table header
+    const tableTop = 100;
+    const itemColumns = {
+      classification_id: { columnWidth: 100, columnStart: 50 },
+      material_name: { columnWidth: 150, columnStart: 150 },
+      clustercode: { columnWidth: 100, columnStart: 300 },
+      // Add other columns as necessary
+    };
+
+    // Draw the table header
+    doc.fontSize(12);
+    for (let key in itemColumns) {
+      const title = key.replace(/_/g, ' ').toUpperCase();
+      const { columnStart } = itemColumns[key];
+      doc.text(title, columnStart, tableTop);
+    }
+
+    // Draw the table rows
+    doc.fontSize(10);
+    let i = 0;
+    data.forEach(item => {
+      const y = tableTop + 20 + (i * 20);
+      for (let key in itemColumns) {
+        const { columnStart } = itemColumns[key];
+        doc.text(item[key], columnStart, y);
+      }
+      i++;
+    });
+
+    doc.end();
+    stream.on('finish', () => resolve(filePath));
+    stream.on('error', reject);
+  });
+};
+
+// Route handler for report generation
+app.post("/generate-report", async (req, res) => {
+  // Extract startDate, endDate, and reportType from request body
+  const { startDate, endDate, reportType } = req.body;
+
+  try {
+    // Replace this query with one that suits your needs
+    const reportQueryResult = await db.query("SELECT * FROM report WHERE item_date BETWEEN $1 AND $2", [startDate, endDate]);
+    const reportData = reportQueryResult.rows;
+
+    if (reportType === 'pdf') {
+      try {
+        const pdfPath = await generatePDF(reportData);
+        res.download(pdfPath, err => {
+          if (err) {
+            throw err; // Handle error, but ensure the file is deleted if it was created.
+          }
+          fs.unlinkSync(pdfPath); // Delete the file after sending it
+        });
+      } catch (pdfErr) {
+        console.error('Error generating PDF:', pdfErr);
+        res.status(500).send('Error generating PDF');
+      }
+    } else if (reportType === 'csv') {
+      const csvString = generateCSV(reportData);
+      const csvPath = join(__dirname, `report-${Date.now()}.csv`);
+      fs.writeFileSync(csvPath, csvString);
+      res.download(csvPath, err => {
+        if (err) {
+          throw err; // Handle error, but ensure the file is deleted if it was created.
+        }
+        fs.unlinkSync(csvPath); // Delete the file after sending it
+      });
+    }
+  } catch (err) {
+    console.error('Error generating report:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+// ... (rest of your express app logic)
+
 
 app.get("/register", (req, res) => {
   res.render("register.ejs");
@@ -167,12 +278,12 @@ app.post("/add-item", async (req, res) => {
     const { classification_id } = container1;
 
     // Get the current date
-    const currentDate = new Date().toISOString().split("T")[0]; // YYYY-MM-DD format
+  
 
     // Insert the item into the database along with the current date
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, item_date, price, available) VALUES ($1, $2, $3, $4, $5, $6)",
-      [classification_id, materialName, clcode, currentDate, price, available]
+      "INSERT INTO item (classification_id, material_name, clustercode, price, available) VALUES ($1, $2, $3, $4, $5, $6)",
+      [classification_id, materialName, clcode, price, available]
     );
 
     // Redirect back to the original page after adding the item

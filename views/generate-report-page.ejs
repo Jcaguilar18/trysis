@@ -1,64 +1,54 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8" />
-  <link rel="icon" href="/favicon.ico" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#000000" />
-  <title>Generate Report Page</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
-  <link rel="stylesheet" href="./styles/generate-report-page.css"/>
+  <!-- [existing head elements] -->
 </head>
 <body>
 <div class="web-page">
   <div class="top-bar">
-    <img class="trisys-logo" src="./assets/trisys-logo-Rf3.png"/>
-    <p class="current-user-text">INVENTORY MANAGER</p>
-    <img class="profile-picture" src="./assets/profile-picture-b57.png"/>
+    <!-- [existing top bar elements] -->
   </div>
   <div class="bottom-page-part">
-    <%- include('sidebar') %>
+    <!-- <%- include('sidebar') %> -->
     <div class="below-top-bar">
       <div class="inner-frame">
         <p class="generate-report-title">Generate Report</p>
-        <div class="upper-inner">
-          <div class="buttons-frame">
-            <input type="radio" id="north" name="direction" class="button-north">
-            <input type="radio" id="south" name="direction" class="button-south">
-          </div>
-          <div class="button-associated-texts">
-            <p class="final-report-text">Final Report</p>
-            <p class="bin-card-report-text">BIN Card Report</p>
-          </div>
-          <div class="date-frame">
-            <div class="date-text-area">
-              <p class="from-text">From:</p>
-              <p class="date-upper-text">Date:</p>
-              <p class="to-text">To:</p>
-              <p class="date-lower-text">Date:</p>
-            </div>
-            <div class="textfield-areas">
-              <div class="upper-textfield">
+        <form action="/generate-report" method="post" id="reportForm">
+          <div class="upper-inner">
+            <!-- [existing upper inner elements] -->
+            <div class="date-frame">
+              <div class="date-text-area">
+                <!-- [existing date text area elements] -->
               </div>
-              <div class="lower-textfield">
+              <div class="textfield-areas">
+                <input type="date" name="startDate" required> <!-- Input for the start date -->
+                <input type="date" name="endDate" required>   <!-- Input for the end date -->
               </div>
             </div>
-            <div class="set-date-buttons-area">
-              <div class="upper-set-date-button">Set Date</div>
-              <div class="lower-set-date-button">Set Date</div>
-            </div>
+            <!-- Hidden input to determine the type of report to generate -->
+            <input type="hidden" name="reportType" id="reportType" value="">
           </div>
-        </div>
-        <p class="preview-final-report-text">Preview Final Report:</p>
-        <div class="preview-area">
-        </div>
+          <p class="preview-final-report-text">Preview Final Report:</p>
+          <!-- [existing preview area elements] -->
+          <div class="set-date-buttons-area">
+            <!-- Buttons to define the type of report -->
+            <button type="button" class="generate-report-button" onclick="setReportTypeAndSubmit('pdf')">Generate PDF</button>
+            <button type="button" class="generate-report-button" onclick="setReportTypeAndSubmit('csv')">Generate CSV</button>
+          </div>
+        </form>
       </div>
       <div class="right-corner-side">
-        <p class="search-text">Search</p>
-        <p class="download-text">Download</p>
+        <!-- [existing right corner side elements] -->
       </div>
     </div>
   </div>
 </div>
+<script>
+  // Function to set report type and submit the form
+  function setReportTypeAndSubmit(type) {
+    document.getElementById('reportType').value = type; // Set the report type based on the button clicked
+    document.getElementById('reportForm').submit(); // Submit the form
+  }
+</script>
 </body>
+</html>
