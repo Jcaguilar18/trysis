@@ -7,7 +7,8 @@
 </head>
 <body>
     <h1>Register</h1>
-    <form action="/register" method="POST">
+    <!-- Add enctype to the form -->
+    <form action="/register" method="POST" enctype="multipart/form-data">
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" name="username" required>
@@ -15,6 +16,12 @@
         <div class="form-group">
             <label for="password">Password</label>
             <input type="password" class="form-control" name="password" required>
+        </div>
+
+        <!-- Add file input for user picture -->
+        <div class="form-group">
+            <label for="picture">Picture</label>
+            <input type="file" class="form-control" name="picture" accept="image/*">
         </div>
 
         <div>

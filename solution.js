@@ -174,6 +174,10 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+app.get("/logs", (req, res) => {
+  res.render("logs.ejs");
+});
+
 app.get("/item", async (req, res) => {
   var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
   var roleOf = roleOfQueryResult.rows[0]?.role;
@@ -451,49 +455,68 @@ console.log("entered");
     res.status(500).send('Internal Server Error');
   }
 });
+//////////////
+import path from 'path';
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)){
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+///////////////////////////////
+import multer from 'multer';
 
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, 'uploads/');
+    },
+    filename: function (req, file, callback) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        callback(null, file.fieldname + '-' + uniqueSuffix);
+    }
+});
 
-
-
-app.post("/register", async (req, res) => {
+const upload = multer({ storage: storage });
+////////////////
+app.post("/register", upload.single('picture'), async (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   const role = req.body.roles;
   const status = req.body.status;
+  const picture = req.file ? req.file.filename : null; // Store the file name of the uploaded picture
 
   try {
-    const checkResult = await db.query("SELECT * FROM users WHERE username = $1", [
-      username,
-    ]);
-    const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [
-      username,
-    ]);
-   
+      const checkResult = await db.query("SELECT * FROM users WHERE username = $1", [username]);
 
-    if (checkResult.rows.length > 0) {
-      req.redirect("/login");
-    } else {
-      bcrypt.hash(password, saltRounds, async (err, hash) => {
-        if (err) {
-          console.error("Error hashing password:", err);
-        } else {
-          const result = await db.query(
-            "INSERT INTO users (username, password, role, status) VALUES ($1, $2, $3, $4) RETURNING *",
-            [username, hash, role, status]
-          );
-          const user = result.rows[0];
-      
-          req.login(user, (err) => {
-            console.log("success");
-            res.redirect("/dashboard");
+      if (checkResult.rows.length > 0) {
+          return res.redirect("/login"); // Use return to ensure that the rest of the code is not executed after the redirect
+      } else {
+          bcrypt.hash(password, saltRounds, async (err, hash) => {
+              if (err) {
+                  console.error("Error hashing password:", err);
+                  return res.status(500).send("Error hashing password");
+              }
+              const result = await db.query(
+                  "INSERT INTO users (username, password, role, status, picture_url) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+                  [username, hash, role, status, picture]
+              );
+              const user = result.rows[0];
+
+              req.login(user, (err) => {
+                  if (err) {
+                      console.error(err);
+                      return res.status(500).send("Error logging in user");
+                  }
+                  res.redirect("/dashboard");
+              });
           });
-        }
-      });
-    }
+      }
   } catch (err) {
-    console.log(err);
+      console.error(err);
+      res.status(500).send("Internal Server Error");
   }
 });
+
+/////////////
+
 
 passport.use(
   new Strategy(async function verify(username, password, cb) {

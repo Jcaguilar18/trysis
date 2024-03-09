@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transaction Logs</title>
+<style>
+  body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+  }
+  .container {
+    width: 80%;
+    margin: auto;
+    background-color: #fff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .search-bar {
+    margin-bottom: 20px;
+  }
+  .transaction-log {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #eee;
+    border-radius: 5px;
+  }
+  .transaction-log > div {
+    display: flex;
+    align-items: center;
+  }
+  .transaction-log img {
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  .date {
+    font-size: 0.9em;
+    color: #666;
+  }
+  .description {
+    margin-left: 10px;
+  }
+  .quantity {
+    font-weight: bold;
+    color: #333;
+  }
+  .trans-type {
+    margin-left: auto;
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+  }
+  .incoming {
+    background-color: #4CAF50;
+  }
+  .removed {
+    background-color: #F44336;
+  }
+  .added {
+    background-color: #2196F3;
+  }
+  .trans-type img {
+    margin-right: 5px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="search-bar">
+    <!-- Search bar here -->
+    <input type="text" placeholder="Search...">
+  </div>
+  <!-- Transaction log entry -->
+  <div class="transaction-log">
+    <div>
+      <img src="user-avatar.jpg" alt="User Avatar" width="40">
+      <div>
+        <div class="date">December 12, 2023</div>
+        <div class="description">MCB - N Version</div>
+      </div>
+    </div>
+    <div class="quantity">34 items</div>
+    <div class="trans-type incoming">
+      <img src="incoming-icon.png" alt="Incoming" width="20">
+      Incoming Stock
+    </div>
+  </div>
+  <!-- Repeat the above block for each transaction log entry -->
+</div>
+<script>
+// Here you would integrate your backend data.
+// Fetch data from your backend and render it.
+</script>
+</body>
+</html>
