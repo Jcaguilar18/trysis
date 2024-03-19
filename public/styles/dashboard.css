@@ -259,7 +259,7 @@ body {
 .web-page .bottom-page-part .dashboard-area .classification-area {
   margin: 0rem 0rem 0rem 2rem;
   width: calc(100% - 13.2rem);
-  height: 19rem;
+  height: 16rem;
   display: flex;
   align-items: center;
   /* background-color: gold; */
@@ -281,7 +281,7 @@ body {
 }
 
 .web-page .bottom-page-part .dashboard-area .classification-area .classification-box .classification-title {
-  margin-bottom: 1.7rem;
+  margin-bottom: 0.2rem;
   width: 100%;
   height: 2rem;
   position: relative;
@@ -314,7 +314,7 @@ body {
 }
 
 .web-page .bottom-page-part .dashboard-area .classification-area .classification-box .percentage {
-  margin: 0rem 0rem -0.3rem -3rem;
+  margin: 0rem 0rem -0.8rem -3rem;
   width: calc(100% - 20.4623rem);
   height: 3.9rem;
   position: relative;
