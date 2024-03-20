@@ -49,7 +49,7 @@
   width: 89.7rem;
   height: 100vh;
   position: relative;
-  border: solid 0.1rem #000000;
+  border-left: solid 0.1rem white;
   box-sizing: border-box;
   box-shadow: 0 0.4rem 0.4rem rgba(0, 0, 0, 0.25);
   background-size: 100% 100%;
@@ -117,6 +117,7 @@ top: 16.5rem;
 background-color: #ffffff;
 border-radius: 0.5rem;
 font-size: 2rem;
+padding-left: 1rem;
 }
 
 .login-website .right-half .password-icon {
@@ -152,6 +153,7 @@ top: 24rem;
 background-color: #ffffff;
 border-radius: 0.5rem;
 font-size: 2rem;
+padding-left: 1rem;
 }
 
 .login-website .right-half .login-button {
@@ -160,7 +162,7 @@ height: 4.4rem;
 position: absolute;
 left: 29rem;
 top: 30rem;
-font-size: 3rem;
+font-size: 2.4rem;
 font-weight: 600;
 line-height: 1.2373046875;
 color: #ffffff;

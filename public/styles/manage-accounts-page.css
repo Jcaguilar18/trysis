@@ -76,9 +76,9 @@ body {
 
   .web-page .bottom-page-part .manage-accounts-header .manage-accounts-text-bar {
     box-sizing: border-box;
-    padding: 2rem 3rem 2rem 25rem;
+    padding: 2rem 3rem 2rem 11rem;
     width: 100%;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 700;
     line-height: 1;
     color: #ffffff;
@@ -115,6 +115,11 @@ body {
     border-radius: 3rem;
     flex-shrink: 0;
     text-decoration: none;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .web-page .bottom-page-part .manage-accounts-header .table-area .new-user-button:hover {
+    box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.7);
   }
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
