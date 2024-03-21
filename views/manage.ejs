@@ -71,9 +71,9 @@
                                         <td class="center-text"><%= user.role %></td>
                                         <td class="center-text">
                                             <% if (user.status === 'active') { %>
-                                                <img src="./assets/green_dot.png" alt="Active" class="status-icon">
+                                                <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
                                             <% } else if (user.status === 'inactive') { %>
-                                                <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon">
+                                                <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
                                             <% } %>
                                             <%= user.status %>
                                         </td>

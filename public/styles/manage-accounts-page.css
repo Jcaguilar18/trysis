@@ -153,10 +153,16 @@ body {
   background-color: #EFF7FF;
 }
 
-.status-icon {
-  height: 20px; /* Adjust as needed */
-  width: 20px; /* Adjust as needed */
+.status-icon-active {
+  height: 20px; 
+  width: 20px; 
   margin-right: 5px;
+}
+
+.status-icon-inactive {
+  height: 20px; 
+  width: 20px; 
+  margin-left: 0.4rem;
 }
 
 /* Add a class for the edit icon */
