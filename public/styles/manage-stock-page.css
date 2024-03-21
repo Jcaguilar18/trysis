@@ -362,3 +362,22 @@ button img {
   width: 20px; 
   height: 20px; 
 }
+
+.save-button {
+  background-color: #191919; /* Button color */
+  color: #ffffff; /* Text color */
+  padding: 10px 20px; /* Button size */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s; /* Transition effect duration */
+  cursor: pointer;
+}
+
+.save-button:hover {
+  background-color: #555555; /* Button color when hovered */
+  color: #f2f2f2; /* Text color when hovered */
+}

@@ -381,7 +381,7 @@ button:hover {
 }
 
 .table-section .entry {
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.1rem;
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
@@ -433,7 +433,7 @@ button:hover {
 }
 
 .lower-section {
-  margin-left: 10rem;
+  margin-left: 46rem;
   display: flex;
   align-items: flex-end;
   flex-shrink: 0;
@@ -492,6 +492,31 @@ button:hover {
   background-color: transparent;
 }
 
+.add-section {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-left: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 6px dashed #aaa; /* Adjust color as needed */
+  margin-bottom: 20px; /* Adjust as needed */
+  width: 90%; /* Adjust as needed */
+}
+
+.add-button {
+  background-color: transparent;
+  border: none;
+}
+
+.add-button img {
+  width: 50px; /* Adjust size as needed */
+}
+
+.add-section:hover {
+  cursor: pointer;
+}
+
 
 /******************************************************************************************/
 /*******************************Modal 2 CSS************************************************/
@@ -507,11 +532,26 @@ button:hover {
   border-radius: 2rem;
 }
 
+.back-button {
+  background-color: #A6A6A6; /* Same color as upper-section-modal */
+  color: #000000; /* Text color */
+  padding: 10px 20px; /* Button size */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
 .upper-section-modal{
+  transition-duration: 0.4s;
   margin-bottom: 1rem;
   width: 9rem;
   height: 3rem;
-  font-size: 1.5rem;
+  font-size: 2rem;
   font-weight: 300;
   line-height: 1.2125;
   color: #000000;
@@ -523,6 +563,29 @@ button:hover {
   background-color: #A6A6A6;
   border-radius: 2rem;
   flex-shrink: 0;
+}
+
+.upper-section-modal:hover {
+  background-color: #555555; /* Color when hovered */
+}
+
+#addItem {
+  background-color: #191919; /* Button color */
+  color: #ffffff; /* Text color */
+  padding: 10px 20px; /* Button size */
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition-duration: 0.4s; /* Transition effect duration */
+  cursor: pointer;
+}
+
+#addItem:hover {
+  background-color: #555555; /* Button color when hovered */
+  color: #f2f2f2; /* Text color when hovered */
 }
 
 .upper-table-part {
@@ -568,6 +631,7 @@ button:hover {
 }
 
 .upper-table-part input {
+  padding-left: 1rem;
   height: 1.7rem;
   width: 18rem;
   margin-top: 1.3rem;
@@ -639,3 +703,4 @@ button:hover {
   width: 20px; /* Adjust as needed */
   height: 20px; /* Adjust as needed */
 }
+
