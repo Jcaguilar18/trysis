@@ -72,6 +72,9 @@
                   <% } %>
                 </tbody>
               </table>
+              <div id="grasshopper" style="display: none;">
+                <p> Grasshopper </p>
+            </div>
           </div>
     </div>
 
@@ -189,23 +192,29 @@ function filterTable(id) {
     // Add the active class to the clicked button
     if (id === '') {
         $('.all-text').addClass('active');
-    } else if (id === 1) {
-        $('.fabrication-text-selection').addClass('active');
-    } else if (id === 2) {
-        $('.fire-protection-text-selection').addClass('active');
-    } else if (id === 3) {
-        $('.electrical-text-selection').addClass('active');
-    }
-
-    // Filter the table rows
-    $('#itemTable tbody tr').each(function() {
-        var rowId = $(this).attr('class');
-        if (id === '' || id.toString() === rowId || id === $(this).data('classificationid')) {
-            $(this).show();
-        } else {
-            $(this).hide();
+        $('#itemTable').hide(); // Hide the table when "All" is clicked
+        $('#grasshopper').show(); // Show the "Grasshopper" text when "All" is clicked
+    } else {
+        $('#itemTable').show(); // Show the table for other buttons
+        $('#grasshopper').hide(); // Hide the "Grasshopper" text for other buttons
+        if (id === 1) {
+            $('.fabrication-text-selection').addClass('active');
+        } else if (id === 2) {
+            $('.fire-protection-text-selection').addClass('active');
+        } else if (id === 3) {
+            $('.electrical-text-selection').addClass('active');
         }
-    });
+
+        // Filter the table rows
+        $('#itemTable tbody tr').each(function() {
+            var rowId = $(this).attr('class');
+            if (id.toString() === rowId || id === $(this).data('classificationid')) {
+                $(this).show();
+            } else {
+                $(this).hide();
+            }
+        });
+    }
 }
 
 // Get the modal
