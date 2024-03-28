@@ -42,36 +42,25 @@
                 <img class="on-off-switch-button" src="./assets/onoffswitch-1.png"/>
                 <img class="atoz-icon" src="./assets/atoz.png"/>
               </div>
+              <div class="tables-section">
+                <div class="left-side-tables">
+                  <div class="left-legend-area">
 
-              <table id="itemTable" class="item-catalog-table">
-                <thead>
-                  <tr>
-                    <th>CODE</th>
-                    <th>DESCRIPTION</th>
-                    <th>ACTION</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% if (cluster && cluster.length > 0) { %>
-                    <% cluster.forEach(cluster => { %>
-                      <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
-                        <td><%= cluster.clustercode %></td>
-                        <td><%= cluster.description %></td>
-                        <td>
-                          <!--TASK: Filter based on Classification Clicked-->
-                          <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                          <!--TASK: Filter Items based on clustercode-->
-                          <button class="action-buttons" onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                        </td>
-                      </tr>
-                    <% }); %>
-                  <% } else { %>
-                    <tr>
-                      <td colspan="4">No items found</td>
-                    </tr>
-                  <% } %>
-                </tbody>
-              </table>
+                  </div>
+                </div>
+                <div class="right-side-tables">
+                  <div class="upper-right">
+                    <div class="right-legend-area">
+
+                    </div>
+                  </div>
+                  <div class="lower-right">
+                    <div class="right-legend-area">
+
+                    </div>
+                  </div>
+                </div>
+              </div>
               <div id="grasshopper" style="display: none;">
                 <p> Grasshopper </p>
             </div>
