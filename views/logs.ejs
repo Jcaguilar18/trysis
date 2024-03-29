@@ -1,98 +1,94 @@
+<% /* transaction-logs.ejs */ %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Transaction Logs</title>
-<style>
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: #f0f0f0;
-  }
-  .container {
-    width: 80%;
-    margin: auto;
-    background-color: #fff;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-  }
-  .search-bar {
-    margin-bottom: 20px;
-  }
-  .transaction-log {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #eee;
-    border-radius: 5px;
-  }
-  .transaction-log > div {
-    display: flex;
-    align-items: center;
-  }
-  .transaction-log img {
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  .date {
-    font-size: 0.9em;
-    color: #666;
-  }
-  .description {
-    margin-left: 10px;
-  }
-  .quantity {
-    font-weight: bold;
-    color: #333;
-  }
-  .trans-type {
-    margin-left: auto;
-    padding: 5px 10px;
-    border-radius: 5px;
-    color: #fff;
-  }
-  .incoming {
-    background-color: #4CAF50;
-  }
-  .removed {
-    background-color: #F44336;
-  }
-  .added {
-    background-color: #2196F3;
-  }
-  .trans-type img {
-    margin-right: 5px;
-  }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Logs</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha384-1DRSw3rCw7jyfV9p3u5RyZ6hFV3TyD6eKAc1l3FQJwSt/5UfgKsSVGqeFjwUgbpL" crossorigin="anonymous">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+        }
+        .transaction-log-container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .log-entry {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        .log-entry:nth-child(even) {
+            background: #e9e9e9;
+        }
+        .log-icon {
+            font-size: 24px;
+            width: 30px;
+            margin-right: 10px;
+        }
+        .added { color: #4CAF50; }
+        .removed { color: #F44336; }
+        .date, .material-name, .trans-type, .username {
+            margin-right: 15px;
+        }
+        .trans-type {
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: #fff;
+        }
+        .incoming { background: #2196F3; }
+        .removed { background: #F44336; }
+        .added { background: #4CAF50; }
+        .username img {
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            margin-right: 10px;
+        }
+        /* Add other styles as necessary */
+    </style>
 </head>
 <body>
-<div class="container">
-  <div class="search-bar">
-    <!-- Search bar here -->
-    <input type="text" placeholder="Search...">
+    <div class="transaction-log-container">
+        <div class="log-header">
+            <h1>Transaction Logs</h1>
+            <!-- Add search and other header elements here -->
+        </div>
+        <% /* transaction-logs.ejs */ %>
+<!-- ... other HTML and EJS code ... -->
+<% logs.forEach(function(log) { %>
+  <div class="log-entry">
+      <!-- ... other log entry elements ... -->
+      <span class="username">
+          <img src="<%= log.picture ? '/uploads/' + log.picture : '/path/to/default/profile/picture.jpg' %>" alt="<%= log.username %>">
+          <%= log.username %>
+      </span>
+      <!-- ... other log entry elements ... -->
   </div>
-  <!-- Transaction log entry -->
-  <div class="transaction-log">
-    <div>
-      <img src="user-avatar.jpg" alt="User Avatar" width="40">
-      <div>
-        <div class="date">December 12, 2023</div>
-        <div class="description">MCB - N Version</div>
-      </div>
+<% }); %>
+<!-- ... other HTML and EJS code ... -->
+
+        <!-- Add pagination here -->
     </div>
-    <div class="quantity">34 items</div>
-    <div class="trans-type incoming">
-      <img src="incoming-icon.png" alt="Incoming" width="20">
-      Incoming Stock
-    </div>
-  </div>
-  <!-- Repeat the above block for each transaction log entry -->
-</div>
-<script>
-// Here you would integrate your backend data.
-// Fetch data from your backend and render it.
-</script>
+    <script>
+      
+    </script>
 </body>
 </html>

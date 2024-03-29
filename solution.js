@@ -10,7 +10,7 @@ import env from "dotenv";
 import cron from 'node-cron';
 
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('24 10 * * *', async () => {
+cron.schedule('59 18 * * *', async () => {
   try {
     // Copy data from items to report
     await db.query('INSERT INTO report SELECT *, CURRENT_DATE AS item_date FROM item');
@@ -174,9 +174,30 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
-app.get("/logs", (req, res) => {
-  res.render("logs.ejs");
+
+app.use('/uploads', express.static('uploads'));
+// solution.js
+
+// Existing imports and setup...
+
+app.get("/logs", async (req, res) => {
+  try {
+    // The SELECT query now also retrieves the 'picture' field from the 'logs' table
+    const logsResult = await db.query("SELECT * FROM logs ORDER BY log_date DESC");
+    const logs = logsResult.rows;
+
+    // Render the 'transaction-logs.ejs' template with the logs data, including picture URLs
+    res.render("logs.ejs", { logs });
+  } catch (err) {
+    console.error("Error fetching transaction logs with pictures:", err);
+    res.status(500).send("Internal Server Error");
+  }
 });
+
+// ... the rest of your express app logic
+
+
+
 
 app.get("/item", async (req, res) => {
   var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
