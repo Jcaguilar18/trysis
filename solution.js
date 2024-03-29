@@ -56,12 +56,18 @@ app.get("/item", async (req, res) => {
   var roleOf = roleOfQueryResult.rows[0]?.role;
   var itemOfQueryResult = await db.query("SELECT * FROM item");
   var clusterquery = await db.query("SELECT * FROM cluster");
+  var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1");
+  var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2");
+  var clusterquery3 = await db.query("SELECT * FROM cluster WHERE classification_id = 3");
   const cluster = clusterquery.rows;
+  const cluster1 = clusterquery1.rows;
+  const cluster2 = clusterquery2.rows;
+  const cluster3 = clusterquery3.rows;
   const item= itemOfQueryResult.rows;
       //console.log(item);
       //console.log(cluster);
       //console.log(roleOf);
-  res.render("item.ejs", {item, roleOf,cluster});
+  res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3});
 });
 
 app.get("/manage", async (req, res) => {

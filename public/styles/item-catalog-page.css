@@ -246,6 +246,13 @@ button:hover {
   background-color: yellow;
 }
 
+.tables-area-left {
+  width: 100%;
+  height: 23.9rem;
+  background-color: teal;
+  overflow: auto;
+}
+
 .right-side-tables {
   margin-left: 4rem;
   gap: 1rem;
@@ -261,6 +268,13 @@ button:hover {
   background-color: brown;
 }
 
+.tables-area-upper-right {
+  width: 100%;
+  height: 11rem;
+  background-color: teal;
+  overflow: auto;
+}
+
 .lower-right {
   height: 100%;
   width: 100%; /* Optional: Sets the width of the table */
@@ -273,9 +287,16 @@ button:hover {
   background-color: yellow;
 }
 
+.tables-area-lower-right {
+  width: 100%;
+  height: 9.8rem;
+  background-color: teal;
+  overflow: auto;
+}
+
 .web-page .bottom-page-part .item-catalog-table {
-  margin: 0rem 5rem 0rem 9rem;
-  width: calc(100% - 10.4rem);
+  /* margin: 0rem 0rem 0rem 0rem; */
+  /* width: calc(100% - 10.4rem); */
   height: 25rem;
   background-color: #9cb2c2;
   flex-shrink: 0;
@@ -321,7 +342,7 @@ button:hover {
     }
 
     #itemTable {
-      width: 86rem; /* Make the table take up the full width of its container */
+      width: 100%; /* Make the table take up the full width of its container */
       border-collapse: collapse; /* Collapse borders to avoid double borders */
   }
   

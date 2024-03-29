@@ -45,7 +45,37 @@
               <div class="tables-section">
                 <div class="left-side-tables">
                   <div class="left-legend-area">
-
+                  </div>
+                  <div class="tables-area-left">
+                    <table id="itemTable" class="item-catalog-table">
+                      <thead>
+                        <tr>
+                          <th>CODE</th>
+                          <th>DESCRIPTION</th>
+                          <th>ACTION</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <% if (cluster1 && cluster1.length > 0) { %>
+                          <% cluster1.forEach(cluster1 => { %>
+                            <tr class="cluster-row" data-clustercode="<%= cluster1.clustercode %>" data-classificationid="<%= cluster1.classification_id %>">
+                              <td><%= cluster1.clustercode %></td>
+                              <td><%= cluster1.description %></td>
+                              <td>
+                                <!--TASK: Filter based on Classification Clicked-->
+                                <button class="action-buttons" onclick="openModal('<%= cluster1.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                <!--TASK: Filter Items based on clustercode-->
+                                <button class="action-buttons" onclick="documentFunction('<%= cluster1.clustercode %>')" style="font-family: FontAwesome;"></button>
+                              </td>
+                            </tr>
+                          <% }); %>
+                        <% } else { %>
+                          <tr>
+                            <td colspan="4">No items found</td>
+                          </tr>
+                        <% } %>
+                      </tbody>
+                    </table>
                   </div>
                 </div>
                 <div class="right-side-tables">
@@ -53,10 +83,72 @@
                     <div class="right-legend-area">
 
                     </div>
+                    <div class="tables-area-upper-right">
+                      <table id="itemTable" class="item-catalog-table">
+                        <thead>
+                          <tr>
+                            <th>CODE</th>
+                            <th>DESCRIPTION</th>
+                            <th>ACTION</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if (cluster2 && cluster2.length > 0) { %>
+                            <% cluster2.forEach(cluster2 => { %>
+                              <tr class="cluster-row" data-clustercode="<%= cluster2.clustercode %>" data-classificationid="<%= cluster2.classification_id %>">
+                                <td><%= cluster2.clustercode %></td>
+                                <td><%= cluster2.description %></td>
+                                <td>
+                                  <!--TASK: Filter based on Classification Clicked-->
+                                  <button class="action-buttons" onclick="openModal('<%= cluster2.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                  <!--TASK: Filter Items based on clustercode-->
+                                  <button class="action-buttons" onclick="documentFunction('<%= cluster2.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                </td>
+                              </tr>
+                            <% }); %>
+                          <% } else { %>
+                            <tr>
+                              <td colspan="4">No items found</td>
+                            </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
+                    </div>
                   </div>
                   <div class="lower-right">
                     <div class="right-legend-area">
 
+                    </div>
+                    <div class="tables-area-lower-right">
+                      <table id="itemTable" class="item-catalog-table">
+                        <thead>
+                          <tr>
+                            <th>CODE</th>
+                            <th>DESCRIPTION</th>
+                            <th>ACTION</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <% if (cluster3 && cluster3.length > 0) { %>
+                            <% cluster3.forEach(cluster3 => { %>
+                              <tr class="cluster-row" data-clustercode="<%= cluster3.clustercode %>" data-classificationid="<%= cluster3.classification_id %>">
+                                <td><%= cluster3.clustercode %></td>
+                                <td><%= cluster3.description %></td>
+                                <td>
+                                  <!--TASK: Filter based on Classification Clicked-->
+                                  <button class="action-buttons" onclick="openModal('<%= cluster3.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                  <!--TASK: Filter Items based on clustercode-->
+                                  <button class="action-buttons" onclick="documentFunction('<%= cluster3.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                </td>
+                              </tr>
+                            <% }); %>
+                          <% } else { %>
+                            <tr>
+                              <td colspan="4">No items found</td>
+                            </tr>
+                          <% } %>
+                        </tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
@@ -291,6 +383,7 @@ function discardChanges() {
 function saveChanges() {
 // Add your code here to save changes
 }
+
     </script>
 
 </body>
