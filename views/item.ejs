@@ -153,9 +153,35 @@
                   </div>
                 </div>
               </div>
-              <div id="grasshopper" style="display: none;">
-                <p> Grasshopper </p>
-            </div>
+              <table id="itemTable2" class="item-catalog-table2">
+                <thead>
+                  <tr>
+                    <th>CODE</th>
+                    <th>DESCRIPTION</th>
+                    <th>ACTION</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (cluster && cluster.length > 0) { %>
+                    <% cluster.forEach(cluster => { %>
+                      <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
+                        <td><%= cluster.clustercode %></td>
+                        <td><%= cluster.description %></td>
+                        <td>
+                          <!--TASK: Filter based on Classification Clicked-->
+                          <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <!--TASK: Filter Items based on clustercode-->
+                          <button class="action-buttons" onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                        </td>
+                      </tr>
+                    <% }); %>
+                  <% } else { %>
+                    <tr>
+                      <td colspan="4">No items found</td>
+                    </tr>
+                  <% } %>
+                </tbody>
+              </table>
           </div>
     </div>
 
@@ -273,11 +299,13 @@ function filterTable(id) {
     // Add the active class to the clicked button
     if (id === '') {
         $('.all-text').addClass('active');
-        $('#itemTable').hide(); // Hide the table when "All" is clicked
-        $('#grasshopper').show(); // Show the "Grasshopper" text when "All" is clicked
+        $('.tables-section').show(); // Show the tables-section when "All" is clicked
+        $('#itemTable2').hide(); // Hide the last table when "All" is clicked
     } else {
-        $('#itemTable').show(); // Show the table for other buttons
-        $('#grasshopper').hide(); // Hide the "Grasshopper" text for other buttons
+        if (id === 1 || id === 2 || id === 3) {
+            $('.tables-section').hide(); // Hide the tables-section when "Fabrication", "Electrical", or "Firepro" is clicked
+            $('#itemTable2').show(); // Show the last table when "Fabrication", "Electrical", or "Firepro" is clicked
+        }
         if (id === 1) {
             $('.fabrication-text-selection').addClass('active');
         } else if (id === 2) {
@@ -287,7 +315,7 @@ function filterTable(id) {
         }
 
         // Filter the table rows
-        $('#itemTable tbody tr').each(function() {
+        $('#itemTable2 tbody tr').each(function() {
             var rowId = $(this).attr('class');
             if (id.toString() === rowId || id === $(this).data('classificationid')) {
                 $(this).show();

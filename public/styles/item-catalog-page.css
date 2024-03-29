@@ -382,6 +382,58 @@ button:hover {
 }
 
 /******************************************************************************************/
+
+.web-page .bottom-page-part .item-catalog-table2 {
+  margin: 0rem 5rem 0rem 9rem;
+  width: calc(100% - 10.4rem);
+  height: 25rem;
+  background-color: #9cb2c2;
+  flex-shrink: 0;
+  overflow: auto;
+}
+
+#itemTable2 {
+  width: 86rem; /* Make the table take up the full width of its container */
+  border-collapse: collapse; /* Collapse borders to avoid double borders */
+  display: none;
+}
+
+#itemTable2 th, #itemTable td {
+  text-align: left; /* Align text to the left */
+  padding: 8px; /* Add some padding */
+  border: none; /* Remove all borders */
+}
+
+#itemTable2 th:first-child, #itemTable td:first-child {
+  border-left: 2px solid #000; /* Add left border to the first cell */
+}
+
+#itemTable2 th:last-child, #itemTable td:last-child {
+  border-right: 2px solid #000; /* Add right border to the last cell */
+}
+
+#itemTable2 tr:first-child th {
+  border-top: 2px solid #000; /* Add top border to the first row */
+}
+
+#itemTable2 tr:last-child td {
+  border-bottom: 2px solid #000; /* Add bottom border to the last row */
+}
+
+#itemTable2 th {
+  background-color: #3B2F36; /* Change the background color of the header cells */
+  color: #fff; /* Change the color of the text in the header cells to white */
+}
+
+#itemTable2 tr:nth-child(odd) {
+background-color: #fff; /* White for odd rows */
+}
+
+#itemTable2 tr:nth-child(even) {
+background-color: #E1E1E1; /* #E1E1E1 for even rows */
+}
+
+/******************************************************************************************/
 /*******************************Modal 1 CSS************************************************/
 /******************************************************************************************/
 
