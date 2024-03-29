@@ -178,23 +178,49 @@ app.get("/register", (req, res) => {
 app.use('/uploads', express.static('uploads'));
 // solution.js
 
-// Existing imports and setup...
+// solution.js
 
 app.get("/logs", async (req, res) => {
-  try {
-    // The SELECT query now also retrieves the 'picture' field from the 'logs' table
-    const logsResult = await db.query("SELECT * FROM logs ORDER BY log_date DESC");
-    const logs = logsResult.rows;
+  const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
+  const transTypeFilter = req.query.trans_type || null;
+  const logsPerPage = 10;
+  const offset = (currentPage - 1) * logsPerPage;
+  let logsResult, countResult, totalLogs, query;
 
-    // Render the 'transaction-logs.ejs' template with the logs data, including picture URLs
-    res.render("logs.ejs", { logs });
+  try {
+    if (transTypeFilter) {
+      query = {
+        text: "SELECT * FROM logs WHERE trans_type = $1 ORDER BY log_date DESC LIMIT $2 OFFSET $3",
+        values: [transTypeFilter, logsPerPage, offset],
+      };
+      countResult = await db.query("SELECT COUNT(*) FROM logs WHERE trans_type = $1", [transTypeFilter]);
+    } else {
+      query = {
+        text: "SELECT * FROM logs ORDER BY log_date DESC LIMIT $1 OFFSET $2",
+        values: [logsPerPage, offset],
+      };
+      countResult = await db.query("SELECT COUNT(*) FROM logs");
+    }
+
+    totalLogs = parseInt(countResult.rows[0].count, 10);
+    logsResult = await db.query(query);
+    const logs = logsResult.rows;
+    const totalPages = Math.ceil(totalLogs / logsPerPage);
+
+    res.render("logs.ejs", {
+      logs,
+      currentPage,
+      totalPages,
+      logsPerPage,
+      transTypeFilter // Pass the current filter back to the template
+    });
   } catch (err) {
-    console.error("Error fetching transaction logs with pictures:", err);
+    console.error("Error fetching filtered logs:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// ... the rest of your express app logic
+
 
 
 
