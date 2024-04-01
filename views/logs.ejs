@@ -122,10 +122,12 @@
 
         <% logs.forEach(function(log) { %>
         <div class="log-entry">
-            <img src="<%= log.picture ? '/uploads/' + log.picture : 'default-image-path' %>" alt="<%= log.username %>" />
+            <img src="<%= log.picture ? '/uploads/' + log.picture : 'default-image-path' %>" alt="User Image">
             <div class="log-details">
                 <p><strong><%= log.material_name %></strong> - <%= log.description %></p>
                 <p>Transaction by <%= log.username %></p>
+                <!-- Added transaction date display -->
+                <p>Date: <%= new Date(log.log_date).toLocaleDateString("en-US") %></p>
             </div>
             <span class="trans-type <%= log.trans_type.toLowerCase() %>"><%= log.trans_type %></span>
         </div>
@@ -142,8 +144,6 @@
         function toggleDropdown() {
             document.getElementById("myDropdown").classList.toggle("show");
         }
-
-        // Close the dropdown if the user clicks outside of it
         window.onclick = function(event) {
             if (!event.target.matches('.dropbtn')) {
                 var dropdowns = document.getElementsByClassName("dropdown-content");

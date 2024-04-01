@@ -166,7 +166,26 @@ app.post("/generate-report", async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+import path from 'path';
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)){
+    fs.mkdirSync(uploadsDir, { recursive: true });
+}
+///////////////////////////////
+import multer from 'multer';
 
+const storage = multer.diskStorage({
+    destination: function (req, file, callback) {
+        callback(null, 'uploads/');
+    },
+    filename: function (req, file, callback) {
+        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+        callback(null, file.fieldname + '-' + uniqueSuffix);
+    }
+});
+
+const upload = multer({ storage: storage });
+app.use('/uploads', express.static('uploads'));
 // ... (rest of your express app logic)
 
 
@@ -175,10 +194,7 @@ app.get("/register", (req, res) => {
 });
 
 
-app.use('/uploads', express.static('uploads'));
-// solution.js
 
-// solution.js
 
 app.get("/logs", async (req, res) => {
   const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
@@ -190,13 +206,13 @@ app.get("/logs", async (req, res) => {
   try {
     if (transTypeFilter) {
       query = {
-        text: "SELECT * FROM logs WHERE trans_type = $1 ORDER BY log_date DESC LIMIT $2 OFFSET $3",
+        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
         values: [transTypeFilter, logsPerPage, offset],
       };
       countResult = await db.query("SELECT COUNT(*) FROM logs WHERE trans_type = $1", [transTypeFilter]);
     } else {
       query = {
-        text: "SELECT * FROM logs ORDER BY log_date DESC LIMIT $1 OFFSET $2",
+        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, picture FROM logs ORDER BY log_id DESC LIMIT $1 OFFSET $2",
         values: [logsPerPage, offset],
       };
       countResult = await db.query("SELECT COUNT(*) FROM logs");
@@ -215,10 +231,11 @@ app.get("/logs", async (req, res) => {
       transTypeFilter // Pass the current filter back to the template
     });
   } catch (err) {
-    console.error("Error fetching filtered logs:", err);
+    console.error("Error fetching logs:", err);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 
@@ -316,28 +333,35 @@ app.get("/bin", async (req, res) => {
 app.get("/add-cluster", (req, res) => {
   res.render("add-cluster.ejs");
 });
-
-// Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
+  const { materialName, clcode, price, available } = req.body;
+
   try {
-    // Extract data from the request body
-    const { materialName, clcode, price, available } = req.body;
+    // Get the classification_id based on the provided clustercode
+    const classificationQueryResult = await db.query("SELECT classification_id FROM cluster WHERE clustercode = $1", [clcode]);
+    if (classificationQueryResult.rows.length === 0) {
+      return res.status(400).send("Invalid cluster code.");
+    }
+    const classificationId = classificationQueryResult.rows[0].classification_id;
 
-    // Get the classification_id based on the clustercode
-    const container = await db.query("SELECT * FROM item WHERE clustercode = $1", [clcode]);
-    const container1 = container.rows[0];
-    const { classification_id } = container1;
-
-    // Get the current date
-  
-
-    // Insert the item into the database along with the current date
+    // Insert the new item
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, price, available) VALUES ($1, $2, $3, $4, $5, $6)",
-      [classification_id, materialName, clcode, price, available]
+      "INSERT INTO item (classification_id, material_name, clustercode, price, available) VALUES ($1, $2, $3, $4, $5)",
+      [classificationId, materialName, clcode, price, available]
     );
 
-    // Redirect back to the original page after adding the item
+    if (req.isAuthenticated()) {
+      const userPictureUrl = req.user.picture_url;
+      const logDescription = `${req.user.username} added a new item: ${materialName}`;
+      console.log(userPictureUrl);
+      await db.query(
+        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Added', CURRENT_DATE, $3)",
+        [req.user.username, logDescription, userPictureUrl]
+      );
+    }
+    
+
+    // Redirect back to the item page
     res.redirect("/item");
   } catch (error) {
     console.error("Error adding item:", error);
@@ -347,24 +371,38 @@ app.post("/add-item", async (req, res) => {
 
 
 
+
 app.post("/add-cluster", async (req, res) => {
   try {
       // Extract data from the request body
       const { clustercode, description, classificationid } = req.body;
 
-      // Insert the item into the database
+      // Insert the cluster into the database
       await db.query(
           "INSERT INTO cluster (clustercode, description, classification_id) VALUES ($1, $2, $3)",
           [clustercode, description, classificationid]
       );
 
+      // If the user is authenticated, log the action
+      if (req.isAuthenticated()) {
+          const currentUser = req.user; // The current logged-in user
+          const logDescription = `${currentUser.username} added a new cluster: ${clustercode}`;
+
+          // Insert the log entry into the logs table
+          await db.query(
+              "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Added', CURRENT_DATE, $3)",
+              [currentUser.username, logDescription, currentUser.picture_url] // Use the current user's picture_url
+          );
+      }
+
       // Redirect back to the original page after adding the item
       res.redirect("/item");
   } catch (error) {
-      console.error("Error adding item:", error);
+      console.error("Error adding cluster:", error);
       res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 
@@ -433,34 +471,13 @@ app.post(
   })
 );
 
-
-// app.post('/addstock', async (req, res) => {
-//   try{
-//   const { no, clustercode, incoming, outgoing,itemDescription } = req.body;
-//   console.log('Item No:', no);
-//   console.log('Cluster Code:', clustercode);
-//   console.log('Item Description:', itemDescription);
-//   console.log('Incoming Value:', incoming);
-//   console.log('Outgoing Value:', outgoing);
-
-
-
-
-
-//   res.send('Stock updated successfully!');
-// }
-// catch{
-
-// }
-// });
-
 app.post('/addstock', async (req, res) => {
   const { no, clustercode, incoming, outgoing, itemDescription } = req.body;
 
   try {
     // Check if the item with the given itemDescription exists in the database
     const checkResult = await db.query("SELECT * FROM item WHERE material_name = $1", [itemDescription]);
-console.log("entered");
+
     if (checkResult.rows.length === 0) {
       res.status(400).send('Item not found');
       return;
@@ -495,134 +512,118 @@ console.log("entered");
     `;
     await db.query(updateQuery, [newAvailable, newAvailable, parsedOutgoing, parsedIncoming, itemDescription]);
 
-    //res.send('Stock updated successfully!');
+    // If the user is authenticated, log the action
+    if (req.isAuthenticated()) {
+      const currentUser = req.user;
+      const logDescription = `${currentUser.username} updated stock for item: ${itemDescription}`;
+
+      // Insert the log entry into the logs table
+      await db.query(
+        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, $3, CURRENT_DATE, $4)",
+        [currentUser.username, logDescription, 'Modified', currentUser.picture_url]
+      );
+    }
+
     res.redirect("/stock");
   } catch (err) {
     console.error('Error updating stock:', err);
     res.status(500).send('Internal Server Error');
   }
 });
+
 //////////////
-import path from 'path';
-const uploadsDir = path.join(__dirname, 'uploads');
-if (!fs.existsSync(uploadsDir)){
-    fs.mkdirSync(uploadsDir, { recursive: true });
-}
-///////////////////////////////
-import multer from 'multer';
-
-const storage = multer.diskStorage({
-    destination: function (req, file, callback) {
-        callback(null, 'uploads/');
-    },
-    filename: function (req, file, callback) {
-        const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-        callback(null, file.fieldname + '-' + uniqueSuffix);
-    }
-});
-
-const upload = multer({ storage: storage });
-////////////////
 app.post("/register", upload.single('picture'), async (req, res) => {
-  const username = req.body.username;
+  const newUsername = req.body.username; // New user's username
   const password = req.body.password;
   const role = req.body.roles;
   const status = req.body.status;
-  const picture = req.file ? req.file.filename : null; // Store the file name of the uploaded picture
+  const picture = req.file ? req.file.filename : null; // New user's picture
 
   try {
-      const checkResult = await db.query("SELECT * FROM users WHERE username = $1", [username]);
+    const checkResult = await db.query("SELECT * FROM users WHERE username = $1", [newUsername]);
 
-      if (checkResult.rows.length > 0) {
-          return res.redirect("/login"); // Use return to ensure that the rest of the code is not executed after the redirect
-      } else {
-          bcrypt.hash(password, saltRounds, async (err, hash) => {
-              if (err) {
-                  console.error("Error hashing password:", err);
-                  return res.status(500).send("Error hashing password");
-              }
-              const result = await db.query(
-                  "INSERT INTO users (username, password, role, status, picture_url) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-                  [username, hash, role, status, picture]
-              );
-              const user = result.rows[0];
+    if (checkResult.rows.length > 0) {
+      // User already exists, redirect to an appropriate page
+      res.redirect("/user-exists"); // Adjust as necessary
+    } else {
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      await db.query(
+        "INSERT INTO users (username, password, role, status, picture_url) VALUES ($1, $2, $3, $4, $5)",
+        [newUsername, hashedPassword, role, status, picture]
+      );
 
-              req.login(user, (err) => {
-                  if (err) {
-                      console.error(err);
-                      return res.status(500).send("Error logging in user");
-                  }
-                  res.redirect("/dashboard");
-              });
-          });
+      // Log the action using the current session user's picture
+      if (req.isAuthenticated()) {
+        const currentUser = req.user; // The current logged-in user
+        const logDescription = `${currentUser.username} registered a new user: ${newUsername}`;
+
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, $3, CURRENT_DATE, $4)",
+          [currentUser.username, logDescription, 'Added', currentUser.picture_url] // Use the current user's picture_url
+        );
       }
+
+      // Redirect to a page indicating successful registration
+      res.redirect("/dashboard");
+    }
   } catch (err) {
-      console.error(err);
-      res.status(500).send("Internal Server Error");
+    console.error(err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
+
+
+
+
 /////////////
-
-
-passport.use(
-  new Strategy(async function verify(username, password, cb) {
+passport.use(new Strategy(
+  async function(username, password, done) {
     try {
-      const stats = await db.query("SELECT status FROM users WHERE username = $1 ", [
-        username,
-         
-      ]);
-      var stat = stats.rows[0]?.status;
-
-
-      console.log(stat);
-      const result = await db.query("SELECT * FROM users WHERE username = $1 ", [
-        username,
-      ]);
-      if(stat === "active"){
-        if (result.rows.length > 0) {
-          const user = result.rows[0];
-          const storedHashedPassword = user.password;
-          bcrypt.compare(password, storedHashedPassword, (err, valid) => {
-            if (err) {
-              //Error with password check
-              console.error("Error comparing passwords:", err);
-              return cb(err);
-            } else {
-              if (valid) {
-                //Passed password check
-                return cb(null, user);
-              } else {
-                //Did not pass password check
-                return cb(null, false);
-              }
-            }
+      const userQueryResult = await db.query("SELECT * FROM users WHERE username = $1", [username]);
+      if (userQueryResult.rows.length > 0) {
+        const user = userQueryResult.rows[0];
+        const validPassword = await bcrypt.compare(password, user.password);
+        if (validPassword) {
+          // User authenticated successfully, return the user object including the picture_url
+          return done(null, {
+            userid: user.userid,
+            username: user.username,
+            picture_url: user.picture_url  // The name of your column in the users table
           });
         } else {
-          return cb("User not found");
+          // Password did not match
+          return done(null, false, { message: 'Incorrect username or password.' });
         }
-      }else{
-        return cb(null,false);
+      } else {
+        // No user found with that username
+        return done(null, false, { message: 'Incorrect username or password.' });
       }
-       
-      
-     
-
-      
     } catch (err) {
-      console.log(err);
+      return done(err);
     }
+  }
+));
 
-    
-  })
-);
+// Specify how to serialize the user for the session
+passport.serializeUser((user, done) => {
+  // Save only the userid in the session to keep the session size small
+  done(null, user.userid);
+});
+passport.deserializeUser(async (userid, done) => {
+  try {
+    const userQueryResult = await db.query("SELECT userid, username, picture_url FROM users WHERE userid = $1", [userid]);
+    if (userQueryResult.rows.length > 0) {
+      const user = userQueryResult.rows[0];
+      done(null, user);
+    } else {
+      done(null, false);
+    }
+  } catch (err) {
+    done(err);
+  }
+});
 
-passport.serializeUser((user, cb) => {
-  cb(null, user);
-});
-passport.deserializeUser((user, cb) => {
-  cb(null, user);
-});
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
