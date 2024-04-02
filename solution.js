@@ -129,43 +129,65 @@ const generatePDF = (data) => {
 
 // Route handler for report generation
 app.post("/generate-report", async (req, res) => {
-  // Extract startDate, endDate, and reportType from request body
   const { startDate, endDate, reportType } = req.body;
-
   try {
-    // Replace this query with one that suits your needs
     const reportQueryResult = await db.query("SELECT * FROM report WHERE item_date BETWEEN $1 AND $2", [startDate, endDate]);
     const reportData = reportQueryResult.rows;
+
+    let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
 
     if (reportType === 'pdf') {
       try {
         const pdfPath = await generatePDF(reportData);
-        res.download(pdfPath, err => {
+        res.download(pdfPath, async err => {
           if (err) {
             throw err; // Handle error, but ensure the file is deleted if it was created.
           }
           fs.unlinkSync(pdfPath); // Delete the file after sending it
         });
+        // Log success
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
+          [req.user.username, logDescription, req.user.picture_url]
+        );
       } catch (pdfErr) {
         console.error('Error generating PDF:', pdfErr);
         res.status(500).send('Error generating PDF');
+        logDescription = `Failed to generate PDF report for period ${startDate} to ${endDate}`;
+        // Log failure
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
+          [req.user.username, logDescription, req.user.picture_url]
+        );
       }
     } else if (reportType === 'csv') {
       const csvString = generateCSV(reportData);
       const csvPath = join(__dirname, `report-${Date.now()}.csv`);
       fs.writeFileSync(csvPath, csvString);
-      res.download(csvPath, err => {
+      res.download(csvPath, async err => {
         if (err) {
           throw err; // Handle error, but ensure the file is deleted if it was created.
         }
         fs.unlinkSync(csvPath); // Delete the file after sending it
       });
+      // Log success
+      await db.query(
+        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
+        [req.user.username, logDescription, req.user.picture_url]
+      );
     }
   } catch (err) {
     console.error('Error generating report:', err);
     res.status(500).send('Internal Server Error');
+    logDescription = `Failed to generate report for period ${startDate} to ${endDate}`;
+    // Log failure
+    await db.query(
+      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
+      [req.user.username, logDescription, req.user.picture_url]
+    );
   }
 });
+
 import path from 'path';
 const uploadsDir = path.join(__dirname, 'uploads');
 if (!fs.existsSync(uploadsDir)){
@@ -193,6 +215,17 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+app.post("/update-account", async (req, res) => {
+  const { userId, username, password, status } = req.body;
+  try {
+    // Optional: Add password hashing here if you're changing passwords
+    await db.query("UPDATE users SET username = $1, password = $2, status = $3 WHERE userid = $4", [username, password, status, userId]);
+    res.redirect("/manage"); // Redirect back to the manage page
+  } catch (err) {
+    console.error("Error updating account:", err);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 
