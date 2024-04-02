@@ -214,13 +214,42 @@ app.use('/uploads', express.static('uploads'));
 app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
-
 app.post("/update-account", async (req, res) => {
   const { userId, username, password, status } = req.body;
+  let logDescription = `Account updated: `; // Initialize log description
+
   try {
-    // Optional: Add password hashing here if you're changing passwords
-    await db.query("UPDATE users SET username = $1, password = $2, status = $3 WHERE userid = $4", [username, password, status, userId]);
-    res.redirect("/manage"); // Redirect back to the manage page
+    let updateFields = {
+      username: username,
+      status: status
+    };
+
+    if (password && password.trim() !== '') {
+      const pepperedPassword = password + (process.env.PEPPER || '');
+      const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
+      updateFields.password = hashedPassword;
+      logDescription += `password changed, `;
+    }
+
+    const setClause = Object.keys(updateFields).map((key, idx) => `${key} = $${idx + 1}`).join(', ');
+    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${Object.keys(updateFields).length + 1}`;
+    const queryParams = [...Object.values(updateFields), userId];
+
+    await db.query(sqlQuery, queryParams);
+
+    // Add more details to log description based on fields updated
+    if (updateFields.username) logDescription += `username to ${username}, `;
+    if (updateFields.status) logDescription += `status to ${status}, `;
+    logDescription = logDescription.slice(0, -2); // Remove the last comma and space
+
+    // Assuming you have a way to get the current user's username and picture_url
+    // Insert log entry
+    await db.query(
+      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Account Updated', CURRENT_DATE, $3)",
+      [req.user.username, logDescription, req.user.picture_url]
+    );
+
+    res.redirect("/manage");
   } catch (err) {
     console.error("Error updating account:", err);
     res.status(500).send("Internal Server Error");
@@ -496,13 +525,17 @@ app.get("/generate-report-page", async (req, res) => {
   }
 });
 
-app.post(
-  "/login", 
-  passport.authenticate("local", {
-    successRedirect: "/dashboard",
-    failureRedirect: "/login",
-  })
+app.post('/login',
+  passport.authenticate('local', { failureRedirect: '/login-failed' }),
+  function(req, res) {
+    res.redirect('/dashboard');
+  }
 );
+
+app.get('/login-failed', function(req, res) {
+  res.render('login.ejs', { error: 'Invalid username or password.' });
+});
+
 
 app.post('/addstock', async (req, res) => {
   const { no, clustercode, incoming, outgoing, itemDescription } = req.body;

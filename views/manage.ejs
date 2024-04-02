@@ -1,89 +1,61 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <link rel="icon" href="/favicon.ico" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <title>Manage Accounts Page</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
-    <link rel="stylesheet" href="./styles/manage-accounts-page.css"/>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .edit-icon {
-            cursor: pointer;
-        }
-
-        .new-user-button {
-            cursor: pointer;
-            /* Add any additional styling for your button here */
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manage Accounts</title>
+<style>
+  form > input, form > select {
+    margin-bottom: 10px;
+  }
+  button[type="submit"], button.edit {
+    margin-right: 10px;
+  }
+</style>
 </head>
 <body>
-    <div class="web-page">
-        <div class="top-bar">
-            <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
-            <p class="current-user-text">INVENTORY MANAGER</p>
-            <img class="profile-picture" src="./assets/profile-picture-7bK.png"/>
-        </div>
-        <div class="bottom-page-part">
-            <% const currentDate = new Date(); %>
-            <%- include('sidebar') %>
-            <div class="manage-accounts-header">
-                <div class="manage-accounts-text-bar">Manage Accounts</div>
-                <div class="table-area">
-                    <a href="/register" class="new-user-button">New User</a>
-                    <div class="users-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>User ID</th>
-                                    <th>Username</th>
-                                    <th>Password</th>
-                                    <th>Role</th>
-                                    <th>Status</th>
-                                    <th>Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% users.forEach(user => { %>
-                                    <tr>
-                                        <td><%= user.userid %></td>
-                                        <td><%= user.username %></td>
-                                        <td><%= user.password %></td>
-                                        <td><%= user.role %></td>
-                                        <td><%= user.status %></td>
-                                        <td><span class="edit-icon" onclick="editUser('<%= user.username %>')">&#9998;</span></td>
-                                    </tr>
-                                <% }); %>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <script>
-        function editUser(username) {
-            console.log('Edit user with username:', username);
-        }
-    </script>
+<h1>Manage Accounts</h1>
+<% users.forEach(user => { %>
+  <form action="/update-account" method="POST">
+    <input type="hidden" name="userId" value="<%= user.userid %>">
+    <label>
+      Username:
+      <input type="text" name="username" value="<%= user.username %>" readonly ondblclick="makeEditable(this)">
+    </label>
+    <label>
+      Password:
+      <input type="password" name="password" placeholder="New Password" readonly ondblclick="makeEditable(this)">
+    </label>
+    <label>
+      Status:
+      <select name="status" disabled ondblclick="makeEditable(this)">
+        <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+        <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+      </select>
+    </label>
+    <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
+    <button type="submit" style="display:none;">Save</button>
+  </form>
+<% }); %>
+
+<script>
+function makeEditable(element) {
+  element.removeAttribute('readonly');
+  element.disabled = false;
+  const form = element.closest('form');
+  form.querySelector('button[type="submit"]').style.display = '';
+  form.querySelector('button.edit').style.display = 'none';
+}
+
+function enableEditing(editButton) {
+  const form = editButton.closest('form');
+  form.querySelectorAll('input, select').forEach(element => {
+    element.removeAttribute('readonly');
+    element.disabled = false;
+  });
+  editButton.style.display = 'none';
+  form.querySelector('button[type="submit"]').style.display = '';
+}
+</script>
 </body>
 </html>

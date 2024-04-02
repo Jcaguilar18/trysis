@@ -25,7 +25,12 @@
                    
                     
                   <form action="/login" method="POST">
+                    <% if (typeof error !== 'undefined') { %>
+                        <div style="color: red;"><%= error %></div>
+                      <% } %>
                 </div>
+                
+
                 <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
                     <p class="wrong-credentials-text">Enter the Correct Credentials</p>
                 <% } %>
