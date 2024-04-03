@@ -1,29 +1,52 @@
 <!DOCTYPE html>
-
 <html>
-
-    <head>
+<head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="theme-color" content="#000000" />
-    <title>Manage Accounts Page</title>
+    <title>Dashboard</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
     <link rel="stylesheet" href="./styles/dashboard.css"/>
-    </head>
-
-    <body>
-        <div class="web-page">
-            <div class="top-bar">
-                <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
-                <p class="current-user-text">INVENTORY MANAGER</p>
-                <img class="profile-picture" src="./assets/profile-picture-7bK.png"/>
-              </div>
-              <div class="right-side">
-                <%- include('sidebar.ejs') %>
-              </div>
+</head>
+<body>
+    <div class="web-page">
+        <div class="top-bar">
+            <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+            <p class="current-user-text">INVENTORY MANAGER</p>
+            <img class="profile-picture" src="./assets/profile-picture-7bK.png"/>
         </div>
-    </body>
+        <div class="right-side">
+            <%- include('sidebar.ejs') %>
+        </div>
 
+        <!-- Inventory Overview Section -->
+        <div class="inventory-overview-section">
+            <h2>Inventory Overview</h2>
+            <% inventorySubtotals.forEach(function(subtotal) { %>
+                <div class="inventory-subtotal">
+                    <h3><%= subtotal.classification_name %></h3>
+                    <p>₱<%= subtotal.subtotal.toLocaleString() %></p>
+                    <p><span class="<%= subtotal.percentage_change && subtotal.percentage_change > 0 ? 'positive-change' : 'negative-change' %>">
+                        <%= subtotal.percentage_change ? subtotal.percentage_change.toFixed(2) : 'N/A' %>%
+                    </span> <%= subtotal.change_type ? subtotal.change_type : 'N/A' %></p>
+                </div>
+            <% }); %>
+        </div>
+
+        <!-- Daily Product Updates Section -->
+        <div class="daily-updates-section">
+            <h2>Daily Product Updates</h2>
+            <% productUpdates.forEach(function(update) { %>
+                <div class="product-update">
+                    <h3><%= update.material_name %> - <%= update.classification %></h3>
+                    <p><%= update.description %></p>
+                    <p>Status: <%= update.status %></p>
+                </div>
+            <% }); %>
+        </div>
+
+    </div>
+</body>
 </html>

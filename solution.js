@@ -484,25 +484,44 @@ app.get("/dashboard", async (req, res) => {
 
   if (req.isAuthenticated()) {
     try {
-      const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
-      req.session.username = req.user.username;
-      req.session.roleOf = roleOf;
+      const roleOfResult = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
+      const roleOf = roleOfResult.rows[0]?.role;
 
-      
-      //console.log('Accessed session username:', req.session.username);
-      
-       
-      
-      res.render("dashboard.ejs", { roleOf: roleOf.rows[0].role });
-      
+      // Fetch the latest updates for products
+      const productUpdatesResult = await db.query(`
+        SELECT * FROM logs 
+        ORDER BY log_date DESC, log_id DESC
+        LIMIT 3  -- Adjust the number as per your needs
+      `);
+      const productUpdates = productUpdatesResult.rows;
+
+      // Calculate inventory subtotals
+      const inventorySubtotalsResult = await db.query(`
+        SELECT classification.classification_name, SUM(item.price * item.beginning_inventory) AS subtotal
+        FROM item 
+        INNER JOIN classification ON item.classification_id = classification.classification_id
+        GROUP BY classification.classification_name
+      `);
+      const inventorySubtotals = inventorySubtotalsResult.rows;
+
+      // Render the dashboard with all necessary data
+      res.render("dashboard.ejs", {
+        roleOf: roleOf,
+        productUpdates: productUpdates,
+        inventorySubtotals: inventorySubtotals,
+        // ... pass other necessary data as well
+      });
+
     } catch (err) {
-      console.log(err);
-      res.redirect("/login");
+      console.error("Error accessing the dashboard:", err);
+      res.status(500).send("Internal Server Error");
     }
   } else {
     res.redirect("/login");
   }
 });
+
+
 
 app.get("/generate-report-page", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
