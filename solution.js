@@ -6,11 +6,10 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
 import env from "dotenv";
-
 import cron from 'node-cron';
 
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('59 18 * * *', async () => {
+cron.schedule('44 13 * * *', async () => {
   try {
     // Copy data from items to report
     await db.query('INSERT INTO report SELECT *, CURRENT_DATE AS item_date FROM item');
