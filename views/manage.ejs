@@ -66,9 +66,15 @@
                                 <% users.forEach(user => { %>
                                     <tr>
                                         <td class="center-text"><%= user.userid %></td>
-                                        <td class="center-text"><%= user.username %></td>
+                                        <td class="center-text"><input type="text" class="username-field" value="<%= user.username %>" readonly></td>
                                         <td class="center-text"><%= '*'.repeat(user.password.length) %></td>
-                                        <td class="center-text"><%= user.role %></td>
+                                        <td class="center-text">
+                                          <select class="role-field" disabled>
+                                              <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+                                              <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+                                              <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                                          </select>
+                                      </td>
                                         <td class="center-text">
                                             <% if (user.status === 'active') { %>
                                                 <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
@@ -76,10 +82,15 @@
                                                 <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
                                             <% } %>
                                             <%= user.status %>
+                                            <select class="status-field" disabled>
+                                              <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+                                              <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                                          </select>
                                         </td>
                                         <td class="center-text">
                                             <!--TASK: Make an Edit Function (Editable Are: Username, Password, Role, & Status)-->
-                                            <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon" onclick="window.location.href='/register?username=<%= user.username %>'">
+                                            <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon" onclick="editUser(this, '<%= user.username %>')">
+                                            <img src="./assets/save_icon.png" alt="Save" class="save-icon" style="display: none;" onclick="saveUser(this, '<%= user.username %>')">
                                         </td>
                                     </tr>
                                 <% }); %>
@@ -91,9 +102,66 @@
         </div>
     </div>
     <script>
-        function editUser(username) {
-            console.log('Edit user with username:', username);
+        function editUser(editIcon, username) {
+    // Get the parent row
+    const row = editIcon.closest('tr');
+    
+    // Get the fields
+    const usernameField = row.querySelector('.username-field');
+    const roleField = row.querySelector('.role-field');
+    const statusField = row.querySelector('.status-field');
+    
+    // Make the fields editable
+    usernameField.removeAttribute('readonly');
+    roleField.disabled = false;
+    statusField.disabled = false;
+    
+    // Switch the icons
+    editIcon.style.display = 'none';
+    const saveIcon = row.querySelector('.save-icon');
+    saveIcon.style.display = '';
+}
+
+function saveUser(saveIcon, username) {
+    // Get the parent row
+    const row = saveIcon.closest('tr');
+    
+    // Get the fields
+    const usernameField = row.querySelector('.username-field');
+    const roleField = row.querySelector('.role-field');
+    const statusField = row.querySelector('.status-field');
+    
+    // Prepare the data to be sent to the server
+    const data = {
+        username: usernameField.value,
+        role: roleField.value,
+        status: statusField.value
+    };
+    
+    // Send an AJAX request to the server
+    fetch('/update-user', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // If the update was successful, reload the page
+            location.reload();
+        } else {
+            // If the update failed, show an error message
+            alert('Failed to update user: ' + data.error);
         }
+    })
+    .catch(error => {
+        // If the request failed, show an error message
+        console.error('Error:', error);
+        alert('Failed to update user: ' + error);
+    });
+}
     </script>
 </body>
 </html>
