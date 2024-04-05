@@ -131,36 +131,14 @@ function saveUser(saveIcon, username) {
     const roleField = row.querySelector('.role-field');
     const statusField = row.querySelector('.status-field');
     
-    // Prepare the data to be sent to the server
-    const data = {
-        username: usernameField.value,
-        role: roleField.value,
-        status: statusField.value
-    };
+    // Save the changes (you might want to send a request to your server here)
+    console.log('Saving changes for user:', username);
+    console.log('New username:', usernameField.value);
+    console.log('New role:', roleField.value);
+    console.log('New status:', statusField.value);
     
-    // Send an AJAX request to the server
-    fetch('/update-user', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            // If the update was successful, reload the page
-            location.reload();
-        } else {
-            // If the update failed, show an error message
-            alert('Failed to update user: ' + data.error);
-        }
-    })
-    .catch(error => {
-        // If the request failed, show an error message
-        console.error('Error:', error);
-        alert('Failed to update user: ' + error);
-    });
+    // Refresh the page
+    location.reload();
 }
     </script>
 </body>
