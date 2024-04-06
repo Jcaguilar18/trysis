@@ -143,6 +143,7 @@ body {
   background-color: #3b2f36;
   border-radius: 2rem;
   flex-shrink: 0;
+  overflow: auto;
 }
 
 .web-page .bottom-page-part .transaction-block .transaction-table-area .transaction-table-entry{

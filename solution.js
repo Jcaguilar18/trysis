@@ -263,6 +263,8 @@ app.get("/logs", async (req, res) => {
   let logsResult, countResult, totalLogs, query;
 
   try {
+    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOf = roleOfQueryResult.rows[0]?.role;
     if (transTypeFilter) {
       query = {
         text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
@@ -283,7 +285,7 @@ app.get("/logs", async (req, res) => {
     const totalPages = Math.ceil(totalLogs / logsPerPage);
 
     res.render("logs.ejs", {
-      roleof,
+      roleOf,
       logs,
       currentPage,
       totalPages,
