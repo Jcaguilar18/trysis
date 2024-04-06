@@ -647,6 +647,10 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   flex-shrink: 0;
 }
 
+.classification_hidden{
+  display: none;
+}
+
 .lower-section {
   margin-left: 46rem;
   display: flex;

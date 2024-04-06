@@ -223,9 +223,10 @@
                 <% cluster.forEach(cluster => { %>
                     <div class="entry">
                         <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
-                        <div class="code" contenteditable="true"><%= cluster.clustercode %></div>
-                        <div class="description" contenteditable="true"><%= cluster.description %></div>
-                        <img class="gear" src="./assets/changinggear-1.png"/>
+                        <div class="classification_hidden" id="cluster_cell" contenteditable="true"><%= cluster.classification_id %></div>
+                        <div class="code" id="cluster_cell" contenteditable="true"><%= cluster.clustercode %></div>
+                        <div class="description" id="cluster_cell" contenteditable="true"><%= cluster.description %></div>
+                        <img class="gear" id="cluster_cell" src="./assets/changinggear-1.png"/>
                     </div>
                 <% }); %>
             <% } else { %>
@@ -369,14 +370,18 @@ if (event.target == modal2) {
 }
 }
 
-// Function to open the modal 
-function openModal(clustercode) {
+// Function to open the modal and filter items based on the clustercode
+function openModal(classification_id) {
 // Filter the items based on the clustercode
-var items = $('#myModal .entry').filter(function() {
+
+/* var items = $('#myModal tbody tr').filter(function() {
     return $(this).data('clustercode') === clustercode;
-});
+}); */
+var items = $('#myModal .entry').filter(function() {
+  return $(this).find('#cluster_cell:first-child').text().trim() === classification_id; });
 
 // Hide all items
+// $('#myModal tbody tr').hide();
 $('#myModal .entry').hide();
 
 // Show only the items with the same clustercode
