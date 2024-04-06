@@ -1,3 +1,7 @@
+/******************************************************************************************/
+/*******************************Main CSS***************************************************/
+/******************************************************************************************/
+
 
 * {
 	margin: 0;
@@ -296,7 +300,7 @@ button:hover {
 .left-legend-text{
 margin-top: 0rem;
 margin-bottom: 1rem;
-margin-left: 2.5rem; /* Change from left to margin-left */
+margin-left: 2.5rem; 
 font-size: 1.5rem;
 font-weight: 400;
 line-height: 1.2125;
@@ -308,7 +312,7 @@ white-space: nowrap;
 .right-legend-text{
   margin-top: 0rem;
   margin-bottom: 0.7rem;
-  margin-left: 2.5rem; /* Change from left to margin-left */
+  margin-left: 2.5rem; 
   font-size: 1.5rem;
   font-weight: 400;
   line-height: 1.2125;
@@ -401,8 +405,8 @@ white-space: nowrap;
         z-index: 1; /* Sit on top */
         left: 0;
         top: 0;
-        width: 100%; /* Full width */
-        height: 100%; /* Full height */
+        width: 100%; 
+        height: 100%; 
         overflow: auto; /* Enable scroll if needed */
         background-color: rgba(0,0,0,0.4); 
     }
@@ -619,7 +623,7 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 .table-section .entry .description {
   margin: 0.566rem 0rem 0rem 0rem;
   box-sizing: border-box;
-  padding: 1rem; /* Adjust padding to fit the text inside */
+  padding: 1rem; 
   width: 50rem;
   font-size: 1.2rem;
   font-weight: 300;
@@ -630,12 +634,12 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   background-color: #d9d9d9;
   border-radius: 2rem;
   flex-shrink: 0;
-  text-align: left; /* Add this to align the text to the left */
+  text-align: left; 
 }
 
 .table-section .entry .gear {
   margin-bottom: 0.234rem;
-  margin-left: 2rem; /* Add this to move the gear icon to the left */
+  margin-left: 2rem; 
   width: 3rem;
   height: 3rem;
   object-fit: contain;
@@ -699,7 +703,7 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 }
 
 .action-buttons {
-  font-size: 30px; /* Adjust as needed */
+  font-size: 30px; 
   background-color: transparent;
 }
 
@@ -710,9 +714,9 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 6px dashed #aaa; /* Adjust color as needed */
-  margin-bottom: 20px; /* Adjust as needed */
-  width: 90%; /* Adjust as needed */
+  border: 6px dashed #aaa; 
+  margin-bottom: 20px; 
+  width: 90%; 
 }
 
 .add-button {
@@ -805,18 +809,29 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   left: 0;
   top: 0;
   background-color: #000000;
-  display: flex; /* Add this line */
-  justify-content: space-between; /* Add this line */
+  display: flex; 
+  justify-content: space-between; 
+}
+
+.below-upper-table-part {
+  background-color: #2C2C2C; 
+  color: white;
+  width: 70rem;
+  height: 2.5rem;
+  left: 0;
+  top: 0;
+  display: flex; 
+  justify-content: space-between; 
 }
 
 .modal-table-part {
   width: 70rem;
-  height: 24rem;
+  height: 20rem;
   left: 0;
   top: 0;
   background-color: white;
-  display: flex; /* Add this line */
-  justify-content: space-between; /* Add this line */
+  display: flex; 
+  justify-content: space-between; 
   overflow: auto;
 }
 
@@ -826,19 +841,31 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   left: 0;
   top: 0;
   background-color: #3b2f36;
-  display: flex; /* Add this line */
-  justify-content: space-between; /* Add this line */
+  display: flex; 
+  justify-content: space-between; 
 }
 
 .upper-table-part-text {
   margin-top: 1.1rem;
-  margin-left: 2.5rem; /* Change from left to margin-left */
+  margin-left: 2.5rem; 
   font-size: 1.8rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
+}
+
+.below-table-part-text {
+  margin-top: 0.5rem;
+  margin-left: 0.4rem; 
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
+  flex: 1;
 }
 
 .upper-table-part input {
@@ -850,7 +877,7 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 }
 
 .upper-table-part button {
-  background-color: #191919; /* Green */
+  background-color: #191919; 
   border: none;
   color: white;
   padding: 15px 32px;
@@ -874,51 +901,21 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   justify-content: space-between;
 }
 
-.inventory-table .table-cell {
+.inventory-table .table-row .table-cell {
   flex: 1;
   padding: 8px;
-  border: 2px solid #000;
-}
-
-.inventory-table .header .table-cell {
-  background-color: #2C2C2C !important; /* Change header color to #2C2C2C */
-  color: white;
-}
-
-.header-table-part {
-  width: 70rem;
-  height: 4rem;
-  left: 0;
-  top: 0;
-  background-color: #000000;
-  display: flex; /* Add this line */
-  justify-content: space-between; /* Add this line */
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-left: none;
+  border-right: none;
 }
 
 .inventory-table .table-row:nth-child(odd) .table-cell {
   background-color: #E1E1E1; /* Change odd cell color to #E1E1E1 */
-  border: none; /* Remove borders */
 }
 
 .inventory-table .table-row:nth-child(even) .table-cell {
   background-color: white; /* Change even cell color to white */
-  border: none; /* Remove borders */
-}
-
-.inventory-table .table-row:first-child .table-cell {
-  border-top: 2px solid #000; /* Add top border to the first row */
-}
-
-.inventory-table .table-row .table-cell:first-child {
-  border-left: 2px solid #000; /* Add left border to the first cell of each row */
-}
-
-.inventory-table .table-row .table-cell:last-child {
-  border-right: 2px solid #000; /* Add right border to the last cell of each row */
-}
-
-.inventory-table .table-row:last-child .table-cell {
-  border-bottom: 2px solid #000; /* Add bottom border to the last row */
 }
 
 .inventory-table .table-cell button img {
