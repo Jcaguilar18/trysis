@@ -6,6 +6,7 @@ import passport from "passport";
 import { Strategy } from "passport-local";
 import session from "express-session";
 import env from "dotenv";
+import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
 cron.schedule('44 13 * * *', async () => {
   try {
