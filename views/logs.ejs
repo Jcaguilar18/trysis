@@ -50,14 +50,13 @@
           <img class="search-icon" src="./assets/searchicon-3.png"/>
         </div>
         <div class="dropdown">
-          <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="myFunction()" class="dropbtn">
-          <!--TASK: Sorting Functions for the Change Log Table-->
-          <div id="myDropdown" class="dropdown-content">
-            <a href="#">Normal</a>
-            <a href="#">Modified</a>
-            <a href="#">Removed</a>
-            <a href="#">Added</a>
-            <a href="#">Set Date</a>
+          <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="toggleDropdown()" class="dropbtn" id="dropdownButton">
+          <div id="dropdownContent" class="dropdown-content">
+            <a href="?trans_type=Daily Transaction">Daily Transaction</a>
+            <a href="?trans_type=Modified">Modified</a>
+            <a href="?trans_type=Removed"">Removed</a>
+            <a href="?trans_type=Added">Added</a>
+            <a href="?trans_type=Set Date">Set Date</a>
           </div>
         </div>
       </div>
@@ -102,6 +101,22 @@
   </div>
 </div>
 <script>
+
+  function toggleDropdown() {
+    document.getElementById("dropdownContent").classList.toggle("show");
+  }
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
+        }
+      }
+    }
+  }
+
   function myFunction() {
   document.getElementById("myDropdown").classList.toggle("show");
 }

@@ -68,7 +68,7 @@ body {
 }
 
 .web-page .bottom-page-part .transaction-logs-title {
-  margin: 0rem 0rem 1.5rem 13rem;
+  margin: 1rem 0rem 1.5rem 13rem;
   width: 20rem;
   height: 3rem;
   font-size: 2rem;
@@ -139,7 +139,7 @@ body {
 
 .web-page .bottom-page-part .transaction-block .transaction-table-area {
   width: 100%;
-  height: 25rem;
+  height: 20rem;
   background-color: #3b2f36;
   border-radius: 2rem;
   flex-shrink: 0;
@@ -309,6 +309,8 @@ body {
     font-weight: normal;
     text-align: center;
   }
+
+  /***********************************Dropdown*****************/
 
   .dropdown {
     margin-left: 24rem;
