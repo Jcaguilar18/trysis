@@ -69,7 +69,7 @@
                               <td><%= cluster1.description %></td>
                               <td>
                                 <!--TASK: Filter based on Classification Clicked-->
-                                <button class="action-buttons" onclick="openModal('<%= cluster1.clustercode %>', '<%= cluster1.classification_id %>')" style="font-family: FontAwesome;"></button>
+                                <button class="action-buttons" onclick="openModal('<%= cluster1.classification_id %>')" style="font-family: FontAwesome;"></button>
                                 <!--TASK: Filter Items based on clustercode-->
                                 <button class="action-buttons" onclick="documentFunction('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
                               </td>
@@ -111,7 +111,7 @@
                                 <td><%= cluster2.description %></td>
                                 <td>
                                   <!--TASK: Filter based on Classification Clicked-->
-                                  <button class="action-buttons" onclick="openModal('<%= cluster2.clustercode %>', '<%= cluster2.classification_id %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="openModal('<%= cluster2.classification_id %>')" style="font-family: FontAwesome;"></button>
                                   <!--TASK: Filter Items based on clustercode-->
                                   <button class="action-buttons" onclick="documentFunction('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
@@ -152,7 +152,7 @@
                                 <td><%= cluster3.description %></td>
                                 <td>
                                   <!--TASK: Filter based on Classification Clicked-->
-                                  <button class="action-buttons" onclick="openModal('<%= cluster3.clustercode %>', '<%= cluster3.classification_id %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="openModal('<%= cluster3.classification_id %>')" style="font-family: FontAwesome;"></button>
                                   <!--TASK: Filter Items based on clustercode-->
                                   <button class="action-buttons" onclick="documentFunction('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
@@ -185,7 +185,7 @@
                         <td><%= cluster.description %></td>
                         <td>
                           <!--TASK: Filter based on Classification Clicked-->
-                          <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>', '<%= cluster.classification_id %>')" style="font-family: FontAwesome;"></button>
+                          <button class="action-buttons" onclick="openModal('<%= cluster.classification_id %>')" style="font-family: FontAwesome;"></button>
                           <!--TASK: Filter Items based on clustercode-->
                           <button class="action-buttons" onclick="documentFunction('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
                         </td>
@@ -405,12 +405,12 @@ function documentFunction(clustercode, cluster_description) {
     $('.modal-table-part .table-row').hide();
 
     // Initialize a counter
-    var counter = 0;
+    // var counter = 0;
 
     // Show only the items with the same clustercode and update their first cell with the counter
     items.each(function(index) {
         $(this).show();
-        $(this).find('.table-cell:first-child').text(++counter);
+        // $(this).find('.table-cell:first-child').text(++counter);
 
         // Apply the colors dynamically
         if (index % 2 === 0) {
