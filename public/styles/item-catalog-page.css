@@ -866,6 +866,7 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 .inventory-table {
     width: 100%;
     border-collapse: collapse;
+    /* background-color: blue; */
 }
 
 .inventory-table .table-row {
@@ -882,6 +883,16 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 .inventory-table .header .table-cell {
   background-color: #2C2C2C !important; /* Change header color to #2C2C2C */
   color: white;
+}
+
+.header-table-part {
+  width: 70rem;
+  height: 4rem;
+  left: 0;
+  top: 0;
+  background-color: #000000;
+  display: flex; /* Add this line */
+  justify-content: space-between; /* Add this line */
 }
 
 .inventory-table .table-row:nth-child(odd) .table-cell {
