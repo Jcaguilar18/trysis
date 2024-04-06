@@ -283,6 +283,7 @@ app.get("/logs", async (req, res) => {
     const totalPages = Math.ceil(totalLogs / logsPerPage);
 
     res.render("logs.ejs", {
+      roleof,
       logs,
       currentPage,
       totalPages,

@@ -9,6 +9,28 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
   <link rel="stylesheet" href="./styles/transaction-logs-page.css"/>
+  <style>
+            .pagination {
+            display: flex;
+            justify-content: center;
+            padding: 20px 0;
+        }
+        .pagination a {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            color: #333;
+            margin: 0 5px;
+            padding: 10px 15px;
+            text-decoration: none;
+        }
+        .pagination a.active {
+            background-color: #4CAF50;
+            color: white;
+        }
+        .pagination a:hover:not(.active) {
+            background-color: #ddd;
+        }
+  </style>
 </head>
 <body>
 <div class="web-page">
@@ -52,33 +74,30 @@
             </div>
             <div class="item-portion">
               <div class="upper-item-portion">
-                <p class="main-item"><%= log.main_item %></p>
+                <!-- <p class="main-item"><%= log.main_item %></p> -->
+                <p class="main-item"><%= log.description %></p>
                 <img class="change-icon" src="./assets/change_icon_transac.png"/>
               </div>
               <div class="lower-item-portion">
-                <p class="sub-item"><%= log.sub_item %></p>
+                <!-- <p class="sub-item"><%= log.sub_item %></p> -->
+                <p class="sub-item"><%= log.description %></p>
               </div>
             </div>
             <div class="name-portion">
               <p class="user-text-template"><%= log.username %></p>
             </div>
             <div class="rightmost-text-portion">
-              <p class="rightmost-text">Added</p>
+              <!-- <p class="rightmost-text">Added</p> -->
+              <p class="rightmost-text"><%= log.trans_type %></p>
             </div>
           </div>
         <% }) %>
       </div>
       <!--TASK: Pagination Function, Pafix or Change if Ever-->
-      <div id="pagination-portion" class="pagination-portion">
-        <% if (page > 1) { %>
-          <a class="page-link" data-page="<%= Number(page) - 1 %>" href="#">Previous</a>
-        <% } %>
-        <% for (var i = Math.max(1, page - 2); i <= Math.min(totalPages, page + 2); i++) { %>
-          <a class="page-link" data-page="<%= i %>" href="#"><%= i %></a>
-        <% } %>
-        <% if (page < totalPages) { %>
-          <a class="page-link" data-page="<%= Number(page) + 1 %>" href="#">Next</a>
-        <% } %>
+      <div id="pagination-portion" class="pagination">
+        <% for(let i = 1; i <= totalPages; i++) { %>
+          <a href="?page=<%= i %><%= transTypeFilter ? '&trans_type=' + transTypeFilter : '' %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+      <% } %>
       </div>
   </div>
 </div>
