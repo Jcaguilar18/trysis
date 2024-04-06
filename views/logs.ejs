@@ -9,28 +9,6 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
   <link rel="stylesheet" href="./styles/transaction-logs-page.css"/>
-  <style>
-            .pagination {
-            display: flex;
-            justify-content: center;
-            padding: 20px 0;
-        }
-        .pagination a {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            color: #333;
-            margin: 0 5px;
-            padding: 10px 15px;
-            text-decoration: none;
-        }
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-  </style>
 </head>
 <body>
 <div class="web-page">
@@ -54,7 +32,7 @@
           <div id="dropdownContent" class="dropdown-content">
             <a href="?trans_type=Daily Transaction">Daily Transaction</a>
             <a href="?trans_type=Modified">Modified</a>
-            <a href="?trans_type=Removed"">Removed</a>
+            <a href="?trans_type=Removed">Removed</a>
             <a href="?trans_type=Added">Added</a>
             <a href="?trans_type=Set Date">Set Date</a>
           </div>
@@ -68,8 +46,8 @@
               <img class="entry-icon" src="./assets/addition_transaction_icon.png"/>
             </div>
             <div class="date-portion">
-              <p class="month-portion">September 31,</p>
-              <p class="year-portion">2024</p>
+              <p class="month-portion"><%= new Date(log.log_date).toLocaleString('default', { month: 'long' }) %> <%= new Date(log.log_date).getDate() %>,</p>
+              <p class="year-portion"><%= new Date(log.log_date).getFullYear() %></p>
             </div>
             <div class="item-portion">
               <div class="upper-item-portion">
