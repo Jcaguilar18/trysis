@@ -372,12 +372,12 @@ if (event.target == modal2) {
 // Function to open the modal and filter items based on the classification_id
 function openModal(clustercode) {
 // Filter the items based on the clustercode
-var items = $('#myModal tbody tr').filter(function() {
+var items = $('#myModal .entry').filter(function() {
     return $(this).data('clustercode') === clustercode;
 });
 
 // Hide all items
-$('#myModal tbody tr').hide();
+$('#myModal .entry').hide();
 
 // Show only the items with the same clustercode
 items.show();
