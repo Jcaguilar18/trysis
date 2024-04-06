@@ -69,7 +69,7 @@
                               <td><%= cluster1.description %></td>
                               <td>
                                 <!--TASK: Filter based on Classification Clicked-->
-                                <button class="action-buttons" onclick="openModal('<%= cluster1.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                <button class="action-buttons" onclick="openModal('<%= cluster1.clustercode %>', '<%= cluster1.classification_id %>')" style="font-family: FontAwesome;"></button>
                                 <!--TASK: Filter Items based on clustercode-->
                                 <button class="action-buttons" onclick="documentFunction('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
                               </td>
@@ -111,7 +111,7 @@
                                 <td><%= cluster2.description %></td>
                                 <td>
                                   <!--TASK: Filter based on Classification Clicked-->
-                                  <button class="action-buttons" onclick="openModal('<%= cluster2.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="openModal('<%= cluster2.clustercode %>', '<%= cluster2.classification_id %>')" style="font-family: FontAwesome;"></button>
                                   <!--TASK: Filter Items based on clustercode-->
                                   <button class="action-buttons" onclick="documentFunction('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
@@ -152,7 +152,7 @@
                                 <td><%= cluster3.description %></td>
                                 <td>
                                   <!--TASK: Filter based on Classification Clicked-->
-                                  <button class="action-buttons" onclick="openModal('<%= cluster3.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="openModal('<%= cluster3.clustercode %>', '<%= cluster3.classification_id %>')" style="font-family: FontAwesome;"></button>
                                   <!--TASK: Filter Items based on clustercode-->
                                   <button class="action-buttons" onclick="documentFunction('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
@@ -185,7 +185,7 @@
                         <td><%= cluster.description %></td>
                         <td>
                           <!--TASK: Filter based on Classification Clicked-->
-                          <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                          <button class="action-buttons" onclick="openModal('<%= cluster.clustercode %>', '<%= cluster.classification_id %>')" style="font-family: FontAwesome;"></button>
                           <!--TASK: Filter Items based on clustercode-->
                           <button class="action-buttons" onclick="documentFunction('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
                         </td>
@@ -260,10 +260,9 @@
       <p class="upper-table-part-text">Material:</p> 
       <!--TASK: Sort by Material Name-->
       <input type="text" id="material" name="material" placeholder="Search material..."> 
-      <button id="addItem">+ Add Item</button> 
     </div>
     <div class="below-upper-table-part">
-      <p class="below-table-part-text">CODE</p>
+      <button id="addItem" class="below-table-part-text">+ Add Item</button> 
       <p class="below-table-part-text">ITEM DESCRIPTION</p>
       <p class="below-table-part-text">ACTION</p>
       <p class="below-table-part-text">AVAILABLE</p>
@@ -306,6 +305,7 @@
 
 
 <script>
+  
   
 // Filter the table based on classification id
 function filterTable(id) {
@@ -369,21 +369,21 @@ if (event.target == modal2) {
 }
 }
 
-// Function to open the modal and filter items based on the clustercode
-function openModal(clustercode) {
-// Filter the items based on the clustercode
-var items = $('#myModal tbody tr').filter(function() {
-    return $(this).data('clustercode') === clustercode;
-});
+// Function to open the modal and filter items based on the classification_id
+function openModal(classification_id) {
+    // Filter the items based on the classification_id
+    var items = $('#myModal .entry').filter(function() {
+        return $(this).data('classification_id') === classification_id;
+    });
 
-// Hide all items
-$('#myModal tbody tr').hide();
+    // Hide all items
+    $('#myModal .entry').hide();
 
-// Show only the items with the same clustercode
-items.show();
+    // Show only the items with the same classification_id
+    items.show();
 
-// Show the modal
-modal.style.display = "block";
+    // Show the modal
+    modal.style.display = "block";
 }
 
 window.onclick = function(event) {
@@ -408,9 +408,16 @@ function documentFunction(clustercode, cluster_description) {
     var counter = 0;
 
     // Show only the items with the same clustercode and update their first cell with the counter
-    items.each(function() {
+    items.each(function(index) {
         $(this).show();
         $(this).find('.table-cell:first-child').text(++counter);
+
+        // Apply the colors dynamically
+        if (index % 2 === 0) {
+            $(this).find('.table-cell').css('background-color', '#E1E1E1'); // odd rows
+        } else {
+            $(this).find('.table-cell').css('background-color', 'white'); // even rows
+        }
     });
 
     // Set the values of the input fields
