@@ -81,7 +81,7 @@
                             <td><%= cluster.clustercode %></td>
                             <td><%= cluster.description %></td>
                             <td>
-                                <button onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                <button onclick="openModal('<%= cluster.clustercode%>')" style="font-family: FontAwesome;"></button>
                                 <button onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
                             </td>
                         </tr>
@@ -193,6 +193,7 @@ function openModal(clustercode) {
     // Show the modal
     modal.style.display = "block";
 }
+
 function documentFunction(clustercode){
     // var items = $('#myModal tbody tr').filter(function() {
     //     return $(this).data('clustercode') === clustercode;
