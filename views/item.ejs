@@ -370,20 +370,20 @@ if (event.target == modal2) {
 }
 
 // Function to open the modal and filter items based on the classification_id
-function openModal(classification_id) {
-    // Filter the items based on the classification_id
-    var items = $('#myModal .entry').filter(function() {
-        return $(this).data('classification_id') === classification_id;
-    });
+function openModal(clustercode) {
+// Filter the items based on the clustercode
+var items = $('#myModal tbody tr').filter(function() {
+    return $(this).data('clustercode') === clustercode;
+});
 
-    // Hide all items
-    $('#myModal .entry').hide();
+// Hide all items
+$('#myModal tbody tr').hide();
 
-    // Show only the items with the same classification_id
-    items.show();
+// Show only the items with the same clustercode
+items.show();
 
-    // Show the modal
-    modal.style.display = "block";
+// Show the modal
+modal.style.display = "block";
 }
 
 window.onclick = function(event) {
