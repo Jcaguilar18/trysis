@@ -394,6 +394,7 @@ app.get("/bin", async (req, res) => {
 app.get("/add-cluster", (req, res) => {
   res.render("add-cluster.ejs");
 });
+
 app.post("/add-item", async (req, res) => {
   const { materialName, clcode, price, available } = req.body;
 
