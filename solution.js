@@ -344,6 +344,7 @@ app.get("/manage", async (req, res) => {
 });
 
 
+
 // Route to render the form for adding an item
 app.get("/add-item", (req, res) => {
   const clcode = req.query.clustercode;
@@ -416,9 +417,12 @@ app.get("/bin", async (req, res) => {
 });
 
 
-
 app.get("/add-cluster", (req, res) => {
   res.render("add-cluster.ejs");
+});
+
+app.get("/update-cluster", (req, res) => {
+  res.render("update-cluster.ejs");
 });
 
 // Route to handle form submission for adding an item
@@ -487,6 +491,37 @@ app.post("/add-cluster", async (req, res) => {
       res.redirect("/item");
   } catch (error) {
       console.error("Error adding cluster:", error);
+      res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/update-cluster", async (req, res) => {
+  try {
+      // Extract data from the request body
+      const { clustercode, description, classificationid } = req.body;
+
+      // Update the cluster in the database
+      await db.query(
+          "UPDATE cluster SET description = $1, classification_id = $2 WHERE clustercode = $3",
+          [description, classificationid, clustercode]
+      );
+
+      // If the user is authenticated, log the action
+      if (req.isAuthenticated()) {
+          const currentUser = req.user; // The current logged-in user
+          const logDescription = `${currentUser.username} updated cluster: ${clustercode}`;
+
+          // Insert the log entry into the logs table
+          await db.query(
+              "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Updated', CURRENT_DATE, $3)",
+              [currentUser.username, logDescription, currentUser.picture_url] // Use the current user's picture_url
+          );
+      }
+
+      // Redirect back to the original page after updating the item
+      res.redirect("/item");
+  } catch (error) {
+      console.error("Error updating cluster:", error);
       res.status(500).send("Internal Server Error");
   }
 });
