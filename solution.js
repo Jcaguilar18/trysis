@@ -579,12 +579,26 @@ app.post('/addstock', async (req, res) => {
       return;
     }
 
+    // Fetch the total of 'Incoming' and 'Outgoing' from the logs table for this item
+    const fetchIncomingTotalQuery = `SELECT SUM(quantity) as total FROM logs WHERE item_description = $1 AND daily_trans_type = 'Incoming'`;
+    const fetchIncomingTotalResult = await db.query(fetchIncomingTotalQuery, [itemDescription]);
+    const incomingTotal = fetchIncomingTotalResult.rows[0] ? fetchIncomingTotalResult.rows[0].total : 0;
+
+    const fetchOutgoingTotalQuery = `SELECT SUM(quantity) as total FROM logs WHERE item_description = $1 AND daily_trans_type = 'Outgoing'`;
+    const fetchOutgoingTotalResult = await db.query(fetchOutgoingTotalQuery, [itemDescription]);
+    const outgoingTotal = fetchOutgoingTotalResult.rows[0] ? fetchOutgoingTotalResult.rows[0].total : 0;
+
+    // Calculate new total_available value
+    var totalAvailable = incomingTotal - outgoingTotal;
+
     // Determine the daily transaction type
     var dailyTransType = '';
     if (parsedIncoming !== 0) {
       dailyTransType = 'Incoming';
+      totalAvailable += parsedIncoming;
     } else if (parsedOutgoing !== 0) {
       dailyTransType = 'Outgoing';
+      totalAvailable -= parsedOutgoing;
     }
 
     // If the user is authenticated, log the action
@@ -594,8 +608,8 @@ app.post('/addstock', async (req, res) => {
 
       // Insert the log entry into the logs table
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture, quantity, daily_trans_type) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6)",
-        [currentUser.username, logDescription, 'Modified', currentUser.picture_url, parsedIncoming - parsedOutgoing, dailyTransType]
+        "INSERT INTO logs (username, description, trans_type, log_date, picture, quantity, daily_trans_type, item_description, total_available) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6, $7, $8)",
+        [currentUser.username, logDescription, 'Modified', currentUser.picture_url, parsedIncoming - parsedOutgoing, dailyTransType, itemDescription, totalAvailable]
       );
     }
 
