@@ -605,8 +605,8 @@ app.post('/addstock', async (req, res) => {
 
       // Insert the log entry into the logs table
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, $3, CURRENT_DATE, $4)",
-        [currentUser.username, logDescription, 'Modified', currentUser.picture_url]
+        "INSERT INTO logs (username, description, trans_type, log_date, picture, quantity) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5)",
+        [currentUser.username, logDescription, 'Modified', currentUser.picture_url, parsedIncoming - parsedOutgoing]
       );
     }
 
@@ -616,7 +616,6 @@ app.post('/addstock', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 //////////////
 app.post("/register", upload.single('picture'), async (req, res) => {
   const newUsername = req.body.username; // New user's username
