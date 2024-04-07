@@ -321,23 +321,38 @@ white-space: nowrap;
   white-space: nowrap;
   }
 
-.pencil-icon-left-legend {
-  margin-left: 3rem;
-  margin-bottom: 0.2rem; 
-  width: 3rem;
-  height: 3rem;
-  object-fit: contain;
-  vertical-align: top;
-}
-
-.pencil-icon-right-legend {
-  margin-left: 3rem;
-  margin-bottom: 0rem; 
-  width: 3rem;
-  height: 3rem;
-  object-fit: contain;
-  vertical-align: top;
-}
+  .pencil-icon-left-legend {
+    margin-left: 3rem;
+    margin-bottom: 0.2rem; 
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+    vertical-align: top;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out; /* Add this line */
+  }
+  
+  .pencil-icon-left-legend:hover {
+    box-shadow: 0 0 10px blue; /* Add this line */
+  }
+  
+  .pencil-icon-right-legend {
+    margin-top: 1rem;
+    margin-left: 3rem;
+    margin-bottom: 0rem; 
+    width: 3rem;
+    height: 3rem;
+    object-fit: contain;
+    vertical-align: top;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out; /* Add this line */
+    /* background-color: pink; */
+    /* border-radius: 50%; */
+  }
+  
+  .pencil-icon-right-legend:hover {
+    box-shadow: 0 0 10px blue; /* Add this line */
+  }
 
 .tables-area-left {
   width: 100%;
