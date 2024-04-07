@@ -114,7 +114,7 @@
                                 <td><%= (item.price * item.available).toFixed(2) %></td>
                                 <td>
                                     <!-- Add this line for the Save button -->
-                                    <button onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
+                                    <button class="save-button" onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
                                 </td>
                             </tr>
                         <% }); %>
