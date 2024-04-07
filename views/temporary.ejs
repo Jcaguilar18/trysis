@@ -1,0 +1,115 @@
+<script>
+  
+// Filter the table based on classification id
+function filterTable(id) {
+    // Remove the active class from all buttons
+    $('.middle-buttons-area button').removeClass('active');
+
+    // Add the active class to the clicked button
+    if (id === '') {
+        $('.all-text').addClass('active');
+    } else if (id === 1) {
+        $('.fabrication-text-selection').addClass('active');
+    } else if (id === 2) {
+        $('.fire-protection-text-selection').addClass('active');
+    } else if (id === 3) {
+        $('.electrical-text-selection').addClass('active');
+    }
+
+    // Filter the table rows
+    $('#itemTable tbody tr').each(function() {
+        var rowId = $(this).attr('class');
+        if (id === '' || id.toString() === rowId || id === $(this).data('classificationid')) {
+            $(this).show();
+        } else {
+            $(this).hide();
+        }
+    });
+}
+
+// Get the modal
+var modal = document.getElementById("myModal");
+var modal2 = document.getElementById("myModal2");
+
+// Get the <span> element that closes the modal
+var span = document.getElementsByClassName("close")[0];
+var span2 = document.getElementsByClassName("close")[1];
+
+// When the user clicks on <span> (x), close the modal
+span.onclick = function() {
+modal.style.display = "none";
+}
+
+span2.onclick = function() {
+modal2.style.display = "none";
+}
+
+// When the user clicks anywhere outside of the modal, close it
+window.onclick = function(event) {
+if (event.target == modal) {
+    modal.style.display = "none";
+}
+if (event.target == modal2) {
+    modal2.style.display = "none";
+}
+}
+
+// Function to open the modal and filter items based on the clustercode
+function openModal(clustercode) {
+// Filter the items based on the clustercode
+var items = $('#myModal tbody tr').filter(function() {
+    return $(this).data('clustercode') === clustercode;
+});
+
+// Hide all items
+$('#myModal tbody tr').hide();
+
+// Show only the items with the same clustercode
+items.show();
+
+// Show the modal
+modal.style.display = "block";
+}
+
+window.onclick = function(event) {
+if (event.target == modal) {
+    modal.style.display = "none";
+}
+if (event.target == modal2) {
+    modal2.style.display = "none";
+}
+}
+
+function documentFunction(clustercode) {
+    // Filter the items based on the clustercode
+    var items = $('.modal-table-part .table-row').filter(function() {
+        return $(this).find('.table-cell:first-child').text().trim() === clustercode;
+    });
+
+    // Hide all items
+    $('.modal-table-part .table-row').hide();
+
+    // Show only the items with the same clustercode
+    items.show();
+
+    // Show the modal
+    modal2.style.display = "block";
+}
+
+// TASK: Make this function properly work.
+function additemFunction(clustercode){
+var url = "/add-item?clustercode=" + clustercode;
+
+// Redirect to the URL
+window.location.href = url;
+}
+
+// Functions to handle the discard and save buttons
+function discardChanges() {
+// Add your code here to discard changes
+}
+
+function saveChanges() {
+// Add your code here to save changes
+}
+    </script>
