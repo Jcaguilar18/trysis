@@ -321,6 +321,8 @@ white-space: nowrap;
   white-space: nowrap;
   }
 
+  /**********************************Pencil Icon Function**********************************/
+
   .pencil-icon-left-legend {
     margin-left: 3rem;
     margin-bottom: 0.2rem; 
@@ -329,11 +331,11 @@ white-space: nowrap;
     object-fit: contain;
     vertical-align: top;
     cursor: pointer;
-    transition: box-shadow 0.3s ease-in-out; /* Add this line */
+    transition: box-shadow 0.3s ease-in-out; 
   }
   
   .pencil-icon-left-legend:hover {
-    box-shadow: 0 0 10px blue; /* Add this line */
+    box-shadow: 0 0 10px blue; 
   }
   
   .pencil-icon-right-legend {
@@ -345,14 +347,16 @@ white-space: nowrap;
     object-fit: contain;
     vertical-align: top;
     cursor: pointer;
-    transition: box-shadow 0.3s ease-in-out; /* Add this line */
+    transition: box-shadow 0.3s ease-in-out; 
     /* background-color: pink; */
     /* border-radius: 50%; */
   }
   
   .pencil-icon-right-legend:hover {
-    box-shadow: 0 0 10px blue; /* Add this line */
+    box-shadow: 0 0 10px blue;
   }
+
+  /**********************************************************************************/
 
 .tables-area-left {
   width: 100%;
@@ -940,7 +944,7 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   border-top: 2px solid #000;
   border-bottom: 2px solid #000;
   border-left: none;
-  border-right: 2px solid #000; /* Add this line */
+  border-right: 2px solid #000;
 }
 
 .inventory-table .table-row:nth-child(odd) .table-cell {
