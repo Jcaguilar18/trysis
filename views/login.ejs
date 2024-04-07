@@ -25,12 +25,17 @@
                 <div class="login-box">
                    
                     
-                  <form action="/login" method="POST">
-                </div>
-                <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
-                    <!--TASK: Make this work-->
-                    <p class="wrong-credentials-text">Enter the Correct Credentials</p>
-                <% } %> 
+                    <form action="/login" method="POST">
+                        <% if (typeof error !== 'undefined') { %>
+                            <div class="wrong-credentials-text"><%= error %></div>
+                          <% } %>
+                    </div>
+                    
+    
+                    <% if (typeof accstat !== 'undefined' && accstat === 'active') { %>
+                        <p class="wrong-credentials-text">Enter the Correct Credentials</p>
+                    <% } %>
+                    
                 <p class="user-id-text">User ID</p>
                 <p class="password-text">Password</p>
                 <input class="user-id-input" type="text" name="username" required>

@@ -609,7 +609,7 @@ app.post('/login',
 );
 
 app.get('/login-failed', function(req, res) {
-  res.render('login.ejs', { error: 'Invalid username or password.' });
+  res.render('login.ejs', { error: 'Enter Correct Credentials' });
 });
 
 app.post('/addstock', async (req, res) => {

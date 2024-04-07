@@ -80,19 +80,19 @@ object-fit: contain;
 vertical-align: top;
 }
 
-.login-website .right-half .wrong-credentials-text {
+.wrong-credentials-text {
   width: 8rem;
   height: 8rem;
   position: absolute;
-  left: 8rem;
-  top: 10rem;
-  font-size: 3rem;
+  left: 14rem;
+  top: 3rem; /* Adjust this value to move the text up */
+  font-size: 2rem;
   font-weight: 400;
   line-height: 1.2373046875;
-  color: lightcoral;
+  color: red;
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
-  }
+}
 
 .login-website .right-half .user-id-text {
 width: 12.9rem;
