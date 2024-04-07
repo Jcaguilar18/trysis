@@ -345,11 +345,6 @@ app.get("/manage", async (req, res) => {
 
 
 // Route to render the form for adding an item
-app.get("/add-item", (req, res) => {
-  const clcode = req.query.clustercode;
-  res.render("add-item.ejs", {clcode});
-});
-
 app.get("/stock", async (req, res) => {
   try {
     var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
@@ -362,8 +357,16 @@ app.get("/stock", async (req, res) => {
       SELECT item.*, cluster.description as cluster_description 
       FROM item 
       INNER JOIN cluster ON item.clustercode = cluster.clustercode`);
-    const items = itemOfQueryResult.rows;
-      console.log("testStock uname");
+    var items = itemOfQueryResult.rows;
+
+    // Fetch the total_available from the logs for each item
+    for (let item of items) {
+      const fetchTotalAvailableQuery = `SELECT total_available FROM logs WHERE item_description = $1 ORDER BY log_id DESC LIMIT 1`;
+      const fetchTotalAvailableResult = await db.query(fetchTotalAvailableQuery, [item.material_name]);
+      item.available = fetchTotalAvailableResult.rows[0] ? fetchTotalAvailableResult.rows[0].total_available : 0;
+    }
+
+    console.log("testStock uname");
     console.log(req.session.username);
     console.log("end /stock");
      
