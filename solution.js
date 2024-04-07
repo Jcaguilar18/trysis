@@ -653,7 +653,7 @@ app.post('/addstock', async (req, res) => {
     const outgoingTotal = fetchOutgoingTotalResult.rows[0] ? fetchOutgoingTotalResult.rows[0].total : 0;
 
     // Calculate new total_available value
-    var totalAvailable = incomingTotal - outgoingTotal;
+    var totalAvailable = incomingTotal - (-outgoingTotal);
 
     // Determine the daily transaction type
     var dailyTransType = '';
