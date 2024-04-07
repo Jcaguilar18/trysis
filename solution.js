@@ -579,24 +579,13 @@ app.post('/addstock', async (req, res) => {
       return;
     }
 
-    // Fetch the available value from the item table
-    const fetchAvailableQuery = `SELECT available FROM item WHERE material_name = $1`;
-    const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
-    const available = fetchAvailableResult.rows[0].available;
-
-    // Calculate new available value
-    const newAvailable = available + parsedIncoming - parsedOutgoing;
-
-    // Update the item table
-    const updateQuery = `
-      UPDATE item
-      SET beginning_inventory = $1,
-          available = $2,
-          total_outgoing = total_outgoing + $3,
-          total_incoming = total_incoming + $4
-      WHERE material_name = $5
-    `;
-    await db.query(updateQuery, [newAvailable, newAvailable, parsedOutgoing, parsedIncoming, itemDescription]);
+    // Determine the daily transaction type
+    var dailyTransType = '';
+    if (parsedIncoming !== 0) {
+      dailyTransType = 'Incoming';
+    } else if (parsedOutgoing !== 0) {
+      dailyTransType = 'Outgoing';
+    }
 
     // If the user is authenticated, log the action
     if (req.isAuthenticated()) {
@@ -605,8 +594,8 @@ app.post('/addstock', async (req, res) => {
 
       // Insert the log entry into the logs table
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture, quantity) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5)",
-        [currentUser.username, logDescription, 'Modified', currentUser.picture_url, parsedIncoming - parsedOutgoing]
+        "INSERT INTO logs (username, description, trans_type, log_date, picture, quantity, daily_trans_type) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6)",
+        [currentUser.username, logDescription, 'Modified', currentUser.picture_url, parsedIncoming - parsedOutgoing, dailyTransType]
       );
     }
 

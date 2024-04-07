@@ -104,31 +104,41 @@
         populateMonthAndDay();
 
         function saveRowData(row, itemNo, clusterCode, itemDescription) {
-            // Create a form dynamically
-            var form = document.createElement("form");
-            form.setAttribute("method", "post");
-            form.setAttribute("action", "/addstock");
+    // Get the incoming and outgoing values
+    var incomingValue = row.querySelector('.incoming').value;
+    var outgoingValue = row.querySelector('.outgoing').value;
 
-            // Create input elements for the form to submit
-            function createInput(name, value) {
-                var input = document.createElement("input");
-                input.setAttribute("type", "hidden");
-                input.setAttribute("name", name);
-                input.setAttribute("value", value);
-                return input;
-            }
+    // Check if both incoming and outgoing values were changed
+    if (incomingValue !== '0' && outgoingValue !== '0') {
+        alert('Only one change can be saved at a time. Please modify either incoming or outgoing, not both.');
+        return;
+    }
 
-            // Append inputs for 'no', 'clustercode', 'incoming', 'outgoing', and now 'itemDescription'
-            form.appendChild(createInput("no", itemNo));
-            form.appendChild(createInput("clustercode", clusterCode));
-            form.appendChild(createInput("itemDescription", itemDescription)); // Use the parameter directly
-            form.appendChild(createInput("incoming", row.querySelector('.incoming').value));
-            form.appendChild(createInput("outgoing", row.querySelector('.outgoing').value));
+    // Create a form dynamically
+    var form = document.createElement("form");
+    form.setAttribute("method", "post");
+    form.setAttribute("action", "/addstock");
 
-            // Append the form to the document and submit
-            document.body.appendChild(form);
-            form.submit();
-        }
+    // Create input elements for the form to submit
+    function createInput(name, value) {
+        var input = document.createElement("input");
+        input.setAttribute("type", "hidden");
+        input.setAttribute("name", name);
+        input.setAttribute("value", value);
+        return input;
+    }
+
+    // Append inputs for 'no', 'clustercode', 'incoming', 'outgoing', and now 'itemDescription'
+    form.appendChild(createInput("no", itemNo));
+    form.appendChild(createInput("clustercode", clusterCode));
+    form.appendChild(createInput("itemDescription", itemDescription)); // Use the parameter directly
+    form.appendChild(createInput("incoming", incomingValue));
+    form.appendChild(createInput("outgoing", outgoingValue));
+
+    // Append the form to the document and submit
+    document.body.appendChild(form);
+    form.submit();
+}
     </script>
 </body>
 </html>
