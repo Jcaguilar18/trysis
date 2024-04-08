@@ -299,8 +299,13 @@ app.get("/logs", async (req, res) => {
 });
 
 app.get("/item", async (req, res) => {
-  var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-  var roleOf = roleOfQueryResult.rows[0]?.role;
+
+  // Getting the Picture and Name of the User
+  const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+  const user = userResult.rows[0];
+  const roleOf = user?.role;
+  const pictureUrl = user?.picture_url;
+
   var itemOfQueryResult = await db.query("SELECT * FROM item");
   var clusterquery = await db.query("SELECT * FROM cluster");
   var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1");
@@ -354,8 +359,12 @@ app.get("/add-item", (req, res) => {
 // Route to render the form for adding an item
 app.get("/stock", async (req, res) => {
   try {
-    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-    var roleOf = roleOfQueryResult.rows[0]?.role;
+    
+    // Getting the Picture and Name of the User
+    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+    const user = userResult.rows[0];
+    const roleOf = user?.role;
+    const pictureUrl = user?.picture_url;
     
     var clusterquery = await db.query("SELECT * FROM cluster");
     const cluster = clusterquery.rows;
