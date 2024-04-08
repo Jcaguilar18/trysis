@@ -470,6 +470,16 @@ app.post("/add-item", async (req, res) => {
   }
 });
 
+app.post('/delete-item', async (req, res) => {
+  const { item_id } = req.body;
+  try {
+    await db.query('DELETE FROM item WHERE item_id = $1', [item_id]);
+    res.json({ message: 'Item deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    res.status(500).json({ error: 'Failed to delete item.' });
+  }
+});
 
 
 

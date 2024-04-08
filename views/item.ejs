@@ -110,6 +110,7 @@
                     <th>MATERIAL NAME</th>
                     <th>NEW MATERIAL NAME</th> <!-- New Column -->
                     <th>TOTAL AMOUNT</th>
+                    <th>DELETE</th>
                 </tr>
             </thead>
             <tbody>
@@ -120,6 +121,11 @@
                             <td><%= item.material_name %></td>
                             <td><input type="text" class="new-material-name" value=""></td> <!-- Editable Field -->
                             <td><%= (item.price * item.available).toFixed(2) %></td>
+                            <td>
+                                <button onclick="deleteItem(<%= item.item_id %>, this)">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </td>
                         </tr>
                     <% }); %>
                 <% } else { %>
@@ -253,6 +259,23 @@ function saveChanges() {
 }
 
 
+function deleteItem(itemId, buttonElement) {
+  if (confirm('Are you sure you want to delete this item?')) {
+    $.ajax({
+      type: 'POST',
+      url: '/delete-item',
+      data: { item_id: itemId },
+      success: function(response) {
+        // Remove the row from the table
+        $(buttonElement).closest('tr').remove();
+        alert('Item deleted successfully.');
+      },
+      error: function(xhr, status, error) {
+        alert('Error deleting item: ' + xhr.responseText);
+      }
+    });
+  }
+}
 
 
 
