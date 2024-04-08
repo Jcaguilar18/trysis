@@ -69,9 +69,9 @@
                               <td><%= cluster1.description %></td>
                               <td>
                                 <!--TASK: Filter based on Classification Clicked-->
-                                <button class="action-buttons" onclick="openModal('<%= cluster1.clustercode %>')" style="font-family: FontAwesome;"></button>
+                                <button class="action-buttons" onclick="editItemModal('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
                                 <!--TASK: Filter Items based on clustercode-->
-                                <button class="action-buttons" onclick="editItemModal('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
+                                <button class="action-buttons" onclick="binCardModalFunction('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
                               </td>
                             </tr>
                           <% }); %>
@@ -300,6 +300,57 @@
   </div>  
 </div>
 
+<!-- Inventory BIN Card Modal -->
+<div id="binCardModal" class="modal">
+  <div class="modal-content2">
+    <div class="upper-section-modal">
+      <button class="back-button" onclick="modal2.style.display = 'none';">&lt;Back</button>
+    </div>
+    <div class="upper-table-part">
+      <p class="upper-table-part-text">Name of Material:</p>
+      <input type="text" id="material" name="material" placeholder="Material ID"> 
+      <p class="upper-table-part-text">Code:</p>
+      <input type="text" id="code" name="code" placeholder="Code ID"> 
+    </div>
+    <div class="modal-table-part">
+      <table class="inventory-table">
+        <thead>
+          <tr>
+            <th>Inventory BIN Card</th>
+          </tr>
+          <tr>
+            <th>Item Description</th>
+            <th>Beginning Inventory</th>
+            <th>Total Incoming</th>
+            <th>Total-Outgoing</th>
+            <th>Available</th>
+            <th>Unit Price</th>
+            <th>Value of Raw Mat. On Hand</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (item && item.length > 0) { %>
+            <% item.forEach(item => { %>
+              <tr class="table-row">
+                <td><%= item.material_name %></td>
+                <td></td> <!-- Beginning Inventory -->
+                <td></td> <!-- Total Incoming -->
+                <td></td> <!-- Total-Outgoing -->
+                <td><%= item.available %></td>
+                <td>₱<%= item.price %></td>
+                <td>₱<%= item.price * item.available %></td>
+              </tr>
+            <% }); %>
+          <% } else { %>
+            <tr>
+              <td colspan="7">No items found</td>
+            </tr>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>  
+</div>
 
 <!---------------------------------------------------------------------------------------------->
                             <!--Script Area -->
@@ -434,6 +485,43 @@ function editItemModal(clustercode, cluster_description) {
 
     // Show the modal
     modal2.style.display = "block";
+}
+
+function binCardModalFunction(clustercode, cluster_description) {
+    // Filter the items based on the clustercode
+    var items = $('.modal-table-part .table-row').filter(function() {
+        return $(this).find('.table-cell:first-child').text().trim() === clustercode;
+    });
+
+    // Hide all items
+    $('.modal-table-part .table-row').hide();
+
+    // Initialize a counter
+    // var counter = 0;
+
+    // Show only the items with the same clustercode and update their first cell with the counter
+    items.each(function(index) {
+        $(this).show();
+        // $(this).find('.table-cell:first-child').text(++counter);
+
+        // Apply the colors dynamically
+        if (index % 2 === 0) {
+            $(this).find('.table-cell').css('background-color', '#E1E1E1'); // odd rows
+        } else {
+            $(this).find('.table-cell').css('background-color', 'white'); // even rows
+        }
+    });
+
+    // Set the values of the input fields
+    $('#code').val(clustercode);
+    $('#material').val(cluster_description);
+
+    // Make the input fields read-only
+    $('#code').prop('readonly', true);
+    $('#material').prop('readonly', true);
+
+    // Show the modal
+    binCardModal.style.display = "block";
 }
 
 // Functions to handle the discard and save buttons
