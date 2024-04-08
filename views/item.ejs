@@ -1,161 +1,162 @@
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Item Catalog</title>
-        <!-- <%- include('sidebar') %> -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-        <style>
-            /* The Modal (background) */
-            .modal {
-                display: none; /* Hidden by default */
-                position: fixed; /* Stay in place */
-                z-index: 1; /* Sit on top */
-                left: 0;
-                top: 0;
-                width: 100%; /* Full width */
-                height: 100%; /* Full height */
-                overflow: auto; /* Enable scroll if needed */
-                background-color: rgb(0,0,0); /* Fallback color */
-                background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            }
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Item Catalog</title>
+    <!-- <%- include('sidebar') %> -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        /* The Modal (background) */
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgb(0,0,0); /* Fallback color */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
 
-            /* Modal Content/Box */
-            .modal-content {
-                background-color: #fefefe;
-                margin: 15% auto; /* 15% from the top and centered */
-                padding: 20px;
-                border: 1px solid #888;
-                width: 80%; /* Could be more or less, depending on screen size */
-            }
+        /* Modal Content/Box */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto; /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%; /* Could be more or less, depending on screen size */
+        }
 
-            /* The Close Button */
-            .close {
-                color: #aaa;
-                float: right;
-                font-size: 28px;
-                font-weight: bold;
-            }
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
 
-            .close:hover,
-            .close:focus {
-                color: black;
-                text-decoration: none;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-    <body>
-        <!-- Labels at the top -->
-        <div style="display: flex; justify-content: space-between;">
-            <h2>INVENTORY MANAGER</h2>
-            <p id="currentDate"></p> <!-- Dynamic date will be inserted here -->
-        </div>
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        .modal-content { width: 50%; /* Adjust size as necessary */ }
+    .edit-input { /* Style for editable input if needed */ }
+    .action-buttons button { margin-right: 10px; }
+    </style>
+</head>
+<body>
+    <!-- Labels at the top -->
+    <div style="display: flex; justify-content: space-between;">
+        <h2>INVENTORY MANAGER</h2>
+        <p id="currentDate"></p> <!-- Dynamic date will be inserted here -->
+    </div>
 
-        <!-- Category buttons -->
-        <div>
-            <button onclick="filterTable('')">All</button>
-            <button onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
-            <button onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
-            <button onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
-        </div>
+    <!-- Category buttons -->
+    <div>
+        <button onclick="filterTable('')">All</button>
+        <button onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
+        <button onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
+        <button onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+    </div>
 
-        <h1>Item Catalog</h1>
-        
-        <table id="itemTable">
+    <h1>Item Catalog</h1>
+    
+    <table id="itemTable">
+        <thead>
+            <tr>
+                <th>CODE</th>
+                <th>DESCRIPTION</th>
+                <th>ACTION</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% if (cluster && cluster.length > 0) { %>
+                <% cluster.forEach(cluster => { %>
+                    
+                    <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
+                        <!-- Add data-clustercode attribute -->
+                        <td><%= cluster.clustercode %></td>
+                        <td><%= cluster.description %></td>
+                        <td>
+                            <button onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                            <button onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
+                        </td>
+                    </tr>
+                <% }); %>
+            <% } else { %>
+                <tr>
+                    <td colspan="4">No items found</td>
+                </tr>
+            <% } %>
+        </tbody>
+    </table>
+    <button onclick="window.location.href='/add-cluster'">Add Cluster</button>
+  <!-- The Modal -->
+<div id="myModal" class="modal">
+    <!-- Modal content -->
+    <div class="modal-content">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <h3>Edit Cluster Information</h3>
+        <table id="modalItemTable">
             <thead>
                 <tr>
                     <th>CODE</th>
-                    <th>DESCRIPTION</th>
-                    <th>ACTION</th>
+                    <th>MATERIAL NAME</th>
+                    <th>NEW MATERIAL NAME</th> <!-- New Column -->
+                    <th>TOTAL AMOUNT</th>
                 </tr>
             </thead>
             <tbody>
-                <% if (cluster && cluster.length > 0) { %>
-                    <% cluster.forEach(cluster => { %>
-                        
-                        <tr class="cluster-row" data-clustercode="<%= cluster.clustercode %>" data-classificationid="<%= cluster.classification_id %>">
-                            <!-- Add data-clustercode attribute -->
-                            <td><%= cluster.clustercode %></td>
-                            <td><%= cluster.description %></td>
-                            <td>
-                                <button onclick="openModal('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                                <button onclick="documentFunction('<%= cluster.clustercode %>')" style="font-family: FontAwesome;"></button>
-                            </td>
+                <% if (item && item.length > 0) { %>
+                    <% item.forEach(item => { %>
+                        <tr class="item-row" data-clustercode="<%= item.clustercode %>">
+                            <td><%= item.clustercode %></td>
+                            <td><%= item.material_name %></td>
+                            <td><input type="text" class="new-material-name" value=""></td> <!-- Editable Field -->
+                            <td><%= (item.price * item.available).toFixed(2) %></td>
                         </tr>
                     <% }); %>
                 <% } else { %>
-                    <tr>
-                        <td colspan="4">No items found</td>
-                    </tr>
+                    <tr><td colspan="4">No items found</td></tr>
                 <% } %>
             </tbody>
         </table>
-        <button onclick="window.location.href='/add-cluster'">Add Cluster</button>
-        <!-- The Modal -->
-        <div id="myModal" class="modal">
-
-            <!-- Modal content -->
-            <div class="modal-content">
-                <span class="close">×</span>
-                <p>Edit Cluster Information</p>
-            <!-- Add your form or other elements here -->
-            <table id="modalItemTable">
-                <thead>
-                    <tr>
-                        <th>CODE</th>
-                        <th>DESCRIPTION</th>
-                        <th>TOTAL AMOUNT</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <% if (item && item.length > 0) { %>
-                        <% item.forEach(item => { %>
-                            <tr class="item-row" data-clustercode="<%= item.clustercode %>">
-                                <td contenteditable="true"><%= item.clustercode %></td>
-                                <td contenteditable="true"><%= item.material_name %></td>
-
-                                <td><%= (item.price * item.available).toFixed(2) %></td> <!-- Calculate Total Amount -->
-                            </tr>
-                        <% }); %>
-                    <% } else { %>
-                        <tr>
-                            <td colspan="5">No items found</td>
-                        </tr>
-                    <% } %>
-                </tbody>
-            </table>
-            </table>
+        
+        <div class="action-buttons">
             <button onclick="discardChanges()">Discard</button>
             <button onclick="saveChanges()">Save</button>
-           
-            <button onclick="additemFunction('<%= cluster.clustercode %>')">Add Item</button>
         </div>
-       
+        <button onclick="addNewItem()">Add Item</button>
     </div>
+</div>
 
-        <!-- -->
+
+    <!-- -->
 
 
-     
+ 
 
-        <script>
-           // Display the current date
+    <script>
+       // Display the current date
 document.getElementById('currentDate').textContent = new Date().toLocaleString();
 
 // Filter the table based on classification id
 // Filter the table based on classification id
 function filterTable(id) {
-    $('#itemTable tbody tr').each(function() {
-        var rowId = $(this).attr('class');
-        if (id === '' || id.toString() === rowId || id === $(this).data('classificationid')) {
-            $(this).show();
-        } else {
-            $(this).hide();
-        }
-    });
+$('#itemTable tbody tr').each(function() {
+    var rowId = $(this).attr('class');
+    if (id === '' || id.toString() === rowId || id === $(this).data('classificationid')) {
+        $(this).show();
+    } else {
+        $(this).hide();
+    }
+});
 }
 
 
@@ -167,68 +168,105 @@ var span = document.getElementsByClassName("close")[0];
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
-    modal.style.display = "none";
+modal.style.display = "none";
 }
 
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    }
+if (event.target == modal) {
+    modal.style.display = "none";
+}
 }
 
 // Function to open the modal and filter items based on the clustercode
 function openModal(clustercode) {
-    // Filter the items based on the clustercode
-    var items = $('#myModal tbody tr').filter(function() {
-        return $(this).data('clustercode') === clustercode;
-    });
+// Filter the items based on the clustercode
+var items = $('#myModal tbody tr').filter(function() {
+    return $(this).data('clustercode') === clustercode;
+});
 
-    // Hide all items
-    $('#myModal tbody tr').hide();
+// Hide all items
+$('#myModal tbody tr').hide();
 
-    // Show only the items with the same clustercode
-    items.show();
+// Show only the items with the same clustercode
+items.show();
 
-    // Show the modal
-    modal.style.display = "block";
+// Show the modal
+modal.style.display = "block";
 }
 function documentFunction(clustercode){
-    // var items = $('#myModal tbody tr').filter(function() {
-    //     return $(this).data('clustercode') === clustercode;
-    // });
 
-    // // Hide all items
-    // $('#myModal tbody tr').hide();
+var url = "/bin?clustercode=" + clustercode;
 
-    // // Show only the items with the same clustercode
-    // items.show();
-
-    // // Show the modal
-    // modal.style.display = "block"; 
-    var url = "/bin?clustercode=" + clustercode;
-
-    // Redirect to the URL
-    window.location.href = url;
+window.location.href = url;
 
 }
 function additemFunction(clustercode){
-    var url = "/add-item?clustercode=" + clustercode;
+var url = "/add-item?clustercode=" + clustercode;
 
 // Redirect to the URL
 window.location.href = url;
 }
 
-// Functions to handle the discard and save buttons
-function discardChanges() {
-    // Add your code here to discard changes
+function closeModal() {
+    $('#myModal').hide();
 }
 
 function saveChanges() {
-    // Add your code here to save changes
+    var editedItems = [];
+    $('#modalItemTable .item-row').each(function() {
+        var $row = $(this);
+        var clustercode = $row.data('clustercode');
+        var originalMaterialName = $row.find('td:nth-child(2)').text().trim();
+        var newMaterialName = $row.find('.new-material-name').val().trim();
+
+        // Only add if newMaterialName is not blank and different from the original
+        if(newMaterialName !== "" && newMaterialName !== originalMaterialName) {
+            editedItems.push({
+                clustercode: clustercode,
+                original_material_name: originalMaterialName,
+                new_material_name: newMaterialName
+            });
+        }
+    });
+
+    // Skip AJAX call if no items were edited
+    if(editedItems.length === 0) {
+        alert('No changes to save or new material name is the same as the original.');
+        return;
+    }
+
+    $.ajax({
+        type: 'POST',
+        url: '/update-item',
+        contentType: 'application/json',
+        data: JSON.stringify({ items: editedItems }),
+        success: function(response) {
+            alert('Items updated successfully.');
+            closeModal();
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            alert('Error saving changes: ' + xhr.responseText);
+        }
+    });
 }
 
 
-        </script>
-    </body>
-    </html>
+
+
+
+function discardChanges() {
+    // Reload the page to revert changes
+    location.reload();
+}
+
+function addNewItem() {
+    // Redirect to the add item page or open a form to add a new item
+    window.location.href = '/add-item?clustercode=' + $('#clusterCode').val();
+}
+
+
+    </script>
+</body>
+</html>

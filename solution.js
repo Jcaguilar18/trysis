@@ -36,7 +36,7 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
-
+app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -208,6 +208,51 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 app.use('/uploads', express.static('uploads'));
 // ... (rest of your express app logic)
+
+app.post('/update-item', async (req, res) => {
+  const { items } = req.body;
+
+  try {
+      for (const item of items) {
+          const { clustercode, original_material_name, new_material_name } = item;
+
+          // Skip update if new_material_name is the same as original or blank
+          if (new_material_name.trim() === "" || new_material_name === original_material_name) {
+              continue; // Skip to the next item
+          }
+
+          // Check for existing material name in the same cluster
+          const existingCheck = await db.query(
+              'SELECT COUNT(*) FROM item WHERE clustercode = $1 AND material_name = $2',
+              [clustercode, new_material_name]
+          );
+
+          if (existingCheck.rows[0].count > 0) {
+              // If the new material name already exists, skip this item
+              console.log(`Skipped updating item with clustercode ${clustercode} to existing material name ${new_material_name}`);
+              continue;
+          }
+
+          // Proceed with update if new_material_name is unique within the cluster
+          await db.query(
+              'UPDATE item SET material_name = $1 WHERE clustercode = $2 AND material_name = $3',
+              [new_material_name, clustercode, original_material_name]
+          );
+      }
+
+      res.json({ message: 'Items updated successfully, with no duplicates.' });
+  } catch (error) {
+      console.error('Error updating items:', error);
+      res.status(500).json({ error: 'Failed to update items.' });
+  }
+});
+
+
+
+
+
+
+
 
 
 app.get("/register", (req, res) => {
@@ -400,6 +445,7 @@ app.post("/add-item", async (req, res) => {
   try {
     // Get the classification_id based on the provided clustercode
     const classificationQueryResult = await db.query("SELECT classification_id FROM cluster WHERE clustercode = $1", [clcode]);
+    console.log(clcode);
     if (classificationQueryResult.rows.length === 0) {
       return res.status(400).send("Invalid cluster code.");
     }
@@ -407,8 +453,8 @@ app.post("/add-item", async (req, res) => {
 
     // Insert the new item
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, price, available) VALUES ($1, $2, $3, $4, $5)",
-      [classificationId, materialName, clcode, price, available]
+      "INSERT INTO item (classification_id, material_name, clustercode, price, available, beginning_inventory) VALUES ($1, $2, $3, $4, $5, $6)",
+      [classificationId, materialName, clcode, price, available, available]
     );
 
     if (req.isAuthenticated()) {
@@ -551,7 +597,8 @@ app.post('/login',
 );
 
 app.get('/login-failed', function(req, res) {
-  res.render('login.ejs', { error: 'Invalid username or password.' });
+  const error = req.session.messages || 'Login failed';
+  res.render('login.ejs', { error: error });
 });
 
 
@@ -660,16 +707,21 @@ app.post("/register", upload.single('picture'), async (req, res) => {
 
 
 
-/////////////
 passport.use(new Strategy(
   async function(username, password, done) {
     try {
       const userQueryResult = await db.query("SELECT * FROM users WHERE username = $1", [username]);
       if (userQueryResult.rows.length > 0) {
         const user = userQueryResult.rows[0];
+        
+        // Check if the user's account status is 'inactive'
+        if (user.status === 'inactive') {
+          return done(null, false, { message: 'Account is inactive.' });
+        }
+        
         const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
-          // User authenticated successfully, return the user object including the picture_url
+          // User authenticated successfully, return the user object
           return done(null, {
             userid: user.userid,
             username: user.username,
@@ -688,6 +740,7 @@ passport.use(new Strategy(
     }
   }
 ));
+
 
 // Specify how to serialize the user for the session
 passport.serializeUser((user, done) => {
