@@ -301,53 +301,48 @@
 </div>
 
 <!-- Inventory BIN Card Modal -->
-<div id="binCardModal" class="modal">
+<div id="binCardModalArea" class="modal">
   <div class="modal-content2">
     <div class="upper-section-modal">
-      <button class="back-button" onclick="modal2.style.display = 'none';">&lt;Back</button>
+      <button class="back-button" onclick="binCardModal.style.display = 'none';">&lt;Back</button>
     </div>
     <div class="upper-table-part">
       <p class="upper-table-part-text">Name of Material:</p>
-      <input type="text" id="material" name="material" placeholder="Material ID"> 
+      <input type="text" id="material2" name="material2" placeholder="Material ID"> 
       <p class="upper-table-part-text">Code:</p>
-      <input type="text" id="code" name="code" placeholder="Code ID"> 
+      <input type="text" id="code2" name="code2" placeholder="Code ID"> 
+    </div>
+    <div class="below-upper-table-part">
+        <p class="below-table-part-text">ITEM DESCRIPTION</p>
+        <p class="below-table-part-text">BEGINNING INVENTORY</p>
+        <p class="below-table-part-text">TOTAL INCOMING</p>
+        <p class="below-table-part-text">TOTAL-OUTGOING</p>
+        <p class="below-table-part-text">AVAILABLE</p>
+        <p class="below-table-part-text">UNIT PRICE</p>
+        <p class="below-table-part-text">VALUE OF RAW MAT. ON HAND</p>
     </div>
     <div class="modal-table-part">
-      <table class="inventory-table">
-        <thead>
-          <tr>
-            <th>Inventory BIN Card</th>
-          </tr>
-          <tr>
-            <th>Item Description</th>
-            <th>Beginning Inventory</th>
-            <th>Total Incoming</th>
-            <th>Total-Outgoing</th>
-            <th>Available</th>
-            <th>Unit Price</th>
-            <th>Value of Raw Mat. On Hand</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% if (item && item.length > 0) { %>
-            <% item.forEach(item => { %>
-              <tr class="table-row">
-                <td><%= item.material_name %></td>
-                <td></td> <!-- Beginning Inventory -->
-                <td></td> <!-- Total Incoming -->
-                <td></td> <!-- Total-Outgoing -->
-                <td><%= item.available %></td>
-                <td>₱<%= item.price %></td>
-                <td>₱<%= item.price * item.available %></td>
-              </tr>
-            <% }); %>
-          <% } else { %>
-            <tr>
-              <td colspan="7">No items found</td>
-            </tr>
-          <% } %>
-        </tbody>
-      </table>
+      <div class="inventory-table">
+        <% if (item && item.length > 0) { %>
+          <% item.forEach(item => { %>
+            <div class="table-row">
+              <div class="table-cell"><%= item.clustercode %></div>
+              <div class="table-cell"><%= item.material_name %></div>
+              <div class="table-cell">
+                <!--TASK: Create Edit Item Function (Total Amount is Note Editable)-->
+                <button onclick="editItem('<%= item.id %>')"><img src="./assets/edit_icon_pencil.png" alt="Edit"></button>
+                <!--TASK: Create Delete Item Function-->
+                <button onclick="deleteItem('<%= item.id %>')"><img src="./assets/trash_icon.png" alt="Delete"></button>
+              </div>
+              <div class="table-cell"><%= item.available %></div>
+              <div class="table-cell">₱<%= item.price %></div>
+              <div class="table-cell">₱<%= item.price * item.available %></div>
+            </div>
+          <% }); %>
+        <% } else { %>
+          <div>No items found</div>
+        <% } %>
+      </div>
     </div>
   </div>  
 </div>
@@ -398,7 +393,7 @@ function filterTable(id) {
 // Get the modal
 var modal = document.getElementById("myModal");
 var modal2 = document.getElementById("myModal2");
-var binCardModal = document.getElementById("binCardModal");
+var binCardModal = document.getElementById("binCardModalArea");
 
 // Get the <span> element that closes the modal
 var span = document.getElementsByClassName("close")[0];
@@ -513,12 +508,12 @@ function binCardModalFunction(clustercode, cluster_description) {
     });
 
     // Set the values of the input fields
-    $('#code').val(clustercode);
-    $('#material').val(cluster_description);
+    $('#code2').val(clustercode);
+    $('#material2').val(cluster_description);
 
     // Make the input fields read-only
-    $('#code').prop('readonly', true);
-    $('#material').prop('readonly', true);
+    $('#code2').prop('readonly', true);
+    $('#material2').prop('readonly', true);
 
     // Show the modal
     binCardModal.style.display = "block";
