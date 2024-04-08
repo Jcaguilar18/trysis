@@ -326,15 +326,12 @@
         <% if (item && item.length > 0) { %>
           <% item.forEach(item => { %>
             <div class="table-row">
-              <div class="table-cell"><%= item.clustercode %></div>
+              <div class="table-cell" style="display: none;"><%= item.clustercode %></div>
               <div class="table-cell"><%= item.material_name %></div>
-              <div class="table-cell">
-                <!--TASK: Create Edit Item Function (Total Amount is Note Editable)-->
-                <button onclick="editItem('<%= item.id %>')"><img src="./assets/edit_icon_pencil.png" alt="Edit"></button>
-                <!--TASK: Create Delete Item Function-->
-                <button onclick="deleteItem('<%= item.id %>')"><img src="./assets/trash_icon.png" alt="Delete"></button>
-              </div>
               <div class="table-cell"><%= item.available %></div>
+              <div class="table-cell">₱<%= item.price %></div>
+              <div class="table-cell">₱<%= item.price %></div>
+              <div class="table-cell">₱<%= item.price %></div>
               <div class="table-cell">₱<%= item.price %></div>
               <div class="table-cell">₱<%= item.price * item.available %></div>
             </div>
