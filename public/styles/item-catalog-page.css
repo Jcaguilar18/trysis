@@ -938,6 +938,15 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   border-right: none;
 }
 
+.inventory-table .table-row .table-cell2 {
+  flex: 1;
+  padding: 8px;
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+  border-left: none;
+  border-right: none;
+}
+
 .inventory-table .table-row .table-cell:first-child {
   flex: 1;
   padding: 8px;

@@ -327,13 +327,13 @@
         <% if (item && item.length > 0) { %>
           <% item.forEach(item => { %>
             <div class="table-row">
-              <div class="table-cell" style="display: none;"><%= item.clustercode %></div>
-              <div class="table-cell"><%= item.material_name %></div>
-              <div class="table-cell"><%= item.price %></div>
-              <div class="table-cell">₱<%= item.price * item.available %></div>
-              <div class="table-cell">₱<%= item.price %></div>
-              <div class="table-cell">₱<%= item.price %></div>
-              <div class="table-cell">₱<%= item.price %></div>
+              <div class="table-cell2" style="display: none;"><%= item.clustercode %></div>
+              <div class="table-cell2"><%= item.material_name %></div>
+              <div class="table-cell2"><%= item.price %></div>
+              <div class="table-cell2">₱<%= item.price %></div>
+              <div class="table-cell2">₱<%= item.price %></div>
+              <div class="table-cell2">₱<%= item.price %></div>
+              <div class="table-cell2">₱<%= item.price %></div>
             </div>
           <% }); %>
         <% } else { %>
@@ -485,7 +485,7 @@ function editItemModal(clustercode, cluster_description) {
 function binCardModalFunction(clustercode, cluster_description) {
     // Filter the items based on the clustercode
     var items = $('.modal-table-part .table-row').filter(function() {
-        return $(this).find('.table-cell:first-child').text().trim() === clustercode;
+        return $(this).find('.table-cell2:first-child').text().trim() === clustercode;
     });
 
     // Hide all items
@@ -500,13 +500,13 @@ function binCardModalFunction(clustercode, cluster_description) {
 
         // Apply the colors dynamically
         if (index % 2 === 0) {
-            $(this).find('.table-cell').css('background-color', '#E1E1E1'); // odd rows
+            $(this).find('.table-cell2').css('background-color', '#E1E1E1'); // odd rows
         } else {
-            $(this).find('.table-cell').css('background-color', 'white'); // even rows
+            $(this).find('.table-cell2').css('background-color', 'white'); // even rows
         }
 
         // Add the price to totalAmount
-        var price = parseFloat($(this).find('.table-cell:nth-child(4)').text().replace('₱', ''));
+        var price = parseFloat($(this).find('.table-cell2:nth-child(4)').text().replace('₱', ''));
         totalAmount += price;
     });
 
