@@ -342,12 +342,6 @@ app.get("/logs", async (req, res) => {
   }
 });
 
-
-
-
-
-
-
 app.get("/item", async (req, res) => {
   var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
   var roleOf = roleOfQueryResult.rows[0]?.role;
