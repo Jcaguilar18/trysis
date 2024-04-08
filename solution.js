@@ -552,8 +552,10 @@ app.get("/dashboard", async (req, res) => {
 
   if (req.isAuthenticated()) {
     try {
-      const roleOfResult = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
-      const roleOf = roleOfResult.rows[0]?.role;
+      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+      const user = userResult.rows[0];
+      const roleOf = user?.role;
+      const pictureUrl = user?.picture_url;
 
       // Fetch the latest updates for products
       const productUpdatesResult = await db.query(`
@@ -574,6 +576,8 @@ app.get("/dashboard", async (req, res) => {
 
       // Render the dashboard with all necessary data
       res.render("dashboard.ejs", {
+        pictureUrl: './uploads/' + pictureUrl,  // Prepend the base directory
+        productUpdates: productUpdates,
         roleOf: roleOf,
         productUpdates: productUpdates,
         inventorySubtotals: inventorySubtotals,
