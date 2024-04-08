@@ -5,11 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage Accounts</title>
 <style>
-  form > input, form > select {
+  form > div {
     margin-bottom: 10px;
   }
   button[type="submit"], button.edit {
     margin-right: 10px;
+  }
+  .hidden {
+    display: none;
   }
 </style>
 </head>
@@ -18,43 +21,43 @@
 <% users.forEach(user => { %>
   <form action="/update-account" method="POST">
     <input type="hidden" name="userId" value="<%= user.userid %>">
-    <label>
-      Username:
-      <input type="text" name="username" value="<%= user.username %>" readonly ondblclick="makeEditable(this)">
-    </label>
-    <label>
-      Password:
-      <input type="password" name="password" placeholder="New Password" readonly ondblclick="makeEditable(this)">
-    </label>
-    <label>
-      Status:
-      <select name="status" disabled ondblclick="makeEditable(this)">
+    <div>
+      <label>Username:</label>
+      <input type="text" name="username" value="<%= user.username %>" readonly>
+    </div>
+    <div>
+      <label>Password:</label>
+      <input type="password" name="password" placeholder="New Password" readonly>
+    </div>
+    <div>
+      <label>Status:</label>
+      <select name="status" disabled>
         <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
         <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
       </select>
-    </label>
+    </div>
+    <div>
+      <label>First Name:</label>
+      <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
+    </div>
+    <div>
+      <label>Last Name:</label>
+      <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
+    </div>
     <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
-    <button type="submit" style="display:none;">Save</button>
+    <button type="submit" class="hidden">Save</button>
   </form>
 <% }); %>
 
 <script>
-function makeEditable(element) {
-  element.removeAttribute('readonly');
-  element.disabled = false;
-  const form = element.closest('form');
-  form.querySelector('button[type="submit"]').style.display = '';
-  form.querySelector('button.edit').style.display = 'none';
-}
-
 function enableEditing(editButton) {
   const form = editButton.closest('form');
   form.querySelectorAll('input, select').forEach(element => {
     element.removeAttribute('readonly');
     element.disabled = false;
   });
-  editButton.style.display = 'none';
-  form.querySelector('button[type="submit"]').style.display = '';
+  editButton.classList.add('hidden');
+  form.querySelector('button[type="submit"]').classList.remove('hidden');
 }
 </script>
 </body>

@@ -259,30 +259,41 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 app.post("/update-account", async (req, res) => {
-  const { userId, username, password, status } = req.body;
-  let logDescription = `Account updated: `; // Initialize log description
+  const { userId, username, password, status, firstname, lastname } = req.body;
+  let logDescription = 'Account updated: '; // Initialize log description
 
   try {
     let updateFields = {
       username: username,
-      status: status
+      status: status,
+      firstname: firstname,
+      lastname: lastname
     };
 
     if (password && password.trim() !== '') {
       const pepperedPassword = password + (process.env.PEPPER || '');
       const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
       updateFields.password = hashedPassword;
-      logDescription += `password changed, `;
+      logDescription += 'password changed, ';
     }
 
-    const setClause = Object.keys(updateFields).map((key, idx) => `${key} = $${idx + 1}`).join(', ');
-    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${Object.keys(updateFields).length + 1}`;
-    const queryParams = [...Object.values(updateFields), userId];
+    const setClause = Object.keys(updateFields)
+      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
+      .map((key, idx) => `${key} = $${idx + 1}`)
+      .join(', ');
+
+    const queryParams = Object.values(updateFields)
+      .filter(value => value !== undefined && value !== '') // Filter out empty strings
+      .concat(userId);
+
+    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${queryParams.length}`;
 
     await db.query(sqlQuery, queryParams);
 
     // Add more details to log description based on fields updated
     if (updateFields.username) logDescription += `username to ${username}, `;
+    if (updateFields.firstname) logDescription += `firstname to ${firstname}, `;
+    if (updateFields.lastname) logDescription += `lastname to ${lastname}, `;
     if (updateFields.status) logDescription += `status to ${status}, `;
     logDescription = logDescription.slice(0, -2); // Remove the last comma and space
 
@@ -299,6 +310,7 @@ app.post("/update-account", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 
 

@@ -7,8 +7,15 @@
 </head>
 <body>
     <h1>Register</h1>
-    <!-- Add enctype to the form -->
     <form action="/register" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label for="firstname">First Name</label>
+            <input type="text" class="form-control" name="firstname" required>
+        </div>
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="text" class="form-control" name="lastname" required>
+        </div>
         <div class="form-group">
             <label for="username">Username</label>
             <input type="text" class="form-control" name="username" required>
@@ -17,13 +24,10 @@
             <label for="password">Password</label>
             <input type="password" class="form-control" name="password" required>
         </div>
-
-        <!-- Add file input for user picture -->
         <div class="form-group">
             <label for="picture">Picture</label>
             <input type="file" class="form-control" name="picture" accept="image/*">
         </div>
-
         <div>
             <h2>Roles</h2>
             <input type="radio" id="manager" name="roles" value="manager" checked>
@@ -33,7 +37,6 @@
             <input type="radio" id="warehouse" name="roles" value="warehouse">
             <label for="warehouse">Warehouse</label>
         </div>
-
         <div>
             <h2>Status</h2>
             <input type="radio" id="active" name="status" value="active" checked>
@@ -41,7 +44,6 @@
             <input type="radio" id="unactive" name="status" value="unactive">
             <label for="unactive">Inactive</label>
         </div>
-
         <br>
         <br>
         <button type="submit" class="btn btn-dark">Register</button>
