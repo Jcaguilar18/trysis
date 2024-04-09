@@ -76,10 +76,10 @@
                                 <td><%= item.material_name %></td>
                                 <td><%= item.available %></td>
                                 <td>
-                                    <input type="number" class="incoming input-field" value="0"> <!-- Set default value to 0 -->
+                                    <input type="number" class="incoming input-field" value="0" min="0" oninput="validateInput(this)"> <!-- Set default value to 0 -->
                                 </td>
                                 <td>
-                                    <input type="number" class="outgoing input-field" value="0"> <!-- Set default value to 0 -->
+                                    <input type="number" class="outgoing input-field" value="0" min="0" oninput="validateInput(this)"> <!-- Set default value to 0 -->
                                 </td>
                                 <td><%= item.available %></td>
                                 <td><%= item.price %></td>
@@ -175,7 +175,12 @@
             form.submit();
         }
 
-
+        function validateInput(input) {
+    input.value = input.value.replace(/[^0-9]/g, ''); // Remove all non-numeric characters
+    if (input.value === '') { // If the input is null or an empty string
+        input.value = '0'; // Set the value to 0
+    }
+}
     </script>
 </body>
 </html>

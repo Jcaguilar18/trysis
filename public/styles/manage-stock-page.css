@@ -359,6 +359,8 @@ button:hover {
 
 .input-field {
   width: 50px; 
+  border:  3px solid rgb(214, 208, 208);
+  text-align: center;
 }
 
 button img {
