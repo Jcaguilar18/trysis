@@ -54,6 +54,7 @@ body {
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: normal;
+    text-transform: uppercase;
 }
 
 .web-page .top-bar .profile-picture {
