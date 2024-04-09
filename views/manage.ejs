@@ -5,8 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage Accounts</title>
 <style>
-  form > div {
+  .table {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
+  }
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .cell {
+    flex: 1;
   }
   button[type="submit"], button.edit {
     margin-right: 10px;
@@ -19,30 +28,32 @@
 <body>
 <h1>Manage Accounts</h1>
 <% users.forEach(user => { %>
-  <form action="/update-account" method="POST">
+  <form action="/update-account" method="POST" class="table">
     <input type="hidden" name="userId" value="<%= user.userid %>">
-    <div>
-      <label>Username:</label>
-      <input type="text" name="username" value="<%= user.username %>" readonly>
-    </div>
-    <div>
-      <label>Password:</label>
-      <input type="password" name="password" placeholder="New Password" readonly>
-    </div>
-    <div>
-      <label>Status:</label>
-      <select name="status" disabled>
-        <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
-        <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-      </select>
-    </div>
-    <div>
-      <label>First Name:</label>
-      <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
-    </div>
-    <div>
-      <label>Last Name:</label>
-      <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
+    <div class="row">
+      <div class="cell">
+        <label>Username:</label>
+        <input type="text" name="username" value="<%= user.username %>" readonly>
+      </div>
+      <div class="cell">
+        <label>Password:</label>
+        <input type="password" name="password" placeholder="New Password" readonly>
+      </div>
+      <div class="cell">
+        <label>Status:</label>
+        <select name="status" disabled>
+          <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+          <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+        </select>
+      </div>
+      <div class="cell">
+        <label>First Name:</label>
+        <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
+      </div>
+      <div class="cell">
+        <label>Last Name:</label>
+        <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
+      </div>
     </div>
     <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
     <button type="submit" class="hidden">Save</button>
