@@ -109,48 +109,12 @@ body {
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame {
-  margin: 0rem 1.7rem -1.2rem 0rem;
+  margin: 0rem 1.7rem 0.6rem 0rem;
   align-items: center;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
   /* background-color: green; */
-}
-
-.buttons-frame input[type='radio'] {
-  display: none;
-}
-
-/* Hide the default radio button */
-.buttons-frame input[type='radio'] {
-  display: none;
-}
-
-/* Create a new custom radio button */
-.buttons-frame input[type='radio'] + label {
-  padding: 10px;
-  display: inline-block;
-  position: relative;
-  margin: 10px;
-  cursor: pointer;
-}
-
-.buttons-frame input[type='radio'] + label:before {
-  content: "";
-  display: inline-block;
-  position: relative;
-  top: 0rem;
-  margin: 0 5px 0 0;
-  width: 4rem;
-  height: 4rem;
-  border-radius: 50%;
-  background: white;
-  border: 2px solid #ddd;
-}
-
-/* Style for the custom radio button when it's checked */
-.buttons-frame input[type='radio']:checked + label:before {
-  background: green;
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .buttons-frame .button-north {
