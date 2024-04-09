@@ -43,7 +43,11 @@
         <% logs.forEach(log => { %>
           <div class="transaction-table-entry">
             <div class="leftmost-icon-portion">
-              <img class="entry-icon" src="./assets/addition_transaction_icon.png"/>
+              <% if (log.trans_type === 'Added') { %>
+                <img class="entry-icon" src="./assets/addition_transaction_icon.png"/>
+              <% } else if (log.trans_type === 'Modified') { %>
+                <img class="entry-icon" src="./assets/modified_icon.png"/>
+              <% } %>
             </div>
             <div class="date-portion">
               <p class="month-portion"><%= new Date(log.log_date).toLocaleString('default', { month: 'long' }) %> <%= new Date(log.log_date).getDate() %>,</p>
@@ -63,8 +67,7 @@
             <div class="name-portion">
               <p class="user-text-template"><%= log.username %></p>
             </div>
-            <div class="rightmost-text-portion">
-              <!-- <p class="rightmost-text">Added</p> -->
+            <div class="rightmost-text-portion <%= log.trans_type === 'Modified' ? 'modified' : (log.trans_type === 'Added' ? 'added' : '') %>">
               <p class="rightmost-text"><%= log.trans_type %></p>
             </div>
           </div>

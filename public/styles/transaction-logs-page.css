@@ -242,6 +242,14 @@ body {
   height: 2.5rem;
   border-radius: 2rem;
   flex-shrink: 0;
+  background-color: green; /* Default color */
+}
+
+.rightmost-text-portion.modified {
+  background-color: blue;
+}
+
+.rightmost-text-portion.added {
   background-color: green;
 }
 
