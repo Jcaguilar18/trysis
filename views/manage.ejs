@@ -51,50 +51,51 @@
                 <div class="table-area">
                     <a href="/register" class="new-user-button">New User</a>
                     <div class="users-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="center-text">User ID</th>
-                                    <th class="center-text">Username</th>
-                                    <th class="center-text">Password</th>
-                                    <th class="center-text">Role</th>
-                                    <th class="center-text">Status</th>
-                                    <th class="center-text">Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="table">
+                            <div class="thead">
+                                <div class="tr">
+                                    <div class="th center-text">User ID</div>
+                                    <div class="th center-text">Username</div>
+                                    <div class="th center-text">Password</div>
+                                    <div class="th center-text">Role</div>
+                                    <div class="th center-text">Status</div>
+                                    <div class="th center-text">Edit</div>
+                                </div>
+                            </div>
+                            <div class="tbody">
                                 <% users.forEach(user => { %>
-                                    <tr>
-                                        <td class="center-text"><%= user.userid %></td>
-                                        <td class="center-text"><input type="text" class="username-field" value="<%= user.username %>" readonly></td>
-                                        <td class="center-text"><%= '*'.repeat(user.password.length) %></td>
-                                        <td class="center-text">
-                                          <select class="role-field" disabled>
-                                              <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
-                                              <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
-                                              <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
-                                          </select>
-                                      </td>
-                                        <td class="center-text">
+                                    <div class="tr">
+                                        <form action="/update-account" method="POST">
+                                        <div class="td center-text" name="userId"><%= user.userid %></div>
+                                        <div class="td center-text"><input type="text" name="username" class="username-field" value="<%= user.username %>" readonly></div>
+                                        <div class="td center-text"><%= '*'.repeat(user.password.length) %></div>
+                                        <div class="td center-text">
+                                            <select class="role-field" name="user-role"  disabled>
+                                                <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+                                                <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+                                                <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                                            </select>
+                                        </div>
+                                        <div class="td center-text">
                                             <% if (user.status === 'active') { %>
                                                 <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
                                             <% } else if (user.status === 'inactive') { %>
                                                 <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
                                             <% } %>
-                                            <%= user.status %>
-                                            <select class="status-field" disabled>
-                                              <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
-                                              <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-                                          </select>
-                                        </td>
-                                        <td class="center-text">
+                                            <select class="status-field" name="status" name="status" disabled>
+                                                <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+                                                <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                                            </select>
+                                        </div>
+                                        <div class="td center-text">
                                             <button type="button" class="edit-icon" onclick="enableEditing(this)">Edit</button>
-                                            <button type="submit" class="save-icon" style="display: none;">Save</button>
-                                        </td>
-                                    </tr>
+                                            <button type="submit" class="hidden">Save</button>
+                                        </div>
+                                    </form>
+                                    </div>
                                 <% }); %>
-                            </tbody>
-                        </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,54 +105,15 @@
 
 
 function enableEditing(editButton) {
-  const row = editButton.closest('tr');
-  row.querySelectorAll('.username-field, .role-field, .status-field').forEach(element => {
+  const form = editButton.closest('form');
+  form.querySelectorAll('input, select').forEach(element => {
     element.removeAttribute('readonly');
     element.disabled = false;
   });
-  editButton.style.display = 'none';
-  row.querySelector('.save-icon').style.display = 'inline';
+  editButton.classList.add('hidden');
+  form.querySelector('button[type="submit"]').classList.remove('hidden');
 }
 
-
-        function editUser(editIcon, username) {
-    // Get the parent row
-    const row = editIcon.closest('tr');
-    
-    // Get the fields
-    const usernameField = row.querySelector('.username-field');
-    const roleField = row.querySelector('.role-field');
-    const statusField = row.querySelector('.status-field');
-    
-    // Make the fields editable
-    usernameField.removeAttribute('readonly');
-    roleField.disabled = false;
-    statusField.disabled = false;
-    
-    // Switch the icons
-    editIcon.style.display = 'none';
-    const saveIcon = row.querySelector('.save-icon');
-    saveIcon.style.display = '';
-}
-
-function saveUser(saveIcon, username) {
-    // Get the parent row
-    const row = saveIcon.closest('tr');
-    
-    // Get the fields
-    const usernameField = row.querySelector('.username-field');
-    const roleField = row.querySelector('.role-field');
-    const statusField = row.querySelector('.status-field');
-    
-    // Save the changes (you might want to send a request to your server here)
-    console.log('Saving changes for user:', username);
-    console.log('New username:', usernameField.value);
-    console.log('New role:', roleField.value);
-    console.log('New status:', statusField.value);
-    
-    // Refresh the page
-    location.reload();
-}
     </script>
 </body>
 </html>
