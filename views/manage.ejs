@@ -51,50 +51,55 @@
                 <div class="table-area">
                     <a href="/register" class="new-user-button">New User</a>
                     <div class="users-table">
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th class="center-text">User ID</th>
-                                    <th class="center-text">Username</th>
-                                    <th class="center-text">Password</th>
-                                    <th class="center-text">Role</th>
-                                    <th class="center-text">Status</th>
-                                    <th class="center-text">Edit</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <% users.forEach(user => { %>
-                                    <tr>
-                                        <td class="center-text"><%= user.userid %></td>
-                                        <td class="center-text"><input type="text" class="username-field" value="<%= user.username %>" readonly></td>
-                                        <td class="center-text"><%= '*'.repeat(user.password.length) %></td>
-                                        <td class="center-text">
-                                          <select class="role-field" name="user-role" disabled>
-                                              <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
-                                              <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
-                                              <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
-                                          </select>
-                                      </td>
-                                        <td class="center-text">
-                                            <% if (user.status === 'active') { %>
-                                                <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
-                                            <% } else if (user.status === 'inactive') { %>
-                                                <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
-                                            <% } %>
-                                            <select class="status-field" disabled>
-                                              <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
-                                              <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-                                          </select>
-                                        </td>
-                                        <td class="center-text">
-                                            <button type="button" class="edit-icon" onclick="enableEditing(this)">Edit</button>
-                                            <button type="submit" class="hidden">Save</button>
-                                        </td>
-                                    </tr>
-                                <% }); %>
-                            </tbody>
-                        </table>
-                    </div>
+                      <div class="row">
+                          <div class="cell">User ID</div>
+                          <div class="cell">Username</div>
+                          <div class="cell">Password</div>
+                          <div class="cell">Role</div>
+                          <div class="cell">Status</div>
+                          <div class="cell">Edit</div>
+                      </div>
+                      <% users.forEach(user => { %>
+                        <form action="/update-account" method="POST" class="table">
+                          <input type="hidden" name="userId" value="<%= user.userid %>">
+                          <div class="row">
+                            <div class="cell">
+                              <label>Username:</label>
+                              <input type="text" name="username" value="<%= user.username %>" readonly>
+                            </div>
+                            <div class="cell">
+                              <label>Password:</label>
+                              <input type="password" name="password" placeholder="New Password" readonly>
+                            </div>
+                            <div class="cell">
+                              <label>Role:</label>
+                              <select name="role" disabled>
+                                <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+                                <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+                                <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                              </select>
+                            </div>
+                            <div class="cell">
+                              <label>Status:</label>
+                              <select name="status" disabled>
+                                <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+                                <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                              </select>
+                            </div>
+                            <div class="cell">
+                              <label>First Name:</label>
+                              <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
+                            </div>
+                            <div class="cell">
+                              <label>Last Name:</label>
+                              <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
+                            </div>
+                          </div>
+                          <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
+                          <button type="submit" class="hidden">Save</button>
+                        </form>
+                      <% }); %>
+                  </div>
                 </div>
             </div>
         </div>
@@ -103,13 +108,13 @@
 
 
 function enableEditing(editButton) {
-  const row = editButton.closest('tr');
-  row.querySelectorAll('.username-field, .role-field, .status-field').forEach(element => {
+  const form = editButton.closest('form');
+  form.querySelectorAll('input, select').forEach(element => {
     element.removeAttribute('readonly');
     element.disabled = false;
   });
-  editButton.style.display = 'none';
-  row.querySelector('.save-icon').style.display = 'inline';
+  editButton.classList.add('hidden');
+  form.querySelector('button[type="submit"]').classList.remove('hidden');
 }
 
     </script>

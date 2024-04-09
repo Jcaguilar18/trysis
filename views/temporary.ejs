@@ -5,48 +5,63 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage Accounts</title>
 <style>
-  
-  form > div {
+  .table {
+    display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
   }
-
+  .row {
+    display: flex;
+    justify-content: space-between;
+  }
+  .cell {
+    flex: 1;
+  }
   button[type="submit"], button.edit {
     margin-right: 10px;
   }
-
   .hidden {
     display: none;
   }
-
 </style>
 </head>
 <body>
 <h1>Manage Accounts</h1>
 <% users.forEach(user => { %>
-  <form action="/update-account" method="POST">
+  <form action="/update-account" method="POST" class="table">
     <input type="hidden" name="userId" value="<%= user.userid %>">
-    <div>
-      <label>Username:</label>
-      <input type="text" name="username" value="<%= user.username %>" readonly>
-    </div>
-    <div>
-      <label>Password:</label>
-      <input type="password" name="password" placeholder="New Password" readonly>
-    </div>
-    <div>
-      <label>Status:</label>
-      <select name="status" disabled>
-        <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
-        <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-      </select>
-    </div>
-    <div>
-      <label>First Name:</label>
-      <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
-    </div>
-    <div>
-      <label>Last Name:</label>
-      <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
+    <div class="row">
+      <div class="cell">
+        <label>Username:</label>
+        <input type="text" name="username" value="<%= user.username %>" readonly>
+      </div>
+      <div class="cell">
+        <label>Password:</label>
+        <input type="password" name="password" placeholder="New Password" readonly>
+      </div>
+      <div class="cell">
+        <label>Role:</label>
+        <select name="role" disabled>
+          <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+          <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+          <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+        </select>
+      </div>
+      <div class="cell">
+        <label>Status:</label>
+        <select name="status" disabled>
+          <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+          <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+        </select>
+      </div>
+      <div class="cell">
+        <label>First Name:</label>
+        <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
+      </div>
+      <div class="cell">
+        <label>Last Name:</label>
+        <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
+      </div>
     </div>
     <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
     <button type="submit" class="hidden">Save</button>
@@ -67,24 +82,58 @@ function enableEditing(editButton) {
 </body>
 </html>
 
+...
 
-app.get("/manage", async (req, res) => {
+app.post("/update-account", async (req, res) => {
+  const { userId, username, password, role, status, firstname, lastname } = req.body;
+  let logDescription = 'Account updated: '; // Initialize log description
+
   try {
-    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  
-      // Fetch user data from the database
-      const usersResult = await db.query("SELECT * FROM users");
-      const users = usersResult.rows;
-      
-      var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-      var roleOf = roleOfQueryResult.rows[0]?.role;
+    let updateFields = {
+      username: username,
+      role: role,
+      status: status,
+      firstname: firstname,
+      lastname: lastname
+    };
 
-  
-      res.render("manage.ejs", { users, roleOf });
+    if (password && password.trim() !== '') {
+      const pepperedPassword = password + (process.env.PEPPER || '');
+      const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
+      updateFields.password = hashedPassword;
+      logDescription += 'password changed, ';
+    }
+
+    const setClause = Object.keys(updateFields)
+      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
+      .map((key, idx) => `${key} = $${idx + 1}`)
+      .join(', ');
+
+    const queryParams = Object.values(updateFields)
+      .filter(value => value !== undefined && value !== '') // Filter out empty strings
+      .concat(userId);
+
+    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${queryParams.length}`;
+
+    await db.query(sqlQuery, queryParams);
+
+    // Add more details to log description based on fields updated
+    if (updateFields.username) logDescription += `username to ${username}, `;
+    if (updateFields.firstname) logDescription += `firstname to ${firstname}, `;
+    if (updateFields.lastname) logDescription += `lastname to ${lastname}, `;
+    if (updateFields.status) logDescription += `status to ${status}, `;
+    logDescription = logDescription.slice(0, -2); // Remove the last comma and space
+
+    // Assuming you have a way to get the current user's username and picture_url
+    // Insert log entry
+    await db.query(
+      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Account Updated', CURRENT_DATE, $3)",
+      [req.user.username, logDescription, req.user.picture_url]
+    );
+
+    res.redirect("/manage");
   } catch (err) {
-      console.log(err);
-      res.redirect("/login");
+    console.error("Error updating account:", err);
+    res.status(500).send("Internal Server Error");
   }
 });

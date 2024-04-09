@@ -311,12 +311,13 @@ app.get("/manage", async (req, res) => {
 });
 
 app.post("/update-account", async (req, res) => {
-  const { userId, username, password, status, firstname, lastname } = req.body;
+  const { userId, username, password, role, status, firstname, lastname } = req.body;
   let logDescription = 'Account updated: '; // Initialize log description
 
   try {
     let updateFields = {
       username: username,
+      role: role,
       status: status,
       firstname: firstname,
       lastname: lastname
