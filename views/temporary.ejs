@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>Manage Accounts Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
+    <link rel="stylesheet" href="./styles/manage-accounts-page.css"/>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+        }
+
+        .new-user-button {
+            cursor: pointer;
+            /* Add any additional styling for your button here */
+        }
+    </style>
+</head>
+<body>
+    <div class="web-page">
+        <div class="top-bar">
+            <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+            <p class="current-user-text">INVENTORY MANAGER</p>
+            <img class="profile-picture" src="./assets/profile-picture-7bK.png"/>
+        </div>
+        <div class="bottom-page-part">
+            <% const currentDate = new Date(); %>
+            <%- include('sidebar') %>
+            <div class="manage-accounts-header">
+                <div class="manage-accounts-text-bar">Manage Accounts</div>
+                <div class="table-area">
+                    <a href="/register" class="new-user-button">New User</a>
+                    <div class="users-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th class="center-text">User ID</th>
+                                    <th class="center-text">Username</th>
+                                    <th class="center-text">Password</th>
+                                    <th class="center-text">Role</th>
+                                    <th class="center-text">Status</th>
+                                    <th class="center-text">Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach(user => { %>
+                                    <tr>
+                                        <td class="center-text"><%= user.userid %></td>
+                                        <td class="center-text"><input type="text" class="username-field" value="<%= user.username %>" readonly></td>
+                                        <td class="center-text"><%= '*'.repeat(user.password.length) %></td>
+                                        <td class="center-text">
+                                          <select class="role-field" disabled>
+                                              <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+                                              <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+                                              <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                                          </select>
+                                      </td>
+                                        <td class="center-text">
+                                            <% if (user.status === 'active') { %>
+                                                <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
+                                            <% } else if (user.status === 'inactive') { %>
+                                                <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
+                                            <% } %>
+                                            <%= user.status %>
+                                            <select class="status-field" disabled>
+                                              <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+                                              <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                                          </select>
+                                        </td>
+                                        <td class="center-text">
+                                            <!--TASK: Make an Edit Function (Editable Are: Username, Password, Role, & Status)-->
+                                            <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon" onclick="editUser(this, '<%= user.username %>')">
+                                            <img src="./assets/save_icon.png" alt="Save" class="save-icon" style="display: none;" onclick="saveUser(this, '<%= user.username %>')">
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        function editUser(editIcon, username) {
+    // Get the parent row
+    const row = editIcon.closest('tr');
+    
+    // Get the fields
+    const usernameField = row.querySelector('.username-field');
+    const roleField = row.querySelector('.role-field');
+    const statusField = row.querySelector('.status-field');
+    
+    // Make the fields editable
+    usernameField.removeAttribute('readonly');
+    roleField.disabled = false;
+    statusField.disabled = false;
+    
+    // Switch the icons
+    editIcon.style.display = 'none';
+    const saveIcon = row.querySelector('.save-icon');
+    saveIcon.style.display = '';
+}
+
+function saveUser(saveIcon, username) {
+    // Get the parent row
+    const row = saveIcon.closest('tr');
+    
+    // Get the fields
+    const usernameField = row.querySelector('.username-field');
+    const roleField = row.querySelector('.role-field');
+    const statusField = row.querySelector('.status-field');
+    
+    // Save the changes (you might want to send a request to your server here)
+    console.log('Saving changes for user:', username);
+    console.log('New username:', usernameField.value);
+    console.log('New role:', roleField.value);
+    console.log('New status:', statusField.value);
+    
+    // Refresh the page
+    location.reload();
+}
+    </script>
+</body>
+</html>
