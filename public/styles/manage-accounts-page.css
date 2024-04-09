@@ -126,23 +126,18 @@ body {
     box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.7);
   }
 
-  /* .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
-    width: 80rem;
-    height: 20rem;
+  .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
+    width: 82rem;
+    height: 22rem;
     background-color: white;
     flex-shrink: 0;
     overflow: auto;
-  } */
+  } 
   
   .center-text {
     text-align: center;
   }
 
-  .users-table {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-}
 
 .users-table .row {
     display: flex;

@@ -1,139 +1,88 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage Accounts</title>
-<style>
-  .table {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-  }
-  .row {
-    display: flex;
-    justify-content: space-between;
-  }
-  .cell {
-    flex: 1;
-  }
-  button[type="submit"], button.edit {
-    margin-right: 10px;
-  }
-  .hidden {
-    display: none;
-  }
-</style>
-</head>
-<body>
-<h1>Manage Accounts</h1>
-<% users.forEach(user => { %>
-  <form action="/update-account" method="POST" class="table">
-    <input type="hidden" name="userId" value="<%= user.userid %>">
-    <div class="row">
-      <div class="cell">
-        <label>Username:</label>
-        <input type="text" name="username" value="<%= user.username %>" readonly>
-      </div>
-      <div class="cell">
-        <label>Password:</label>
-        <input type="password" name="password" placeholder="New Password" readonly>
-      </div>
-      <div class="cell">
-        <label>Role:</label>
-        <select name="role" disabled>
-          <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
-          <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
-          <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
-        </select>
-      </div>
-      <div class="cell">
-        <label>Status:</label>
-        <select name="status" disabled>
-          <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
-          <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-        </select>
-      </div>
-      <div class="cell">
-        <label>First Name:</label>
-        <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
-      </div>
-      <div class="cell">
-        <label>Last Name:</label>
-        <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
-      </div>
-    </div>
-    <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
-    <button type="submit" class="hidden">Save</button>
-  </form>
-<% }); %>
+<div class="users-table">
+    <table>
+        <thead>
+            <tr>
+                <th class="center-text">User ID</th>
+                <th class="center-text">Username</th>
+                <th class="center-text">Password</th>
+                <th class="center-text">Role</th>
+                <th class="center-text">Status</th>
+                <th class="center-text">Edit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(user => { %>
+                <tr>
+                    <td class="center-text"><%= user.userid %></td>
+                    <td class="center-text"><%= user.username %></td>
+                    <td class="center-text"><%= '*'.repeat(user.password.length) %></td>
+                    <td class="center-text"><%= user.role %></td>
+                    <td class="center-text">
+                        <% if (user.status === 'active') { %>
+                            <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
+                        <% } else if (user.status === 'inactive') { %>
+                            <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
+                        <% } %>
+                        <%= user.status %>
+                    </td>
+                    <td class="center-text">
+                        <!--TASK: Make an Edit Function (Editable Are: Username, Password, Role, & Status)-->
+                        <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon" onclick="window.location.href='/register?username=<%= user.username %>'">
+                    </td>
+                </tr>
+            <% }); %>
+        </tbody>
+    </table>
+</div>
 
-<script>
-function enableEditing(editButton) {
-  const form = editButton.closest('form');
-  form.querySelectorAll('input, select').forEach(element => {
-    element.removeAttribute('readonly');
-    element.disabled = false;
-  });
-  editButton.classList.add('hidden');
-  form.querySelector('button[type="submit"]').classList.remove('hidden');
+CSS:
+
+.web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
+width: 80rem;
+height: 20rem;
+background-color: white;
+flex-shrink: 0;
+overflow: auto;
 }
-</script>
-</body>
-</html>
 
-...
+.center-text {
+text-align: center;
+}
 
-app.post("/update-account", async (req, res) => {
-  const { userId, username, password, role, status, firstname, lastname } = req.body;
-  let logDescription = 'Account updated: '; // Initialize log description
+/* Table header color */
+.users-table table thead th {
+background-color: #CDD6FF;
+}
 
-  try {
-    let updateFields = {
-      username: username,
-      role: role,
-      status: status,
-      firstname: firstname,
-      lastname: lastname
-    };
+/* Table border color */
+.users-table table, .users-table table th, .users-table table td {
+border: 1px solid blue;
+}
 
-    if (password && password.trim() !== '') {
-      const pepperedPassword = password + (process.env.PEPPER || '');
-      const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
-      updateFields.password = hashedPassword;
-      logDescription += 'password changed, ';
-    }
+/* Alternating row colors */
+.users-table table tbody tr:nth-child(odd) {
+background-color: white;
+}
 
-    const setClause = Object.keys(updateFields)
-      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
-      .map((key, idx) => `${key} = $${idx + 1}`)
-      .join(', ');
+.users-table table tbody tr:nth-child(even) {
+background-color: #EFF7FF;
+}
 
-    const queryParams = Object.values(updateFields)
-      .filter(value => value !== undefined && value !== '') // Filter out empty strings
-      .concat(userId);
+.status-icon-active {
+height: 20px; 
+width: 20px; 
+margin-right: 5px;
+}
 
-    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${queryParams.length}`;
+.status-icon-inactive {
+height: 20px; 
+width: 20px; 
+margin-left: 0.4rem;
+}
 
-    await db.query(sqlQuery, queryParams);
-
-    // Add more details to log description based on fields updated
-    if (updateFields.username) logDescription += `username to ${username}, `;
-    if (updateFields.firstname) logDescription += `firstname to ${firstname}, `;
-    if (updateFields.lastname) logDescription += `lastname to ${lastname}, `;
-    if (updateFields.status) logDescription += `status to ${status}, `;
-    logDescription = logDescription.slice(0, -2); // Remove the last comma and space
-
-    // Assuming you have a way to get the current user's username and picture_url
-    // Insert log entry
-    await db.query(
-      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Account Updated', CURRENT_DATE, $3)",
-      [req.user.username, logDescription, req.user.picture_url]
-    );
-
-    res.redirect("/manage");
-  } catch (err) {
-    console.error("Error updating account:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
+/* Add a class for the edit icon */
+.edit-icon {
+height: 28px; /* Adjust as needed */
+width: 28px; /* Adjust as needed */
+cursor: pointer;
+}
