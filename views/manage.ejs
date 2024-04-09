@@ -40,6 +40,14 @@
         <input type="password" name="password" placeholder="New Password" readonly>
       </div>
       <div class="cell">
+        <label>Role:</label>
+        <select name="role" disabled>
+          <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+          <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+          <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+        </select>
+      </div>
+      <div class="cell">
         <label>Status:</label>
         <select name="status" disabled>
           <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
