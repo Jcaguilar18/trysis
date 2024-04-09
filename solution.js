@@ -213,49 +213,6 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
-app.post("/update-account", async (req, res) => {
-  const { userId, username, password, status } = req.body;
-  let logDescription = `Account updated: `; // Initialize log description
-
-  try {
-    let updateFields = {
-      username: username,
-      status: status
-    };
-
-    if (password && password.trim() !== '') {
-      const pepperedPassword = password + (process.env.PEPPER || '');
-      const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
-      updateFields.password = hashedPassword;
-      logDescription += `password changed, `;
-    }
-
-    const setClause = Object.keys(updateFields).map((key, idx) => `${key} = $${idx + 1}`).join(', ');
-    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${Object.keys(updateFields).length + 1}`;
-    const queryParams = [...Object.values(updateFields), userId];
-
-    await db.query(sqlQuery, queryParams);
-
-    // Add more details to log description based on fields updated
-    if (updateFields.username) logDescription += `username to ${username}, `;
-    if (updateFields.status) logDescription += `status to ${status}, `;
-    logDescription = logDescription.slice(0, -2); // Remove the last comma and space
-
-    // Assuming you have a way to get the current user's username and picture_url
-    // Insert log entry
-    await db.query(
-      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Account Updated', CURRENT_DATE, $3)",
-      [req.user.username, logDescription, req.user.picture_url]
-    );
-
-    res.redirect("/manage");
-  } catch (err) {
-    console.error("Error updating account:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-
 
 app.get("/logs", async (req, res) => {
   const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
@@ -350,6 +307,59 @@ app.get("/manage", async (req, res) => {
   } catch (err) {
       console.log(err);
       res.redirect("/login");
+  }
+});
+
+app.post("/update-account", async (req, res) => {
+  const { userId, username, password, status, firstname, lastname } = req.body;
+  let logDescription = 'Account updated: '; // Initialize log description
+
+  try {
+    let updateFields = {
+      username: username,
+      status: status,
+      firstname: firstname,
+      lastname: lastname
+    };
+
+    if (password && password.trim() !== '') {
+      const pepperedPassword = password + (process.env.PEPPER || '');
+      const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
+      updateFields.password = hashedPassword;
+      logDescription += 'password changed, ';
+    }
+
+    const setClause = Object.keys(updateFields)
+      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
+      .map((key, idx) => `${key} = $${idx + 1}`)
+      .join(', ');
+
+    const queryParams = Object.values(updateFields)
+      .filter(value => value !== undefined && value !== '') // Filter out empty strings
+      .concat(userId);
+
+    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${queryParams.length}`;
+
+    await db.query(sqlQuery, queryParams);
+
+    // Add more details to log description based on fields updated
+    if (updateFields.username) logDescription += `username to ${username}, `;
+    if (updateFields.firstname) logDescription += `firstname to ${firstname}, `;
+    if (updateFields.lastname) logDescription += `lastname to ${lastname}, `;
+    if (updateFields.status) logDescription += `status to ${status}, `;
+    logDescription = logDescription.slice(0, -2); // Remove the last comma and space
+
+    // Assuming you have a way to get the current user's username and picture_url
+    // Insert log entry
+    await db.query(
+      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Account Updated', CURRENT_DATE, $3)",
+      [req.user.username, logDescription, req.user.picture_url]
+    );
+
+    res.redirect("/manage");
+  } catch (err) {
+    console.error("Error updating account:", err);
+    res.status(500).send("Internal Server Error");
   }
 });
 
