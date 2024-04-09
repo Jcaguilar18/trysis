@@ -300,7 +300,7 @@ app.get("/logs", async (req, res) => {
 
 app.get("/item", async (req, res) => {
 
-  // Getting the Picture and Role of the USer
+  // Getting the Picture and Role of the User
   const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
   const user = userResult.rows[0];
   const roleOf = user?.role;
@@ -360,7 +360,7 @@ app.get("/add-item", (req, res) => {
 app.get("/stock", async (req, res) => {
   try {
     
-  // Getting the Picture and Role of the USer
+  // Getting the Picture and Role of the User
   const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
   const user = userResult.rows[0];
   const roleOf = user?.role;
