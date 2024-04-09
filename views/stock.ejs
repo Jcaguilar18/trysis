@@ -36,7 +36,7 @@
                 <button class="fire-protection-text" onclick="filterTable(2, this)">Fire Protection</button> <!-- Pass classification id as argument -->
                 <button class="electrical-text" onclick="filterTable(3, this)">Electrical</button> <!-- Pass classification id as argument -->
                 <div class="search-bar">
-                    <input class="search-input" type="text" placeholder="Search Code here..."/>
+                    <input class="search-input" type="text" placeholder="Search Code here..." onkeyup="searchTable()"/>
                     <img class="search-icon" src="./assets/searchicon-1.png"/>
                 </div>
                 <img class="on-off-switch" src="./assets/onoffswitch-1.png"/>
@@ -179,6 +179,28 @@ clickedButton.classList.add('active');
     input.value = input.value.replace(/[^0-9]/g, ''); // Remove all non-numeric characters
     if (input.value === '') { // If the input is null or an empty string
         input.value = '0'; // Set the value to 0
+    }
+}
+
+function searchTable() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementsByClassName("search-input")[0];
+    filter = input.value.toUpperCase();
+    table = document.getElementById("itemTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 1; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
     }
 }
     </script>
