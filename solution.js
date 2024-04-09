@@ -658,7 +658,11 @@ app.post('/addstock', async (req, res) => {
     const available = fetchAvailableResult.rows[0].available;
 
     // Calculate new available value
-    const newAvailable = available + parsedIncoming - parsedOutgoing;
+    let newAvailable = available + parsedIncoming - parsedOutgoing;
+
+    if (newAvailable < 0) {
+      newAvailable = 0;
+    }
 
     // Update the item table
     const updateQuery = `

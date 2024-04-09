@@ -12,8 +12,8 @@
             <img class="trisys-logo" src="./assets/trisys-logo.png"/>
             <p class="current-user-text">INVENTORY MANAGER</p>
             <img class="profile-picture" src="./assets/profile-picture.png"/>
-          </div>
-          <div class="bottom-page-part">
+        </div>
+        <div class="bottom-page-part">
             <div class="upper-part">
                 <img class="item-icon" src="./assets/group.png"/>
                 <p class="manage-stock-text">Manage Stock</p>
@@ -28,9 +28,9 @@
 
                 %>
                 <p class="date-text"><%= formattedDate %></p>
-              </div>
-              <!-- Category buttons -->
-              <div class="middle-buttons-area">
+            </div>
+            <!-- Category buttons -->
+            <div class="middle-buttons-area">
                 <button class="all-text" onclick="filterTable('', this)">All</button>
                 <button class="fabrication-text" onclick="filterTable(1, this)">Fabrication</button> <!-- Pass classification id as argument -->
                 <button class="fire-protection-text" onclick="filterTable(2, this)">Fire Protection</button> <!-- Pass classification id as argument -->
@@ -41,16 +41,16 @@
                 </div>
                 <img class="on-off-switch" src="./assets/onoffswitch-1.png"/>
                 <img class="a-to-z-icon" src="./assets/atoz.png"/>
-              </div>
-              <div class="upper-table-part">
+            </div>
+            <div class="upper-table-part">
                 <!--TASK: Month & Day Sorting Function + Add a Function that Can Sort Through by Code-->
                 <!--TASK: Error Handling if date is wrong-->
-                  <p class="month-text">MONTH:</p>
-                  <p class="date-text"><%= currentMonthDay.split(' ')[0] %></p> <!-- Display the month -->
-                  <p class="day-text">DAY:</p>
-                  <p class="date-text"><%= currentMonthDay.split(' ')[1] %></p> <!-- Display the day -->
-              </div>
-              <div class="table-section">
+                <p class="month-text">MONTH:</p>
+                <p class="date-text"><%= currentMonthDay.split(' ')[0] %></p> <!-- Display the month -->
+                <p class="day-text">DAY:</p>
+                <p class="date-text"><%= currentMonthDay.split(' ')[1] %></p> <!-- Display the day -->
+            </div>
+            <div class="table-section">
                 <table id = "itemTable">
                     <thead>
                         <tr>
@@ -74,7 +74,7 @@
                                 <td><%= item.clustercode %></td>
                                 <td><%= item.cluster_description %></td>
                                 <td><%= item.material_name %></td>
-                                <td><%= item.available %></td>
+                                <td>0</td>
                                 <td>
                                     <input type="number" class="incoming input-field" value="0" min="0" oninput="validateInput(this)"> <!-- Set default value to 0 -->
                                 </td>
@@ -96,13 +96,13 @@
                 <div class="lower-section">
                     <!--TASK: Make a Pagination function, maybe 10 records shown at a time-->
                     <div class="showing-area-text-area">
-                      <p class="showing-area-text">Showing 1-10 | Out of 1574</p>
+                    <p class="showing-area-text">Showing 1-10 | Out of 1574</p>
                     </div>
                     <!--TASK: Make this buttons work through pagination-->
                         <img class="up-arrow" src="./assets/auto-group-titq.png"/> 
                         <img class="down-arrow" src="./assets/auto-group-titq.png"/>
-                  </div>
-          </div>
+                </div>
+        </div>
     </div>
     <%- include('sidebar') %>
     <script>
@@ -118,24 +118,24 @@
         populateMonthAndDay();
 
         function filterTable(id, clickedButton) {
-  var rows = document.getElementById('itemTable').getElementsByTagName('tr');
-  for (var i = 1; i < rows.length; i++) { 
+var rows = document.getElementById('itemTable').getElementsByTagName('tr');
+for (var i = 1; i < rows.length; i++) { 
     var rowId = rows[i].className;
     if (id === '' || id.toString() === rowId) {
-      rows[i].style.display = "";
+    rows[i].style.display = "";
     } else {
-      rows[i].style.display = "none";
+    rows[i].style.display = "none";
     }
-  }
+}
 
-  // Remove the bold-text class from all buttons
-  var buttons = document.getElementsByClassName('middle-buttons-area')[0].getElementsByTagName('button');
-  for (var i = 0; i < buttons.length; i++) {
+// Remove the bold-text class from all buttons
+var buttons = document.getElementsByClassName('middle-buttons-area')[0].getElementsByTagName('button');
+for (var i = 0; i < buttons.length; i++) {
     buttons[i].classList.remove('active');
-  }
+}
 
-  // Add the bold-text class to the clicked button
-  clickedButton.classList.add('active');
+// Add the bold-text class to the clicked button
+clickedButton.classList.add('active');
 }
 
         function populateMonthAndDay() {
