@@ -353,10 +353,9 @@ app.get("/add-item", (req, res) => {
   res.render("add-item.ejs", {clcode});
 });
 
-// Route to render the form for adding an item
+
 app.get("/stock", async (req, res) => {
   try {
-    
     var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
     var roleOf = roleOfQueryResult.rows[0]?.role;
     
@@ -367,16 +366,8 @@ app.get("/stock", async (req, res) => {
       SELECT item.*, cluster.description as cluster_description 
       FROM item 
       INNER JOIN cluster ON item.clustercode = cluster.clustercode`);
-    var items = itemOfQueryResult.rows;
-
-    // Fetch the total_available from the logs for each item
-    for (let item of items) {
-      const fetchTotalAvailableQuery = `SELECT total_available FROM logs WHERE item_description = $1 ORDER BY log_id DESC LIMIT 1`;
-      const fetchTotalAvailableResult = await db.query(fetchTotalAvailableQuery, [item.material_name]);
-      item.available = fetchTotalAvailableResult.rows[0] ? fetchTotalAvailableResult.rows[0].total_available : 0;
-    }
-
-    console.log("testStock uname");
+    const items = itemOfQueryResult.rows;
+      console.log("testStock uname");
     console.log(req.session.username);
     console.log("end /stock");
      
@@ -653,27 +644,24 @@ app.post('/addstock', async (req, res) => {
       return;
     }
 
-    // Fetch the total of 'Incoming' and 'Outgoing' from the logs table for this item
-    const fetchIncomingTotalQuery = `SELECT SUM(quantity) as total FROM logs WHERE item_description = $1 AND daily_trans_type = 'Incoming'`;
-    const fetchIncomingTotalResult = await db.query(fetchIncomingTotalQuery, [itemDescription]);
-    const incomingTotal = fetchIncomingTotalResult.rows[0] ? fetchIncomingTotalResult.rows[0].total : 0;
+    // Fetch the available value from the item table
+    const fetchAvailableQuery = `SELECT available FROM item WHERE material_name = $1`;
+    const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
+    const available = fetchAvailableResult.rows[0].available;
 
-    const fetchOutgoingTotalQuery = `SELECT SUM(quantity) as total FROM logs WHERE item_description = $1 AND daily_trans_type = 'Outgoing'`;
-    const fetchOutgoingTotalResult = await db.query(fetchOutgoingTotalQuery, [itemDescription]);
-    const outgoingTotal = fetchOutgoingTotalResult.rows[0] ? fetchOutgoingTotalResult.rows[0].total : 0;
+    // Calculate new available value
+    const newAvailable = available + parsedIncoming - parsedOutgoing;
 
-    // Calculate new total_available value
-    var totalAvailable = incomingTotal - (-outgoingTotal);
-
-    // Determine the daily transaction type
-    var dailyTransType = '';
-    if (parsedIncoming !== 0) {
-      dailyTransType = 'Incoming';
-      totalAvailable += parsedIncoming;
-    } else if (parsedOutgoing !== 0) {
-      dailyTransType = 'Outgoing';
-      totalAvailable -= parsedOutgoing;
-    }
+    // Update the item table
+    const updateQuery = `
+      UPDATE item
+      SET beginning_inventory = $1,
+          available = $2,
+          total_outgoing = total_outgoing + $3,
+          total_incoming = total_incoming + $4
+      WHERE material_name = $5
+    `;
+    await db.query(updateQuery, [newAvailable, newAvailable, parsedOutgoing, parsedIncoming, itemDescription]);
 
     // If the user is authenticated, log the action
     if (req.isAuthenticated()) {
@@ -682,8 +670,8 @@ app.post('/addstock', async (req, res) => {
 
       // Insert the log entry into the logs table
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture, quantity, daily_trans_type, item_description, total_available) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6, $7, $8)",
-        [currentUser.username, logDescription, 'Modified', currentUser.picture_url, parsedIncoming - parsedOutgoing, dailyTransType, itemDescription, totalAvailable]
+        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, $3, CURRENT_DATE, $4)",
+        [currentUser.username, logDescription, 'Modified', currentUser.picture_url]
       );
     }
 
