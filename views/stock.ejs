@@ -26,10 +26,10 @@
               </div>
               <!-- Category buttons -->
               <div class="middle-buttons-area">
-                <button class="all-text" onclick="filterTable('')">All</button>
-                <button class="fabrication-text" onclick="filterTable(1)">Fabrication</button> <!-- Pass classification id as argument -->
-                <button class="fire-protection-text" onclick="filterTable(2)">Fire Protection</button> <!-- Pass classification id as argument -->
-                <button class="electrical-text" onclick="filterTable(3)">Electrical</button> <!-- Pass classification id as argument -->
+                <button class="all-text" onclick="filterTable('', this)">All</button>
+                <button class="fabrication-text" onclick="filterTable(1, this)">Fabrication</button> <!-- Pass classification id as argument -->
+                <button class="fire-protection-text" onclick="filterTable(2, this)">Fire Protection</button> <!-- Pass classification id as argument -->
+                <button class="electrical-text" onclick="filterTable(3, this)">Electrical</button> <!-- Pass classification id as argument -->
                 <div class="search-bar">
                     <input class="search-input" type="text" placeholder="Search Code here..."/>
                     <img class="search-icon" src="./assets/searchicon-1.png"/>
@@ -145,17 +145,26 @@
     
         populateMonthAndDay();
 
-        function filterTable(id) {
-            var rows = document.getElementById('itemTable').getElementsByTagName('tr');
-            for (var i = 1; i < rows.length; i++) { 
-                var rowId = rows[i].className;
-                if (id === '' || id.toString() === rowId) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
+        function filterTable(id, clickedButton) {
+  var rows = document.getElementById('itemTable').getElementsByTagName('tr');
+  for (var i = 1; i < rows.length; i++) { 
+    var rowId = rows[i].className;
+    if (id === '' || id.toString() === rowId) {
+      rows[i].style.display = "";
+    } else {
+      rows[i].style.display = "none";
+    }
+  }
+
+  // Remove the bold-text class from all buttons
+  var buttons = document.getElementsByClassName('middle-buttons-area')[0].getElementsByTagName('button');
+  for (var i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove('active');
+  }
+
+  // Add the bold-text class to the clicked button
+  clickedButton.classList.add('active');
+}
 
         function populateMonthAndDay() {
             var currentDate = new Date();
