@@ -258,6 +258,7 @@ app.post('/update-item', async (req, res) => {
 app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
+
 app.post("/update-account", async (req, res) => {
   const { userId, username, password, role, status, firstname, lastname } = req.body;
   let logDescription = 'Account updated: '; // Initialize log description
