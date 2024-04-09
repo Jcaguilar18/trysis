@@ -227,6 +227,7 @@
                         <div class="code" id="cluster_cell" contenteditable="true"><%= cluster.clustercode %></div>
                         <div class="description" id="cluster_cell" contenteditable="true"><%= cluster.description %></div>
                         <img class="gear" id="cluster_cell" src="./assets/changinggear-1.png"/>
+                        <a href="/update-cluster?clustercode=<%= cluster.clustercode %>&description=<%= cluster.description %>&classificationid=<%= cluster.classification_id %>" class="save-button">Save</a>
                     </div>
                 <% }); %>
             <% } else { %>
@@ -239,8 +240,9 @@
           </button>
       </div>
         <div class="lower-section">
-            <button onclick="discardChanges()" class="discard-button">Discard</button>
+            <!-- <button onclick="discardChanges()" class="discard-button">Discard</button> -->
             <!-- <button onclick="saveChanges()" class="save-button">Save</button> -->
+            <!-- <button onclick="window.open('/update-cluster', '_blank')" class="save-button">Update</button> -->
             <button onclick="window.open('/update-cluster', '_blank')" class="save-button">Update</button>
             <!--- <button onclick="additemFunction('<%= cluster.clustercode %>')" class="add-item-button">Add Item</button> -->
         </div>
@@ -353,7 +355,12 @@
 
 
 <script>
-  
+
+function populateForm(clustercode, description, classificationid) {
+    document.getElementById('clustercode').value = clustercode;
+    document.getElementById('description').value = description;
+    document.getElementById('classificationid').value = classificationid;
+}
   
 // Filter the table based on classification id
 function filterTable(id) {

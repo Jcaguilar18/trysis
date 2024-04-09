@@ -70,4 +70,14 @@
         <button type="submit">Update</button>
     </form>
 </body>
+
+<script>
+    window.onload = function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        document.getElementById('clustercode').value = urlParams.get('clustercode');
+        document.getElementById('description').value = urlParams.get('description');
+        document.getElementById('classificationid').value = urlParams.get('classificationid');
+    }
+</script>
+
 </html>
