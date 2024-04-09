@@ -370,16 +370,23 @@ app.get("/stock", async (req, res) => {
     var clusterquery = await db.query("SELECT * FROM cluster");
     const cluster = clusterquery.rows;
 
+    const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
+    const itemsPerPage = 10;
+    const offset = (currentPage - 1) * itemsPerPage;
+
     var itemOfQueryResult = await db.query(`
       SELECT item.*, cluster.description as cluster_description 
       FROM item 
-      INNER JOIN cluster ON item.clustercode = cluster.clustercode`);
+      INNER JOIN cluster ON item.clustercode = cluster.clustercode
+      ORDER BY item.classification_id, item.material_name, item.clustercode
+      LIMIT $1 OFFSET $2`, [itemsPerPage, offset]);
     const items = itemOfQueryResult.rows;
-      console.log("testStock uname");
-    console.log(req.session.username);
-    console.log("end /stock");
-     
-    res.render("stock.ejs", {items, roleOf, cluster});
+
+    const countResult = await db.query("SELECT COUNT(*) FROM item");
+    const totalItems = parseInt(countResult.rows[0].count, 10);
+    const totalPages = Math.ceil(totalItems / itemsPerPage);
+
+    res.render("stock.ejs", {items, roleOf, cluster, currentPage, totalPages, itemsPerPage, totalItems});
   } catch (error) {
     console.error(`Error: ${error}`);
     res.status(500).send('An error occurred');

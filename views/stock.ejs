@@ -69,38 +69,39 @@
                     </thead>
                     <tbody>
                         <% items.forEach((item, index) => { %>
-                            <tr class="<%= item.classification_id %>">
-                                <td><%= index + 1 %></td>
-                                <td><%= item.clustercode %></td>
-                                <td><%= item.cluster_description %></td>
-                                <td><%= item.material_name %></td>
-                                <td><%= item.available %></td>
-                                <td>
-                                    <input type="number" class="incoming input-field" value="0"> <!-- Set default value to 0 -->
-                                </td>
-                                <td>
-                                    <input type="number" class="outgoing input-field" value="0"> <!-- Set default value to 0 -->
-                                </td>
-                                <td><%= item.available %></td>
-                                <td><%= item.price %></td>
-                                <td><%= (item.price * item.available).toFixed(2) %></td>
-                                <td>
-                                    <!-- Add this line for the Save button -->
-                                    <button class="save-button" onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
-                                </td>
-                            </tr>
+                          <tr class="<%= item.classification_id %>">
+                            <td><%= (currentPage - 1) * itemsPerPage + index + 1 %></td>
+                            <td><%= item.clustercode %></td>
+                            <td><%= item.cluster_description %></td>
+                            <td><%= item.material_name %></td>
+                            <td><%= item.available %></td>
+                            <td>
+                              <input type="number" class="incoming input-field" value="0">
+                            </td>
+                            <td>
+                              <input type="number" class="outgoing input-field" value="0">
+                            </td>
+                            <td><%= item.available %></td>
+                            <td><%= item.price %></td>
+                            <td><%= (item.price * item.available).toFixed(2) %></td>
+                            <td>
+                              <button class="save-button" onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
+                            </td>
+                          </tr>
                         <% }); %>
-                    </tbody>
+                      </tbody>
                 </table>
                 </div>
                 <div class="lower-section">
-                    <!--TASK: Make a Pagination function, maybe 10 records shown at a time-->
                     <div class="showing-area-text-area">
-                      <p class="showing-area-text">Showing 1-10 | Out of 1574</p>
+                      <p class="showing-area-text">Showing <%= (currentPage - 1) * itemsPerPage + 1 %> - <%= Math.min(currentPage * itemsPerPage, totalItems) %> | Out of <%= totalItems %></p>
                     </div>
-                    <!--TASK: Make this buttons work through pagination-->
-                        <img class="up-arrow" src="./assets/auto-group-titq.png"/> 
-                        <img class="down-arrow" src="./assets/auto-group-titq.png"/>
+                    <% if (currentPage > 1) { %>
+                      <a href="?page=<%= currentPage - 1 %>"><img class="down-arrow" src="./assets/auto-group-titq.png"/></a>
+                    <% } %>
+                    <% if (currentPage < totalPages) { %>
+                      <a href="?page=<%= currentPage + 1 %>"><img class="up-arrow" src="./assets/auto-group-titq.png"/></a>
+                    <% } %>
                   </div>
           </div>
     </div>
