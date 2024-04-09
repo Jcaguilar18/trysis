@@ -88,9 +88,8 @@
                                           </select>
                                         </td>
                                         <td class="center-text">
-                                            <!--TASK: Make an Edit Function (Editable Are: Username, Password, Role, & Status)-->
-                                            <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon" onclick="editUser(this, '<%= user.username %>')">
-                                            <img src="./assets/save_icon.png" alt="Save" class="save-icon" style="display: none;" onclick="saveUser(this, '<%= user.username %>')">
+                                            <button type="button" class="edit-icon" onclick="enableEditing(this)">Edit</button>
+                                            <button type="submit" class="save-icon" style="display: none;">Save</button>
                                         </td>
                                     </tr>
                                 <% }); %>
@@ -102,6 +101,19 @@
         </div>
     </div>
     <script>
+
+
+function enableEditing(editButton) {
+  const row = editButton.closest('tr');
+  row.querySelectorAll('.username-field, .role-field, .status-field').forEach(element => {
+    element.removeAttribute('readonly');
+    element.disabled = false;
+  });
+  editButton.style.display = 'none';
+  row.querySelector('.save-icon').style.display = 'inline';
+}
+
+
         function editUser(editIcon, username) {
     // Get the parent row
     const row = editIcon.closest('tr');
