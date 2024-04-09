@@ -117,41 +117,19 @@
                   <p class="date-below-inventory-overview"><%= formattedDate2 %></p>
                   <div class="classification-area">
 
-                    <div class="classification-box">
-                      <div class="classification-title">
-                        <p class="classification-sub-total">FABRICATION SUB-TOTAL</p>
+                    <% inventorySubtotals.forEach(subtotal => { %>
+                      <div class="classification-box">
+                        <div class="classification-title">
+                          <p class="classification-sub-total"><%= subtotal.classification_name %> SUB-TOTAL</p>
+                        </div>
+                        <p class="amount-of-money">₱<%= subtotal.subtotal.toFixed(2) %></p>
+                        <div class="percentage">
+                          <img class="percentage-indicator" src="./assets/arrowdown-2.png"/>
+                          <p class="percentage-text">0.9%</p> <!-- You'll need to calculate this value -->
+                        </div>
+                        <p class="quantity-state">Decreased</p> <!-- You'll need to calculate this value -->
                       </div>
-                      <p class="amount-of-money">₱300 M</p>
-                      <div class="percentage">
-                        <img class="percentage-indicator" src="./assets/arrowdown-2.png"/>
-                        <p class="percentage-text">0.9%</p>
-                      </div>
-                      <p class="quantity-state">Decreased</p>
-                    </div>
-
-                    <div class="classification-box">
-                      <div class="classification-title">
-                        <p class="classification-sub-total">FIREPRO SUB-TOTAL</p>
-                      </div>
-                      <p class="amount-of-money">₱300 M</p>
-                      <div class="percentage">
-                        <img class="percentage-indicator" src="./assets/arrowdown-2.png"/>
-                        <p class="percentage-text">0.9%</p>
-                      </div>
-                      <p class="quantity-state">Decreased</p>
-                    </div>
-
-                    <div class="classification-box">
-                      <div class="classification-title">
-                        <p class="classification-sub-total">ELECTRICAL SUB-TOTAL</p>
-                      </div>
-                      <p class="amount-of-money">₱300 M</p>
-                      <div class="percentage">
-                        <img class="percentage-indicator" src="./assets/arrowdown-2.png"/>
-                        <p class="percentage-text">0.9%</p>
-                      </div>
-                      <p class="quantity-state">Decreased</p>
-                    </div>
+                    <% }) %>
 
                   </div>
                 </div>
