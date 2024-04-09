@@ -224,9 +224,11 @@ button:hover {
   flex-shrink: 0;
 }
 
+/**********************************************************Upper Table Part******************************************/
+
 .web-page .bottom-page-part .upper-table-part {
   margin: 0rem 2.7rem 0rem 9rem;
-  width: 84rem;
+  width: 85rem;
   height: 2.7rem;
   left: 0;
   top: 0;
@@ -237,25 +239,19 @@ button:hover {
 
 .web-page .bottom-page-part .upper-table-part .month-text{
   margin-top: 0.4rem;
-  margin-left: 2.5rem; /* Change from left to margin-left */
-  font-size: 1rem;
+  margin-left: 1rem; /* Change from left to margin-left */
+  font-size: 0.8rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
-}
-
-.month-dropdown{
-  margin-top: 0.3rem;
-  margin-left: 1rem; 
-  height: 1rem;
 }
 
 .web-page .bottom-page-part .upper-table-part .day-text {
   margin-top: 0.4rem;
   margin-left: 2.5rem; /* Change from left to margin-right */
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
@@ -263,11 +259,18 @@ button:hover {
   white-space: nowrap;
 }
 
-.day-input{
-  margin-top: 0.2rem;
-  margin-left: 1rem; 
-  height: 1rem;
+.web-page .bottom-page-part .upper-table-part .date-text {
+  margin-top: 0.4rem;
+  margin-left: 0.7rem; 
+  font-size: 0.8rem;
+  font-weight: 700;
+  line-height: 1.2125;
+  color: #ffffff;
+  font-family: Inter, 'Source Sans Pro';
+  white-space: nowrap;
 }
+
+/********************************************************************************/
 
 .web-page .bottom-page-part .table-section {
   margin: 0rem 2.7rem 0rem 9rem;
@@ -340,7 +343,7 @@ button:hover {
 #itemTable th, #itemTable td {
   text-align: center; /* Align text to the center */
   padding: 4px; 
-  border: none; /* Remove borders */
+  border-bottom: 3px solid #000; /* Remove borders */
 }
 
 #itemTable th {

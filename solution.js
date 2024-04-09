@@ -255,6 +255,8 @@ app.post("/update-account", async (req, res) => {
   }
 });
 
+
+
 app.get("/logs", async (req, res) => {
   const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
   const transTypeFilter = req.query.trans_type || null;
@@ -284,10 +286,16 @@ app.get("/logs", async (req, res) => {
     const logs = logsResult.rows;
     const totalPages = Math.ceil(totalLogs / logsPerPage);
 
+    // Calculate the start and end page for pagination
+    const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
+    const endPage = Math.min(startPage + 4, totalPages);
+
     res.render("logs.ejs", {
       roleOf,
       logs,
       currentPage,
+      startPage,
+      endPage,
       totalPages,
       logsPerPage,
       transTypeFilter // Pass the current filter back to the template
