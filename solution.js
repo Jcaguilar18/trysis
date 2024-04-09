@@ -300,7 +300,7 @@ app.get("/logs", async (req, res) => {
 
 app.get("/item", async (req, res) => {
 
-  // Getting the Picture and Name of the User
+  // Getting the Picture and Role of the USer
   const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
   const user = userResult.rows[0];
   const roleOf = user?.role;
@@ -360,11 +360,11 @@ app.get("/add-item", (req, res) => {
 app.get("/stock", async (req, res) => {
   try {
     
-    // Getting the Picture and Name of the User
-    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-    const user = userResult.rows[0];
-    const roleOf = user?.role;
-    const pictureUrl = user?.picture_url;
+  // Getting the Picture and Role of the USer
+  const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+  const user = userResult.rows[0];
+  const roleOf = user?.role;
+  const pictureUrl = user?.picture_url;
     
     var clusterquery = await db.query("SELECT * FROM cluster");
     const cluster = clusterquery.rows;
@@ -561,10 +561,12 @@ app.get("/dashboard", async (req, res) => {
 
   if (req.isAuthenticated()) {
     try {
-      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-      const user = userResult.rows[0];
-      const roleOf = user?.role;
-      const pictureUrl = user?.picture_url;
+
+  // Getting the Picture and Role of the USer
+  const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+  const user = userResult.rows[0];
+  const roleOf = user?.role;
+  const pictureUrl = user?.picture_url;
 
       // Fetch the latest updates for products
       const productUpdatesResult = await db.query(`
@@ -608,6 +610,7 @@ app.get("/generate-report-page", async (req, res) => {
   res.setHeader("Expires", "0");
 
   if (req.isAuthenticated()) {
+    
     try {
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
