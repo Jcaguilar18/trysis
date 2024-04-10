@@ -63,7 +63,9 @@
         html2canvas: { scale: 2 },
         jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
       };
-      html2pdf().from(document.body).set(opt).save();
+      var element = document.querySelector('.bottom-page-part'); // Select the element you want to convert to PDF
+      html2pdf().from(element).set(opt).save(); // Generate the PDF
+      /* html2pdf().from(document.body).set(opt).save(); */
     } else {
       document.getElementById('reportType').value = type; // Set the report type based on the button clicked
       document.getElementById('reportForm').submit(); // Submit the form
