@@ -518,33 +518,45 @@ app.post("/add-cluster", async (req, res) => {
 });
 
 app.post("/update-cluster", async (req, res) => {
+  const { classification_id, code, description } = req.body;
+
   try {
-      // Extract data from the request body
-      const { clustercode, description, classificationid } = req.body;
+    let updateFields = {
+      classification_id: classification_id,
+      clustercode: code,
+      description: description,
+    };
 
-      // Update the cluster in the database
-      await db.query(
-          "UPDATE cluster SET description = $1, classification_id = $2 WHERE clustercode = $3",
-          [description, classificationid, clustercode]
-      );
+    const setClause = Object.keys(updateFields)
+      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
+      .map((key, idx) => `${key} = $${idx + 1}`)
+      .join(', ');
 
-      // If the user is authenticated, log the action
-      if (req.isAuthenticated()) {
-          const currentUser = req.user; // The current logged-in user
-          const logDescription = `${currentUser.username} updated cluster: ${clustercode}`;
+    const queryParams = Object.values(updateFields)
+      .filter(value => value !== undefined && value !== '') // Filter out empty strings
+      .concat(code);
 
-          // Insert the log entry into the logs table
-          await db.query(
-              "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Updated', CURRENT_DATE, $3)",
-              [currentUser.username, logDescription, currentUser.picture_url] // Use the current user's picture_url
-          );
-      }
+    const sqlQuery = `UPDATE cluster SET ${setClause} WHERE clustercode = $${queryParams.length}`;
 
-      // Redirect back to the original page after updating the item
-      res.redirect("/item");
+    await db.query(sqlQuery, queryParams);
+
+    // If the user is authenticated, log the action
+    if (req.isAuthenticated()) {
+        const currentUser = req.user; // The current logged-in user
+        const logDescription = `${currentUser.username} updated cluster: ${code}`;
+
+        // Insert the log entry into the logs table
+        await db.query(
+            "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Updated', CURRENT_DATE, $3)",
+            [currentUser.username, logDescription, currentUser.picture_url] // Use the current user's picture_url
+        );
+    }
+
+    // Redirect back to the original page after updating the item
+    res.redirect("/item");
   } catch (error) {
-      console.error("Error updating cluster:", error);
-      res.status(500).send("Internal Server Error");
+    console.error("Error updating cluster:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 

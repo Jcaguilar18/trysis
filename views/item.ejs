@@ -221,14 +221,17 @@
             </div>
             <% if (cluster && cluster.length > 0) { %>
                 <% cluster.forEach(cluster => { %>
+                  <form action="/update-cluster" method="POST" class="table">
                     <div class="entry">
                         <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
                         <div class="classification_hidden" id="cluster_cell" contenteditable="true"><%= cluster.classification_id %></div>
-                        <div class="code" id="cluster_cell" contenteditable="true"><%= cluster.clustercode %></div>
-                        <div class="description" id="cluster_cell" contenteditable="true"><%= cluster.description %></div>
+                        <!-- <input type="text" class="classification_hidden" name="classification_id" id="cluster_cell" value="<%= cluster.classification_id %>"> -->
+                        <input type="text" class="code" name="code" id="cluster_cell" value="<%= cluster.clustercode %>">
+                        <input type="text" class="description" name="description" id="cluster_cell" value="<%= cluster.description %>">
                         <img class="gear" id="cluster_cell" src="./assets/changinggear-1.png"/>
-                        <a href="/update-cluster?clustercode=<%= cluster.clustercode %>&description=<%= cluster.description %>&classificationid=<%= cluster.classification_id %>" class="save-button">Save</a>
+                        <button type="submit">Save</button>
                     </div>
+                  </form>
                 <% }); %>
             <% } else { %>
                 <div>No items found</div>
