@@ -83,47 +83,29 @@ const generateCSV = (data) => {
   return parser.parse(data);
 };
 
-const generatePDF = (data) => {
-  return new Promise((resolve, reject) => {
+const generatePDF = async () => {
+  try {
+    const res = await db.query('SELECT username FROM users');
     const doc = new PDFDocument();
-    const filePath = `report-${Date.now()}.pdf`;
+    const filePath = `usernames-${Date.now()}.pdf`;
     const stream = fs.createWriteStream(filePath);
 
     doc.pipe(stream);
-    
-    // Set up the table header
-    const tableTop = 100;
-    const itemColumns = {
-      classification_id: { columnWidth: 100, columnStart: 50 },
-      material_name: { columnWidth: 150, columnStart: 150 },
-      clustercode: { columnWidth: 100, columnStart: 300 },
-      // Add other columns as necessary
-    };
-
-    // Draw the table header
     doc.fontSize(12);
-    for (let key in itemColumns) {
-      const title = key.replace(/_/g, ' ').toUpperCase();
-      const { columnStart } = itemColumns[key];
-      doc.text(title, columnStart, tableTop);
-    }
-
-    // Draw the table rows
+    doc.text('Username:', 50, 100);
     doc.fontSize(10);
     let i = 0;
-    data.forEach(item => {
-      const y = tableTop + 20 + (i * 20);
-      for (let key in itemColumns) {
-        const { columnStart } = itemColumns[key];
-        doc.text(item[key], columnStart, y);
-      }
+    for (let row of res.rows) {
+      const y = 120 + (i * 20);
+      doc.text(`${i+1}. ${row.username}`, 50, y);
       i++;
-    });
-
+    }
     doc.end();
-    stream.on('finish', () => resolve(filePath));
-    stream.on('error', reject);
-  });
+    stream.on('finish', () => console.log(`PDF saved to ${filePath}`));
+    stream.on('error', console.error);
+  } catch (err) {
+    console.error(err.stack);
+  }
 };
 
 // Route handler for report generation
