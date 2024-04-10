@@ -261,7 +261,7 @@ body {
   flex-shrink: 0;
   color: brown;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .upper-set-date-button {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area form .upper-set-date-button {
   margin: 0rem 0.3rem 2rem 0rem;
   width: 15rem;
   height: 5rem;
@@ -280,7 +280,7 @@ body {
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .lower-set-date-button {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area form .lower-set-date-button {
   margin-left: 1rem;
   width: 15rem;
   height: 5rem;
