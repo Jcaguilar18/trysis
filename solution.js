@@ -798,7 +798,7 @@ app.post("/register", upload.single('picture'), async (req, res) => {
       }
 
       // Redirect to a page indicating successful registration
-      res.redirect("/dashboard");
+      res.redirect("/manage");
     }
   } catch (err) {
     console.error(err);
