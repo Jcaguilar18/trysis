@@ -768,6 +768,10 @@ app.post('/addstock', async (req, res) => {
     const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
     const available = fetchAvailableResult.rows[0].available;
 
+    const fetchPriceQuery = `SELECT price FROM item WHERE material_name = $1`;
+    const fetchPriceResult = await db.query(fetchPriceQuery, [itemDescription]);
+    const current_price = fetchPriceResult.rows[0].available;
+
     // Calculate new available value
     let newAvailable = available + parsedIncoming - parsedOutgoing;
 
@@ -775,6 +779,23 @@ app.post('/addstock', async (req, res) => {
       newAvailable = 0;
     }
 
+    // Determine the transaction type and log description
+    let transType;
+    let logDescription;
+    const currentUser = req.user;
+    if (newAvailable > available) {
+      transType = 'Added';
+      logDescription = `${currentUser.username} added stock for item: ${itemDescription}`;
+    } else if (newAvailable === available){
+      transType = 'Modified';
+      logDescription = `${currentUser.username} added not stock for item: ${itemDescription}`;
+    }
+    else if (newAvailable < 0){
+      transType = 'Removed';
+      logDescription = `${currentUser.username} decreased stock for item: ${itemDescription}`;
+    }
+
+    const oldlogDescription = `${itemDescription} had an availability of ${available}`;
     // Update the item table
     const updateQuery = `
       UPDATE item
@@ -788,13 +809,10 @@ app.post('/addstock', async (req, res) => {
 
     // If the user is authenticated, log the action
     if (req.isAuthenticated()) {
-      const currentUser = req.user;
-      const logDescription = `${currentUser.username} updated stock for item: ${itemDescription}`;
-
       // Insert the log entry into the logs table
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, $3, CURRENT_DATE, $4)",
-        [currentUser.username, logDescription, 'Modified', currentUser.picture_url]
+        "INSERT INTO logs (username, newvaluesummary, trans_type, log_date, picture, logs_clustercode, logs_material_name, logs_available, outgoing, incoming, logs_price, dailyprodupdate, oldvaluesummary) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
+        [currentUser.username, logDescription, transType, currentUser.picture_url, clustercode, itemDescription, newAvailable, parsedOutgoing, parsedIncoming, current_price, 'Yes', oldlogDescription]
       );
     }
 
