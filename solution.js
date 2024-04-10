@@ -215,6 +215,10 @@ app.get("/register", (req, res) => {
 
 
 app.get("/logs", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
   const transTypeFilter = req.query.trans_type || null;
   const logsPerPage = 10;
@@ -222,8 +226,15 @@ app.get("/logs", async (req, res) => {
   let logsResult, countResult, totalLogs, query;
 
   try {
-    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+
+    const userResult = await db.query("SELECT picture_url, role FROM users WHERE username = $1", [req.user.username]);
+    const user = userResult.rows[0];
+    const pictureUrl = user?.picture_url;
+    const roleOfUser = user?.role;
+
+    var roleOfQueryResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.session.username]);
     var roleOf = roleOfQueryResult.rows[0]?.role;
+
     if (transTypeFilter) {
       query = {
         text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
@@ -249,6 +260,8 @@ app.get("/logs", async (req, res) => {
 
     res.render("logs.ejs", {
       roleOf,
+      pictureUrl: './uploads/' + pictureUrl,
+      roleOfUser,
       logs,
       currentPage,
       startPage,
@@ -258,30 +271,43 @@ app.get("/logs", async (req, res) => {
       transTypeFilter // Pass the current filter back to the template
     });
   } catch (err) {
+    // res.redirect("/login");
     console.error("Error fetching logs:", err);
     res.status(500).send("Internal Server Error");
   }
 });
 
 app.get("/item", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+  try {
 
-  var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-  var roleOf = roleOfQueryResult.rows[0]?.role;
+    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOf = roleOfQueryResult.rows[0]?.role;
 
-  var itemOfQueryResult = await db.query("SELECT * FROM item");
-  var clusterquery = await db.query("SELECT * FROM cluster");
-  var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1");
-  var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2");
-  var clusterquery3 = await db.query("SELECT * FROM cluster WHERE classification_id = 3");
-  const cluster = clusterquery.rows;
-  const cluster1 = clusterquery1.rows;
-  const cluster2 = clusterquery2.rows;
-  const cluster3 = clusterquery3.rows;
-  const item= itemOfQueryResult.rows;
-      //console.log(item);
-      //console.log(cluster);
-      //console.log(roleOf);
-  res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3});
+    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+    const user = userResult.rows[0];
+    const roleOfUser = user?.role;
+    const pictureUrl = user?.picture_url;
+
+    var itemOfQueryResult = await db.query("SELECT * FROM item");
+    var clusterquery = await db.query("SELECT * FROM cluster");
+    var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1");
+    var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2");
+    var clusterquery3 = await db.query("SELECT * FROM cluster WHERE classification_id = 3");
+    const cluster = clusterquery.rows;
+    const cluster1 = clusterquery1.rows;
+    const cluster2 = clusterquery2.rows;
+    const cluster3 = clusterquery3.rows;
+    const item= itemOfQueryResult.rows;
+
+    res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, roleOfUser});
+  } catch (err) {
+    console.error(err);
+    // res.redirect("/login");
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 app.get("/manage", async (req, res) => {
@@ -289,6 +315,11 @@ app.get("/manage", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
+
+  const userResultToPage = await db.query("SELECT picture_url, role FROM users WHERE username = $1", [req.user.username]);
+  const user = userResultToPage.rows[0];
+  const pictureUrl = user?.picture_url;
+  const roleOfUser = user?.role;
   
       // Fetch user data from the database
       const usersResult = await db.query("SELECT * FROM users");
@@ -303,7 +334,7 @@ app.get("/manage", async (req, res) => {
    
 
       // Render the "manage.ejs" template with the user data
-      res.render("manage.ejs", { users, roleOf });
+      res.render("manage.ejs", { users, roleOf, pictureUrl: './uploads/' + pictureUrl, roleOfUser: roleOfUser });
   } catch (err) {
       console.log(err);
       res.redirect("/login");
@@ -374,9 +405,15 @@ app.get("/add-item", (req, res) => {
 
 
 app.get("/stock", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   try {
-    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-    var roleOf = roleOfQueryResult.rows[0]?.role;
+  const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+  const user = userResult.rows[0];
+  const roleOf = user?.role;
+  const pictureUrl = user?.picture_url;
     
     var clusterquery = await db.query("SELECT * FROM cluster");
     const cluster = clusterquery.rows;
@@ -390,8 +427,9 @@ app.get("/stock", async (req, res) => {
     console.log(req.session.username);
     console.log("end /stock");
      
-    res.render("stock.ejs", {items, roleOf, cluster});
+    res.render("stock.ejs", {items, roleOf: roleOf, cluster, pictureUrl: './uploads/' + pictureUrl});
   } catch (error) {
+    // res.redirect("/login");
     console.error(`Error: ${error}`);
     res.status(500).send('An error occurred');
   }
@@ -628,10 +666,15 @@ app.get("/generate-report-page", async (req, res) => {
   if (req.isAuthenticated()) {
     
     try {
+      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+      const user = userResult.rows[0];
+      const roleOfUser = user?.role;
+      const pictureUrl = user?.picture_url;
+
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
       req.session.roleOf = roleOf;
-      res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role });
+      res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role, roleOfUser: roleOfUser, pictureUrl: './uploads/' + pictureUrl});
       
     } catch (err) {
       console.log(err);

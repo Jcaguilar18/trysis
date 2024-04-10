@@ -13,10 +13,12 @@
 <body>
 <div class="web-page">
   <div class="top-bar">
-    <img class="trisys-logo" src="./assets/trisys-logo-Rf3.png"/>
-    <p class="current-user-text">INVENTORY MANAGER</p>
-    <img class="profile-picture" src="./assets/profile-picture-b57.png"/>
-  </div>
+    <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+    <div class="user-info">
+        <p class="current-user-text"><%= roleOf %></p>
+        <img class="profile-picture" src="<%= pictureUrl %>"/>
+    </div>
+</div>
   <div class="bottom-page-part">
     <%- include('sidebar') %>
     <div class="below-top-bar">

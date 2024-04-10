@@ -24,23 +24,29 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: #3b2f36;
     flex-shrink: 0;
     height: 5rem;
-  }
+}
 
-  .web-page .top-bar .trisys-logo {
-    margin-right: 63rem;
+.web-page .top-bar .trisys-logo {
     width: 11rem;
     height: 11rem;
     object-fit: contain;
     vertical-align: top;
     flex-shrink: 0;
     padding-left: 2rem;
-  }
+}
 
-  .web-page .top-bar .current-user-text {
-    margin-right: 1.7rem;
+.web-page .top-bar .user-info {
+    /* background-color: pink; */
+    display: flex;
+    align-items: center;
+}
+
+.web-page .top-bar .current-user-text {
+    margin-right: 2rem;
     font-size: 1rem;
     line-height: 1;
     color: #ffffff;
@@ -48,15 +54,17 @@ body {
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: normal;
-  }
+    text-transform: uppercase;
+}
 
-  .web-page .top-bar .profile-picture {
+.web-page .top-bar .profile-picture {
+    margin-right: 7rem;
     width: 4rem;
     height: 4rem;
     object-fit: contain;
     vertical-align: top;
     flex-shrink: 0;
-  }
+}
 
   .web-page .bottom-page-part {
     width: 100%;
