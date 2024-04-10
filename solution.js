@@ -631,9 +631,15 @@ app.get("/generate-report-page", async (req, res) => {
 });
 
 app.post('/login',
-  passport.authenticate('local', { failureRedirect: '/login-failed' }),
-  function(req, res) {
-    res.redirect('/dashboard');
+  function(req, res, next) {
+    passport.authenticate('local', function(err, user, info) {
+      if (err) { return next(err); }
+      if (!user) { return res.render('login.ejs', { error: info.message }); }
+      req.logIn(user, function(err) {
+        if (err) { return next(err); }
+        return res.redirect('/dashboard');
+      });
+    })(req, res, next);
   }
 );
 
@@ -752,6 +758,10 @@ passport.use(new Strategy(
       const userQueryResult = await db.query("SELECT * FROM users WHERE username = $1", [username]);
       if (userQueryResult.rows.length > 0) {
         const user = userQueryResult.rows[0];
+        if (user.status === 'inactive') {
+          // User is inactive
+          return done(null, false, { message: 'User does not exist anymore.' });
+        }
         const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
           // User authenticated successfully, return the user object including the picture_url
@@ -762,11 +772,11 @@ passport.use(new Strategy(
           });
         } else {
           // Password did not match
-          return done(null, false, { message: 'Incorrect username or password.' });
+          return done(null, false, { message: 'Incorrect password.' });
         }
       } else {
         // No user found with that username
-        return done(null, false, { message: 'Incorrect username or password.' });
+        return done(null, false, { message: 'Incorrect username.' });
       }
     } catch (err) {
       return done(err);
