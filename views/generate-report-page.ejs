@@ -51,8 +51,10 @@
               </div>
             </div>
             <div class="set-date-buttons-area">
-              <div class="upper-set-date-button">Set Date</div>
-              <div class="lower-set-date-button">Set Date</div>
+              <form id="clustercode-form" action="/binCardPDF" method="get">
+                <input type="text" id="upper-set-date-button" name="clustercode" class="upper-set-date-button">
+                <button type="submit" class="lower-set-date-button">Set Date</button>
+              </form>
             </div>
           </div>
         </div>
@@ -83,8 +85,16 @@
 
   today = yyyy + '-' + mm + '-' + dd;
   document.getElementById("upperDate").value = today;
-  document.getElementById("lowerDate").value = today;
+  document.
+  getElementById("lowerDate").value = today;
 };
+
+/*************************Just testing to Generate BIN Card***********************/
+document.getElementById('upper-set-date-button').addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      window.location.href = '/binCardPDF';
+    }
+  });
 </script>
 
 </body>

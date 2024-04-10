@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple HTML Page</title>
+    <style>
+      table, th, td {
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
+      th, td {
+        padding: 15px;
+      }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Simple HTML Page</h1>
+    <p>This is a paragraph.</p>
+    <table>
+      <tr>
+        <th colspan="7">INVENTORY BIN CARD</th>
+      </tr>
+      <tr>
+        <td>Name of Material:</td>
+        <td><%= clusterDescription %></td>
+        <td>Code:</td>
+        <td><%= clusterCode %></td>
+      </tr>
+      <tr>
+        <td>Item Description</td>
+        <td>Beginning Inventory</td>
+        <td>Total Incoming</td>
+        <td>Total Out-Going</td>
+        <td>Available</td>
+        <td>Unit Price</td>
+        <td>Value of Raw Mat. On Hand</td>
+      </tr>
+      <% productUpdates.forEach(function(product) { %>
+        <tr>
+          <td><%= product.material_name %></td>
+          <td>0</td>
+          <td>0</td>
+          <td>0</td>
+          <td><%= product.available %></td>
+          <td><%= product.price %></td>
+          <td><%= product.available * product.price %></td>
+        </tr>
+      <% }); %>
+      <tr>
+        <td>Php</td>
+        <td colspan="6">
+          <% var totalValue = productUpdates.reduce(function(total, product) {
+            return total + product.available * product.price;
+          }, 0); %>
+          <%= totalValue %>
+        </td>
+      </tr>
+    </table>
+</body>
+</html>

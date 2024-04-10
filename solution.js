@@ -658,6 +658,45 @@ app.get("/dashboard", async (req, res) => {
   }
 });
 
+app.get("/binCardPDF", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
+  if (req.isAuthenticated()) {
+    try {
+      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+      const user = userResult.rows[0];
+      const roleOf = user?.role;
+      const pictureUrl = user?.picture_url;
+
+      const clustercode = req.query.clustercode; // Get the clustercode from the query parameters
+      const productUpdatesResult = await db.query(`
+        SELECT i.clustercode, c.description, i.material_name, i.available, i.price
+        FROM item i
+        INNER JOIN cluster c ON i.clustercode = c.clustercode
+        WHERE i.clustercode=$1
+      `, [clustercode]); // Use the clustercode in the query
+      const productUpdates = productUpdatesResult.rows;
+      const clusterDescription = productUpdates[0]?.description;
+      const clusterCode = productUpdates[0]?.clustercode;
+
+      res.render("binCardPDF.ejs", {
+        pictureUrl: './uploads/' + pictureUrl,
+        productUpdates: productUpdates,
+        roleOf: roleOf,
+        clusterDescription: clusterDescription,
+        clusterCode: clusterCode
+      });
+    } catch (err) {
+      console.error("Error accessing the dashboard:", err);
+      res.status(500).send("Internal Server Error");
+    }
+  } else {
+    res.redirect("/login");
+  }
+});
+
 app.get("/generate-report-page", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
