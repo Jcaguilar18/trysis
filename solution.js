@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 
-cron.schedule('56 13 * * *', async () => {
+cron.schedule('46 4 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -154,31 +154,41 @@ const generatePDF = (data) => {
 };
 
 app.post("/generate-report-page", async (req, res) => {
-  const { endDate } = req.body;
+  const { endDate } = req.body; // Assuming you're getting endDate from the request
+  const currentUser = req.session.username; // Assuming username is stored in session
+  const currentRole = req.session.role; // Assuming user role is stored in session
 
   try {
-    // Modified query to select the most recent backup for each clustercode
+    // Example database query, adjust according to your actual database and query
     const reportQueryResult = await db.query(`
-      SELECT DISTINCT ON (clustercode) classification_id, clustercode, material_name, price, description, available
+      SELECT classification_id, clustercode, description, available, price, item_date
       FROM report
       WHERE item_date::DATE = $1
-      ORDER BY clustercode, item_date DESC
     `, [endDate]);
 
-    // Since we're now directly fetching the most recent entry for each clustercode, 
-    // we can directly use the fetched rows without further aggregation.
-    const reportData = reportQueryResult.rows.map(item => ({
-      ...item,
-      total_amount: item.available * item.price
+    // Ensure reportData is declared and initialized before using it
+    let reportData = reportQueryResult.rows.map(row => ({
+      ...row,
+      total_amount: row.available * row.price
     }));
 
-    if (reportData.length === 0) {
-      return res.status(404).send('No report found for the selected date.');
-    }
+    // Ensure subtotals and grandTotal are calculated after reportData is initialized
+    let subtotals = reportData.reduce((acc, item) => {
+      const classification = item.classification_id.toString();
+      acc[classification] = (acc[classification] || 0) + item.total_amount;
+      return acc;
+    }, {});
 
-    // Store in session or pass directly
-    req.session.reportData = reportData;
-    res.redirect("/view-report");
+    let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
+
+    // Pass the properly initialized reportData and other variables to the EJS template
+    res.render("report-page.ejs", {
+      reportData,
+      subtotals,
+      grandTotal,
+      currentUser,
+      currentRole
+    });
   } catch (err) {
     console.error('Error generating report page:', err);
     res.status(500).send('Internal Server Error');
@@ -189,20 +199,22 @@ app.post("/generate-report-page", async (req, res) => {
 
 
 
+// app.get("/view-report", (req, res) => {
+//   const reportData = req.session.reportData;
+//   const currentUser = req.session.username;
+//   const currentRole =req.session.roleOf;
+//   const subtotals = req.session.subtotals;
+//   const grandTotal = req.session.grandTotal;
 
-// ... your existing code ...
-app.get("/view-report", (req, res) => {
-  const reportData = req.session.reportData;
-  const currentUser = req.session.username; // This should be set when the user logs in
-  const currentRole =req.session.roleOf;
-console.log(currentUser);
-console.log(currentRole);
-  if (!reportData) {
-    return res.status(404).send('No report available to view.');
-  }
+// console.log(currentUser);
+// console.log(currentRole);
+//   if (!reportData) {
+//     return res.status(404).send('No report available to view.');
+//   }
 
-  res.render("report-page.ejs", { reportData, currentUser, currentRole });
-});
+//   res.render("report-page.ejs", { reportData, currentUser, currentRole,  subtotals,
+//   grandTotal });
+// });
 
 
 
