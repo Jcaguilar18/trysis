@@ -445,8 +445,8 @@ app.get("/stock", async (req, res) => {
   const roleOf = user?.role;
   const pictureUrl = user?.picture_url;
     
-    var clusterquery = await db.query("SELECT * FROM cluster");
-    const cluster = clusterquery.rows;
+  var clusterquery = await db.query("SELECT * FROM cluster WHERE status != 'DESET'");
+  const cluster = clusterquery.rows;
 
     var itemOfQueryResult = await db.query(`
       SELECT item.*, cluster.description as cluster_description 
