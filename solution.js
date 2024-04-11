@@ -433,6 +433,10 @@ app.get("/add-item", (req, res) => {
   res.render("add-item.ejs", {clcode});
 });
 
+app.get("/update-item", (req, res) => {
+  res.render("update-item.ejs");
+});
+
 
 app.get("/stock", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -553,6 +557,111 @@ app.post("/add-item", async (req, res) => {
     res.redirect("/item");
   } catch (error) {
     console.error("Error adding item:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/update-item", async (req, res) => {
+  const { materialName, price} = req.body;
+
+  try {
+    const materialQueryResult = await db.query("SELECT material_name FROM item WHERE material_name = $1", [materialName]);
+    if (materialQueryResult.rows.length === 0) {
+      return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invalid Cluster Code</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1> ${materialName} is invalid or do not exist.</h1>
+                <button onclick="location.href='/item'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
+    }
+
+  await db.query(
+    "UPDATE item SET price = $1 WHERE material_name = $2",
+    [price, materialName]
+  );
+  
+  if (req.isAuthenticated()) {
+    const userPictureUrl = req.user.picture_url;
+    const logDescription = `${req.user.username} updated the price of ${materialName}`;
+    console.log(userPictureUrl);
+    await db.query(
+      "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Modified', CURRENT_DATE, $3, $4)",
+      [req.user.username, logDescription, userPictureUrl, materialName]
+    );
+  }
+
+    // Redirect back to the item page
+    res.redirect("/item");
+  } catch (error) {
+    console.error("Error updating item:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+app.post("/delete-item", async (req, res) => {
+  const { materialName } = req.body;
+
+  try {
+    const materialQueryResult = await db.query("SELECT material_name FROM item WHERE material_name = $1", [materialName]);
+    if (materialQueryResult.rows.length === 0) {
+      return res.status(400).send(`
+        <!DOCTYPE html>
+        ...
+        <h1> ${materialName} is invalid or do not exist.</h1>
+        ...
+      `);
+    }
+
+    // Delete the item
+    await db.query(
+      "DELETE FROM item WHERE material_name = $1",
+      [materialName]
+    );
+  
+    if (req.isAuthenticated()) {
+      const userPictureUrl = req.user.picture_url;
+      const logDescription = `${req.user.username} deleted the item: ${materialName}`;
+      console.log(userPictureUrl);
+      await db.query(
+        "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Deleted', CURRENT_DATE, $3, $4)",
+        [req.user.username, logDescription, userPictureUrl, materialName]
+      );
+    }
+
+    // Redirect back to the item page
+    res.redirect("/item");
+  } catch (error) {
+    console.error("Error deleting item:", error);
     res.status(500).send("Internal Server Error");
   }
 });

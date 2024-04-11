@@ -246,6 +246,7 @@ body {
 }
 
 .rightmost-text-portion {
+  margin-left: -1rem;
   width: 12rem;
   height: 2.5rem;
   border-radius: 2rem;
@@ -336,8 +337,8 @@ body {
 }
 
 .user-text-template {
-  margin-top: 1.2rem;
-  font-size: 0.9rem;
+  margin-top: 0.4rem;
+  font-size: 1.5rem;
   line-height: 1;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
