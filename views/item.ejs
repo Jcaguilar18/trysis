@@ -48,7 +48,7 @@
                 <div class="left-side-tables">
                   <div class="left-legend-area">
                     <div class="search-bar-left-legend">
-                      <input class="search-input-legend" type="text" placeholder="Search Code here"/>
+                      <input class="search-input-legend" type="text" id="myInput" onkeyup="myFunction()" placeholder="Search Code here"/>
                       <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                     </div>
                     <p class="left-legend-text">Legend (Fabrication)</p>
@@ -70,9 +70,7 @@
                               <td><%= cluster1.clustercode %></td>
                               <td><%= cluster1.description %></td>
                               <td>
-                                <!--TASK: Filter based on Classification Clicked-->
                                 <button class="action-buttons" onclick="editItemModal('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
-                                <!--TASK: Filter Items based on clustercode-->
                                 <button class="action-buttons" onclick="binCardModalFunction('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
                               </td>
                             </tr>
@@ -90,14 +88,14 @@
                   <div class="upper-right">
                     <div class="right-legend-area">
                       <div class="search-bar-right-legend">
-                        <input class="search-input-legend" type="text" placeholder="Search Code here"/>
+                        <input class="search-input-legend" type="text" id="myInput2" onkeyup="myFunction2()" placeholder="Search Code here"/>
                         <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                       </div>
-                      <p class="right-legend-text">Legend (Fabrication)</p>
+                      <p class="right-legend-text">Legend (Firepro)</p>
                       <img class="pencil-icon-right-legend" src="./assets/pencil-icon-item.png" onclick="openModal('2')"/>
                     </div>
                     <div class="tables-area-upper-right">
-                      <table id="itemTable" class="item-catalog-table">
+                      <table id="itemTable3" class="item-catalog-table">
                         <thead>
                           <tr>
                             <th>CODE</th>
@@ -113,9 +111,8 @@
                                 <td><%= cluster2.description %></td>
                                 <td>
                                   <!--TASK: Filter based on Classification Clicked-->
-                                  <button class="action-buttons" onclick="openModal('<%= cluster2.classification_id %>')" style="font-family: FontAwesome;"></button>
-                                  <!--TASK: Filter Items based on clustercode-->
-                                  <button class="action-buttons" onclick="editItemModal('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="editItemModal('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="binCardModalFunction('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
                               </tr>
                             <% }); %>
@@ -134,7 +131,7 @@
                         <input class="search-input-legend" type="text" placeholder="Search Code here"/>
                         <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                       </div>
-                      <p class="right-legend-text">Legend (Fabrication)</p>
+                      <p class="right-legend-text">Legend (Electrical)</p>
                       <img class="pencil-icon-right-legend" src="./assets/pencil-icon-item.png" onclick="openModal('3')"/>
                     </div>
                     <div class="tables-area-lower-right">
@@ -153,10 +150,8 @@
                                 <td><%= cluster3.clustercode %></td>
                                 <td><%= cluster3.description %></td>
                                 <td>
-                                  <!--TASK: Filter based on Classification Clicked-->
-                                  <button class="action-buttons" onclick="openModal('<%= cluster3.classification_id %>')" style="font-family: FontAwesome;"></button>
-                                  <!--TASK: Filter Items based on clustercode-->
-                                  <button class="action-buttons" onclick="editItemModal('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="editItemModal('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
+                                  <button class="action-buttons" onclick="binCardModalFunction('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
                               </tr>
                             <% }); %>
@@ -186,10 +181,8 @@
                         <td><%= cluster.clustercode %></td>
                         <td><%= cluster.description %></td>
                         <td>
-                          <!--TASK: Filter based on Classification Clicked-->
-                          <button class="action-buttons" onclick="openModal('<%= cluster.classification_id %>')" style="font-family: FontAwesome;"></button>
-                          <!--TASK: Filter Items based on clustercode-->
-                          <button class="action-buttons" onclick="editItemModal('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
+                          <button class="action-buttons" onclick="editItemModal('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
+                          <button class="action-buttons" onclick="binCardModalFunction('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
                         </td>
                       </tr>
                     <% }); %>
@@ -271,7 +264,7 @@
       <input type="text" id="material" name="material" placeholder="Search material..."> 
     </div>
     <div class="below-upper-table-part">
-      <button id="addItem" class="below-table-part-text">+ Add Item</button> 
+      <button id="addItem" class="below-table-part-text" onclick="location.href='/add-item'">+ Add Item</button> 
       <p class="below-table-part-text">ITEM DESCRIPTION</p>
       <p class="below-table-part-text">ACTION</p>
       <p class="below-table-part-text">AVAILABLE</p>
@@ -544,6 +537,50 @@ function discardChanges() {
 
 function saveChanges() {
 // Add your code here to save changes
+}
+
+function myFunction() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById('myInput');
+  filter = input.value.toUpperCase();
+  table = document.getElementById("itemTable");
+  tr = table.getElementsByTagName('tr');
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function myFunction2() {
+  // Declare variables
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById('myInput2');
+  filter = input.value.toUpperCase();
+  table = document.getElementById("itemTable3");
+  tr = table.getElementsByTagName('tr');
+
+  // Loop through all table rows, and hide those who don't match the search query
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
 }
 
     </script>

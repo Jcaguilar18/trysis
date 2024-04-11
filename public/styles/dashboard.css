@@ -175,21 +175,22 @@ body {
 }
 
 .daily-product-horizontal-slide .daily-update-box .text-area-update {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    height: 100%;
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center; /* Add this line */
 }
 
 .daily-product-horizontal-slide .daily-update-box .text-area-update .upper {
     flex: 1;
     display: flex;
     /* background-color: orange; */
+    justify-content: center;
 }
 
 .web-page .bottom-page-part .dashboard-area .daily-product-horizontal-slide .daily-update-box .text-area-update .upper .quantity {
   margin-top: 0.3rem;
-  margin-left: 4.5rem;
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
@@ -197,7 +198,9 @@ body {
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex-shrink: 0;
+  text-align: center;
 }
+
 .web-page .bottom-page-part .dashboard-area .daily-product-horizontal-slide .daily-update-box .text-area-update .upper .update-icon-indicator {
   margin-top: 0.3rem;
   margin-bottom: 0.1rem;
@@ -206,6 +209,7 @@ body {
   object-fit: contain;
   vertical-align: top;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .daily-product-horizontal-slide .daily-update-box .text-area-update .lower {
@@ -214,7 +218,7 @@ body {
 }
 
 .web-page .bottom-page-part .dashboard-area .daily-product-horizontal-slide .daily-update-box .text-area-update .lower .material-name {
-  margin: 0rem 0rem 0.2rem 2rem;
+  margin: 0rem 0rem 0.2rem 0rem;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.2125;
@@ -222,10 +226,11 @@ body {
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .web-page .bottom-page-part .dashboard-area .daily-product-horizontal-slide .daily-update-box .text-area-update .lower .item-name {
-  margin-left: 1rem;
+  margin-left: 0rem;
   margin-bottom: 0.5rem;
   font-size: 0.6rem;
   font-weight: 700;
@@ -234,10 +239,11 @@ body {
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .web-page .bottom-page-part .dashboard-area .daily-product-horizontal-slide .daily-update-box .text-area-update .lower .product-update {
-  margin-left: 2rem;
+  margin-left: 0rem;
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.2125;
@@ -245,6 +251,7 @@ body {
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex-shrink: 0;
+  text-align: center;
 }
 
 .web-page .bottom-page-part .dashboard-area .inventory-overview-title {

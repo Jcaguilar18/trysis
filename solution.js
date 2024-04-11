@@ -435,35 +435,6 @@ app.get("/stock", async (req, res) => {
   }
 });
 
-/*
-app.get("/logs/:page?", async (req, res) => {
-  try {
-    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-    var roleOf = roleOfQueryResult.rows[0]?.role;
-
-    var page = req.params.page || 1;
-    var offset = (page - 1) * 5;
-
-    var countQuery = await db.query("SELECT COUNT(*) FROM inventory");
-    var totalRecords = countQuery.rows[0].count;
-    var totalPages = Math.ceil(totalRecords / 5);
-    
-    var logsquery = await db.query("SELECT * FROM inventory ORDER BY changeid LIMIT 5 OFFSET $1", [offset]);
-    const logs = logsquery.rows;
-
-    console.log("testStock uname");
-    console.log(req.session.username);
-    console.log("end /logs");
-     
-    res.render("logs.ejs", {logs, roleOf, page, totalPages});
-  } catch (error) {
-    console.error(`Error: ${error}`);
-    res.status(500).send('An error occurred');
-  }
-});
-*/
-
-
 app.get("/bin", async (req, res) => {
   var clustercode = req.query.clustercode;
   var itemOfQueryResult = await db.query(`
@@ -487,20 +458,55 @@ app.get("/update-cluster", (req, res) => {
 
 // Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
-  const { materialName, clcode, price, available } = req.body;
+  const { materialName, clcode, price} = req.body;
 
   try {
     // Get the classification_id based on the provided clustercode
     const classificationQueryResult = await db.query("SELECT classification_id FROM cluster WHERE clustercode = $1", [clcode]);
     if (classificationQueryResult.rows.length === 0) {
-      return res.status(400).send("Invalid cluster code.");
+      return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Invalid Cluster Code</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>The cluster code ${clcode} is invalid.</h1>
+                <button onclick="location.href='/item'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
     }
     const classificationId = classificationQueryResult.rows[0].classification_id;
 
     // Insert the new item
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, price, available) VALUES ($1, $2, $3, $4, $5)",
-      [classificationId, materialName, clcode, price, available]
+      "INSERT INTO item (classification_id, material_name, clustercode, price) VALUES ($1, $2, $3, $4)",
+      [classificationId, materialName, clcode, price]
     );
 
     if (req.isAuthenticated()) {
@@ -508,11 +514,10 @@ app.post("/add-item", async (req, res) => {
       const logDescription = `${req.user.username} added a new item: ${materialName}`;
       console.log(userPictureUrl);
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Added', CURRENT_DATE, $3)",
-        [req.user.username, logDescription, userPictureUrl]
+        "INSERT INTO logs (username, description, trans_type, log_date, picture, dailyProdUpdate, logs_clustercode, logs_material_name) VALUES ($1, $2, 'Added', CURRENT_DATE, $3, 'Yes', $4, $5)",
+        [req.user.username, logDescription, userPictureUrl, clcode, materialName]
       );
     }
-    
 
     // Redirect back to the item page
     res.redirect("/item");
@@ -624,11 +629,31 @@ app.get("/dashboard", async (req, res) => {
 
       // Fetch the latest updates for products
       const productUpdatesResult = await db.query(`
-        SELECT * FROM logs 
-        ORDER BY log_date DESC, log_id DESC
-        LIMIT 3  -- Adjust the number as per your needs
-      `);
-      const productUpdates = productUpdatesResult.rows;
+      SELECT * FROM logs 
+      WHERE dailyprodupdate = 'Yes'
+      ORDER BY log_id DESC
+      LIMIT 4
+    `);
+    const productUpdates = productUpdatesResult.rows.map(row => {
+      let productUpdate = {};
+      productUpdate.materialName = row.logs_clustercode;
+      productUpdate.itemName = row.logs_material_name;
+      if (row.trans_type === 'Added' && row.incoming === null && row.outgoing === null) {
+        productUpdate.productUpdate = 'Stock Added';
+        productUpdate.quantity = '';
+      } else if (row.trans_type === 'Added' && row.incoming !== null && row.outgoing !== null) {
+        productUpdate.productUpdate = 'Stock Increased';
+        productUpdate.quantity = row.incoming - row.outgoing;
+      } else if (row.trans_type === 'Removed' && row.incoming !== null && row.outgoing !== null) {
+        productUpdate.productUpdate = 'Stock Decreased';
+        productUpdate.quantity = row.incoming - row.outgoing;
+      }
+      else if (row.trans_type === 'Modified' && row.incoming !== null && row.outgoing !== null) {
+        productUpdate.productUpdate = 'Stock Unchanged';
+        productUpdate.quantity = row.incoming - row.outgoing;
+      }
+      return productUpdate;
+    });
 
       // Calculate inventory subtotals
       const inventorySubtotalsResult = await db.query(`
@@ -790,7 +815,7 @@ app.post('/addstock', async (req, res) => {
       transType = 'Modified';
       logDescription = `${currentUser.username} added not stock for item: ${itemDescription}`;
     }
-    else if (newAvailable < 0){
+    else if (newAvailable < available){
       transType = 'Removed';
       logDescription = `${currentUser.username} decreased stock for item: ${itemDescription}`;
     }

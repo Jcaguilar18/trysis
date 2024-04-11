@@ -463,6 +463,8 @@ white-space: nowrap;
         cursor: pointer;
     }
 
+/******************************************Item Table 1****************************************/
+
     #itemTable {
       width: 100%; /* Make the table take up the full width of its container */
       border-collapse: collapse; /* Collapse borders to avoid double borders */
@@ -501,6 +503,48 @@ white-space: nowrap;
 
 #itemTable tr:nth-child(even) {
     background-color: #E1E1E1; /* #E1E1E1 for even rows */
+}
+
+/******************************Item Table 3************************************/
+
+#itemTable3 {
+  width: 100%; /* Make the table take up the full width of its container */
+  border-collapse: collapse; /* Collapse borders to avoid double borders */
+}
+
+#itemTable3 th, #itemTable3 td {
+  text-align: left; /* Align text to the left */
+  padding: 8px; /* Add some padding */
+  border: none; /* Remove all borders */
+}
+
+#itemTable3 th:first-child, #itemTable3 td:first-child {
+  border-left: 2px solid #000; /* Add left border to the first cell */
+}
+
+#itemTable3 th:last-child, #itemTable3 td:last-child {
+  border-right: 2px solid #000; /* Add right border to the last cell */
+}
+
+#itemTable3 tr:first-child th {
+  border-top: 2px solid #000; /* Add top border to the first row */
+}
+
+#itemTable3 tr:last-child td {
+  border-bottom: 2px solid #000; /* Add bottom border to the last row */
+}
+
+#itemTable3 th {
+  background-color: #3B2F36; /* Change the background color of the header cells */
+  color: #fff; /* Change the color of the text in the header cells to white */
+}
+
+#itemTable3 tr:nth-child(odd) {
+background-color: #fff; /* White for odd rows */
+}
+
+#itemTable3 tr:nth-child(even) {
+background-color: #E1E1E1; /* #E1E1E1 for even rows */
 }
 
 /******************************************************************************************/
