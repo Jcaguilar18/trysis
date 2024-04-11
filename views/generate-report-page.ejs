@@ -3,10 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Generate Report</title>
+  <script>
+    function changeActionToBinCard() {
+      document.getElementById('reportForm').action = '/generate-bincard';
+    }
+  </script>
 </head>
 <body>
   <h1>Generate Report</h1>
-  <form action="/generate-report-page" method="POST">
+  <form id="reportForm" action="/generate-report-page" method="POST">
     <label for="startDate">Start Date:</label>
     <input type="date" id="startDate" name="startDate" required>
     
@@ -14,6 +19,8 @@
     <input type="date" id="endDate" name="endDate" required>
 
     <button type="submit">Generate Report</button>
+    <!-- Additional button for generating bin card -->
+    <button type="submit" onclick="changeActionToBinCard()">Generate Bin Card</button>
   </form>
 </body>
 </html>

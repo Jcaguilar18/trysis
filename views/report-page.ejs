@@ -52,12 +52,11 @@
     <div class="report-container" id="report">
       <div class="report-title">
         <h1>Inventory Final Report</h1>
-        <% if (reportData && reportData.length > 0) { %>
-          <p>Report Period: <%= new Date(reportData[0].item_date).toDateString() %></p>
-        <% } else { %>
-          <p>Report Period: Not available</p>
-        <% } %>
+      
+          <p>Report Period: <%= marker %></p>
+        
       </div>
+      
       
   
       <% const classifications = { '1': 'Fabrication', '2': 'Firepro', '3': 'Electrical' }; %>

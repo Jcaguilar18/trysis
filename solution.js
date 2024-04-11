@@ -153,44 +153,118 @@ const generatePDF = (data) => {
   });
 };
 
+
 app.post("/generate-report-page", async (req, res) => {
-  const { endDate } = req.body; // Assuming you're getting endDate from the request
-  const currentUser = req.session.username; // Assuming username is stored in session
-  const currentRole = req.session.role; // Assuming user role is stored in session
+  const { endDate } = req.body;
+  const currentUser = req.session.username;
+const currentRole =req.session.roleOf;
 
+const marker = new Date(req.body.endDate).toISOString().split('T')[0];
+console.log(currentRole);
+console.log(currentUser);
+console.log(marker);
   try {
-    // Example database query, adjust according to your actual database and query
     const reportQueryResult = await db.query(`
-      SELECT classification_id, clustercode, description, available, price, item_date
-      FROM report
-      WHERE item_date::DATE = $1
-    `, [endDate]);
+    SELECT classification_id, clustercode, description, available, price, item_date
+FROM report
+WHERE item_date::DATE = $1
 
-    // Ensure reportData is declared and initialized before using it
-    let reportData = reportQueryResult.rows.map(row => ({
-      ...row,
-      total_amount: row.available * row.price
+    `, [endDate]);
+    
+
+    if (reportQueryResult.rows.length === 0) {
+      return res.status(404).send('No report found for the selected date.');
+    }
+
+    let aggregatedData = {};
+    reportQueryResult.rows.forEach(item => {
+      const key = item.clustercode;
+      if (!aggregatedData[key]) {
+        aggregatedData[key] = {
+          classification_id: item.classification_id,
+          clustercode: item.clustercode,
+          descriptions: new Set(),
+          total_amount: 0
+        };
+      }
+      aggregatedData[key].descriptions.add(item.description);
+      aggregatedData[key].total_amount += (item.available * item.price);
+    });
+
+    const reportData = Object.values(aggregatedData).map(item => ({
+      ...item,
+      description: Array.from(item.descriptions).join(", ")
     }));
 
-    // Ensure subtotals and grandTotal are calculated after reportData is initialized
+    // Calculate subtotals for each classification
     let subtotals = reportData.reduce((acc, item) => {
       const classification = item.classification_id.toString();
       acc[classification] = (acc[classification] || 0) + item.total_amount;
       return acc;
     }, {});
 
-    let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
+    
+    
 
-    // Pass the properly initialized reportData and other variables to the EJS template
+    // Calculate the grand total
+    let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
+    console.log(reportData[0].item_date);
+    console.log(reportQueryResult.rows);
+    console.log(reportData);
+
     res.render("report-page.ejs", {
       reportData,
       subtotals,
       grandTotal,
-      currentUser,
-      currentRole
+      currentUser: req.session.username,
+  currentRole: req.session.roleOf,
+      marker
     });
   } catch (err) {
     console.error('Error generating report page:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+app.post('/generate-bincard', async (req, res) => {
+  const { endDate } = req.body;
+  const currentUser = req.session.username;
+  const currentRole = req.session.role;
+
+  try {
+    const bincardDataQuery = await db.query(`
+      SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
+      FROM item
+      WHERE item_date <= $1
+      ORDER BY clustercode
+    `, [endDate]);
+
+    let bincards = {};
+
+    bincardDataQuery.rows.forEach(item => {
+      const clustercode = item.clustercode;
+      if (!bincards[clustercode]) {
+        bincards[clustercode] = { items: [] };
+      }
+
+      bincards[clustercode].items.push({
+        name: item.material_name,
+        description: item.description,
+        beginningInventory: item.beginning_inventory,
+        totalIncoming: item.total_incoming,
+        totalOutgoing: item.total_outgoing,
+        available: item.available,
+        unitPrice: item.price,
+        totalValue: item.available * item.price
+      });
+    });
+
+    res.render('bincard.ejs', {
+      bincards: bincards,
+      currentUser: currentUser,
+      currentRole: currentRole
+    });
+  } catch (err) {
+    console.error('Error generating bin card:', err);
     res.status(500).send('Internal Server Error');
   }
 });
