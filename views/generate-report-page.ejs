@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
   <!-- [existing head elements] -->
 </head>
 <body>
@@ -46,8 +47,19 @@
 <script>
   // Function to set report type and submit the form
   function setReportTypeAndSubmit(type) {
-    document.getElementById('reportType').value = type; // Set the report type based on the button clicked
-    document.getElementById('reportForm').submit(); // Submit the form
+    if (type === 'pdf') {
+      var opt = {
+        margin: 1,
+        filename: 'myfile.pdf',
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { scale: 2 },
+        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+      };
+      html2pdf().from(document.body).set(opt).save();
+    } else {
+      document.getElementById('reportType').value = type; // Set the report type based on the button clicked
+      document.getElementById('reportForm').submit(); // Submit the form
+    }
   }
 </script>
 </body>

@@ -8,16 +8,46 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 
-// Schedule the task to run at 11:59 PM every day
-cron.schedule('44 13 * * *', async () => {
+cron.schedule('43 8 * * *', async () => {
   try {
-    // Copy data from items to report
-    await db.query('INSERT INTO report SELECT *, CURRENT_DATE AS item_date FROM item');
-    console.log('Data copied from items to report successfully at 11:59 PM.');
+    // Begin transaction
+    await db.query('BEGIN');
+
+    // Insert the backup into the report table with the current timestamp
+    await db.query(`
+      INSERT INTO report (classification_id, material_name, clustercode, price, description, item_id, total_incoming, total_outgoing, beginning_inventory, item_date, available) 
+      SELECT classification_id, material_name, clustercode, price, description, item_id, total_incoming, total_outgoing, available, NOW(), available
+      FROM item
+    `);
+    console.log('Data backed up successfully.');
+
+    // Update the beginning_inventory to the most recent backup's available for each item
+    const updateBeginningInventoryQuery = `
+      UPDATE item i
+      SET beginning_inventory = (
+        SELECT r.available
+        FROM report r
+        WHERE r.material_name = i.material_name
+        ORDER BY r.item_date DESC
+        LIMIT 1
+      )
+    `;
+    await db.query(updateBeginningInventoryQuery);
+
+    // Reset incoming and outgoing totals
+    await db.query('UPDATE item SET total_incoming = 0, total_outgoing = 0');
+    console.log('Incoming and outgoing totals reset to zero.');
+
+    // Commit transaction
+    await db.query('COMMIT');
   } catch (error) {
-    console.error('Error copying data:', error);
+    // Rollback transaction in case of error
+    await db.query('ROLLBACK');
+    console.error('Error during backup process:', error);
   }
 });
+
+
 
 
 const app = express();
@@ -59,7 +89,7 @@ app.get("/login", (req, res) => {
   res.render("login.ejs");
 });
 
-// Assuming all necessary imports are at the top of your solution.js file
+
 
 
 import { fileURLToPath } from "url";
@@ -70,13 +100,10 @@ import fs from "fs";
 import dotenv from "dotenv";
 dotenv.config();
 
-// ... (other imports and configurations)
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-
-// ... (rest of your express and db setup)
-
 // Helper function to generate CSV
 const generateCSV = (data) => {
   const parser = new Parser();
@@ -97,7 +124,7 @@ const generatePDF = (data) => {
       classification_id: { columnWidth: 100, columnStart: 50 },
       material_name: { columnWidth: 150, columnStart: 150 },
       clustercode: { columnWidth: 100, columnStart: 300 },
-      // Add other columns as necessary
+     
     };
 
     // Draw the table header
@@ -165,9 +192,9 @@ app.post("/generate-report", async (req, res) => {
       fs.writeFileSync(csvPath, csvString);
       res.download(csvPath, async err => {
         if (err) {
-          throw err; // Handle error, but ensure the file is deleted if it was created.
+          throw err; 
         }
-        fs.unlinkSync(csvPath); // Delete the file after sending it
+        fs.unlinkSync(csvPath); 
       });
       // Log success
       await db.query(
@@ -449,38 +476,36 @@ app.post("/add-item", async (req, res) => {
   const { materialName, clcode, price, available } = req.body;
 
   try {
-    // Get the classification_id based on the provided clustercode
-    const classificationQueryResult = await db.query("SELECT classification_id FROM cluster WHERE clustercode = $1", [clcode]);
-    console.log(clcode);
-    if (classificationQueryResult.rows.length === 0) {
+    // Get the classification_id and description based on the provided clustercode
+    const clusterQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clcode]);
+    if (clusterQueryResult.rows.length === 0) {
       return res.status(400).send("Invalid cluster code.");
     }
-    const classificationId = classificationQueryResult.rows[0].classification_id;
+    const classificationId = clusterQueryResult.rows[0].classification_id;
+    const clusterDescription = clusterQueryResult.rows[0].description;
 
-    // Insert the new item
+    // Insert the new item along with the cluster description
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, price, available, beginning_inventory) VALUES ($1, $2, $3, $4, $5, $6)",
-      [classificationId, materialName, clcode, price, available, available]
+      "INSERT INTO item (classification_id, material_name, clustercode, price, available, beginning_inventory, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [classificationId, materialName, clcode, price, available, available, clusterDescription] // setting beginning_inventory equal to available
     );
 
     if (req.isAuthenticated()) {
       const userPictureUrl = req.user.picture_url;
-      const logDescription = `${req.user.username} added a new item: ${materialName}`;
-      console.log(userPictureUrl);
+      const logDescription = `${req.user.username} added a new item: ${materialName} with cluster description: ${clusterDescription}`;
       await db.query(
         "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Added', CURRENT_DATE, $3)",
         [req.user.username, logDescription, userPictureUrl]
       );
     }
     
-
-    // Redirect back to the item page
     res.redirect("/item");
   } catch (error) {
     console.error("Error adding item:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 app.post('/delete-item', async (req, res) => {
   const { item_id } = req.body;
@@ -570,7 +595,7 @@ app.get("/dashboard", async (req, res) => {
         roleOf: roleOf,
         productUpdates: productUpdates,
         inventorySubtotals: inventorySubtotals,
-        // ... pass other necessary data as well
+      
       });
 
     } catch (err) {
@@ -617,47 +642,44 @@ app.get('/login-failed', function(req, res) {
   res.render('login.ejs', { error: error });
 });
 
-
 app.post('/addstock', async (req, res) => {
-  const { no, clustercode, incoming, outgoing, itemDescription } = req.body;
+  const { clustercode, incoming, outgoing, itemDescription } = req.body;
 
   try {
-    // Check if the item with the given itemDescription exists in the database
-    const checkResult = await db.query("SELECT * FROM item WHERE material_name = $1", [itemDescription]);
-
-    if (checkResult.rows.length === 0) {
-      res.status(400).send('Item not found');
-      return;
-    }
-
     // Parse incoming and outgoing as integers
     const parsedIncoming = parseInt(incoming, 10);
     const parsedOutgoing = parseInt(outgoing, 10);
 
     // Check if parsing is successful
     if (isNaN(parsedIncoming) || isNaN(parsedOutgoing)) {
-      res.status(400).send('Invalid incoming or outgoing value');
+      res.status(400).send('Invalid incoming or outgoing values');
       return;
     }
 
-    // Fetch the available value from the item table
-    const fetchAvailableQuery = `SELECT available FROM item WHERE material_name = $1`;
-    const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
-    const available = fetchAvailableResult.rows[0].available;
+    // Check if the item exists in the item table
+    const itemCheckQuery = `SELECT * FROM item WHERE material_name = $1`;
+    const itemCheckResult = await db.query(itemCheckQuery, [itemDescription]);
 
-    // Calculate new available value
-    const newAvailable = available + parsedIncoming - parsedOutgoing;
+    if (itemCheckResult.rows.length === 0) {
+      res.status(404).send('Item not found');
+      return;
+    }
 
-    // Update the item table
-    const updateQuery = `
+    // Get the current available, total incoming, and total outgoing for the item
+    const currentItem = itemCheckResult.rows[0];
+    const newTotalIncoming = currentItem.total_incoming + parsedIncoming;
+    const newTotalOutgoing = currentItem.total_outgoing + parsedOutgoing;
+    const newAvailable = currentItem.available + parsedIncoming - parsedOutgoing;
+
+    // Update the item with new totals
+    const updateItemQuery = `
       UPDATE item
-      SET beginning_inventory = $1,
-          available = $2,
-          total_outgoing = total_outgoing + $3,
-          total_incoming = total_incoming + $4
-      WHERE material_name = $5
+      SET available = $1,
+          total_incoming = $2,
+          total_outgoing = $3
+      WHERE material_name = $4
     `;
-    await db.query(updateQuery, [newAvailable, newAvailable, parsedOutgoing, parsedIncoming, itemDescription]);
+    await db.query(updateItemQuery, [newAvailable, newTotalIncoming, newTotalOutgoing, itemDescription]);
 
     // If the user is authenticated, log the action
     if (req.isAuthenticated()) {
@@ -666,8 +688,8 @@ app.post('/addstock', async (req, res) => {
 
       // Insert the log entry into the logs table
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, $3, CURRENT_DATE, $4)",
-        [currentUser.username, logDescription, 'Modified', currentUser.picture_url]
+        "INSERT INTO logs (username, description, trans_type, log_date, quantity, picture) VALUES ($1, $2, 'Stock Update', CURRENT_DATE, $3, $4)",
+        [currentUser.username, logDescription, newAvailable, currentUser.picture_url]
       );
     }
 
@@ -677,6 +699,17 @@ app.post('/addstock', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 //////////////
 app.post("/register", upload.single('picture'), async (req, res) => {
