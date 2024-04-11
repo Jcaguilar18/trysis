@@ -262,6 +262,7 @@ body {
   color: brown;
 }
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area form .upper-set-date-button {
+  text-align: center;
   margin: 0rem 0.3rem 2rem 0rem;
   width: 15rem;
   height: 5rem;

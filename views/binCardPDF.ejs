@@ -39,10 +39,29 @@
         font-size: larger;
       }
 
+      #download {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+#download:hover {
+  background-color: #45a049;
+}
+
     </style>
 </head>
 <body>
 
+<div id="printPage">
 <div style="display: flex; justify-content: space-between; align-items: center;">
     <p><%= new Date().toLocaleDateString() %> <%= new Date().toLocaleTimeString() %></p> 
     <h1 class="top-bin-card">INVENTORY BIN CARD</h1> 
@@ -88,12 +107,13 @@
     </td>
   </tr>
 </table>
-
+</div>
 <button id="download">Download as PDF</button>
 
+</body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 <script>
-  var element = document.body;
+    var element = document.body;
   document.getElementById("download").addEventListener("click", function () {
     html2pdf().set({ 
       margin: 0,

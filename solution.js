@@ -283,9 +283,10 @@ app.get("/item", async (req, res) => {
   res.setHeader("Expires", "0");
   try {
 
-    var roleOfQueryResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.session.username]);
-    var roleOf = roleOfQueryResult.rows[0]?.role;
-    var pictureUrl = roleOfQueryResult.rows[0]?.picture_url;
+    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+    const user = userResult.rows[0];
+    const roleOf = user?.role;
+    const pictureUrl = user?.picture_url;
 
     var itemOfQueryResult = await db.query(`
     SELECT 
@@ -346,14 +347,12 @@ app.get("/manage", async (req, res) => {
   const userResultToPage = await db.query("SELECT picture_url, role FROM users WHERE username = $1", [req.user.username]);
   const user = userResultToPage.rows[0];
   const pictureUrl = user?.picture_url;
-  const roleOfUser = user?.role;
+  const roleOf = user?.role;
   
       // Fetch user data from the database
       const usersResult = await db.query("SELECT * FROM users");
       const users = usersResult.rows;
-      
-      var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
-      var roleOf = roleOfQueryResult.rows[0]?.role;
+    
       console.log("Start: testing in /manage");
       console.log(roleOf);
       console.log(req.session.username);////////////////////////////////////////////// important code take note!
@@ -361,7 +360,7 @@ app.get("/manage", async (req, res) => {
    
 
       // Render the "manage.ejs" template with the user data
-      res.render("manage.ejs", { users, roleOf, pictureUrl: './uploads/' + pictureUrl, roleOfUser: roleOfUser });
+      res.render("manage.ejs", { users, roleOf, pictureUrl: './uploads/' + pictureUrl});
   } catch (err) {
       console.log(err);
       res.redirect("/login");
