@@ -460,4 +460,28 @@ passport.deserializeUser((user, cb) => {
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
+<<<<<<< Updated upstream
+=======
+});
+
+
+
+
+app.get('/download', async (req, res) => {
+  const { rows: reportData } = await db.query('SELECT * FROM cluster'); // get data from cluster table
+  const csvString = generateCSV(reportData);
+  const csvPath = join(__dirname, `report-${Date.now()}.csv`);
+  fs.writeFileSync(csvPath, csvString);
+  res.download(csvPath, async err => {
+    if (err) {
+      throw err; // Handle error, but ensure the file is deleted if it was created.
+    }
+    fs.unlinkSync(csvPath); // Delete the file after sending it
+  });
+  // Log success
+  await db.query(
+    "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
+    [req.user.username, 'CSV report generated', req.user.picture_url]
+  );
+>>>>>>> Stashed changes
 });
