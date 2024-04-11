@@ -1,66 +1,19 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
-  <!-- [existing head elements] -->
+  <meta charset="UTF-8">
+  <title>Generate Report</title>
 </head>
 <body>
-<div class="web-page">
-  <div class="top-bar">
-    <!-- [existing top bar elements] -->
-  </div>
-  <div class="bottom-page-part">
-    <!-- <%- include('sidebar') %> -->
-    <div class="below-top-bar">
-      <div class="inner-frame">
-        <p class="generate-report-title">Generate Report</p>
-        <form action="/generate-report" method="post" id="reportForm">
-          <div class="upper-inner">
-            <!-- [existing upper inner elements] -->
-            <div class="date-frame">
-              <div class="date-text-area">
-                <!-- [existing date text area elements] -->
-              </div>
-              <div class="textfield-areas">
-                <input type="date" name="startDate" required> <!-- Input for the start date -->
-                <input type="date" name="endDate" required>   <!-- Input for the end date -->
-              </div>
-            </div>
-            <!-- Hidden input to determine the type of report to generate -->
-            <input type="hidden" name="reportType" id="reportType" value="">
-          </div>
-          <p class="preview-final-report-text">Preview Final Report:</p>
-          <!-- [existing preview area elements] -->
-          <div class="set-date-buttons-area">
-            <!-- Buttons to define the type of report -->
-            <button type="button" class="generate-report-button" onclick="setReportTypeAndSubmit('pdf')">Generate PDF</button>
-            <button type="button" class="generate-report-button" onclick="setReportTypeAndSubmit('csv')">Generate CSV</button>
-          </div>
-        </form>
-      </div>
-      <div class="right-corner-side">
-        <!-- [existing right corner side elements] -->
-      </div>
-    </div>
-  </div>
-</div>
-<script>
-  // Function to set report type and submit the form
-  function setReportTypeAndSubmit(type) {
-    if (type === 'pdf') {
-      var opt = {
-        margin: 1,
-        filename: 'myfile.pdf',
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { scale: 2 },
-        jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      html2pdf().from(document.body).set(opt).save();
-    } else {
-      document.getElementById('reportType').value = type; // Set the report type based on the button clicked
-      document.getElementById('reportForm').submit(); // Submit the form
-    }
-  }
-</script>
+  <h1>Generate Report</h1>
+  <form action="/generate-report-page" method="POST">
+    <label for="startDate">Start Date:</label>
+    <input type="date" id="startDate" name="startDate" required>
+    
+    <label for="endDate">End Date:</label>
+    <input type="date" id="endDate" name="endDate" required>
+
+    <button type="submit">Generate Report</button>
+  </form>
 </body>
 </html>

@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 
-cron.schedule('43 8 * * *', async () => {
+cron.schedule('10 11 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -154,65 +154,51 @@ const generatePDF = (data) => {
 };
 
 // Route handler for report generation
-app.post("/generate-report", async (req, res) => {
-  const { startDate, endDate, reportType } = req.body;
+app.post("/generate-report-page", async (req, res) => {
+  const { endDate } = req.body;
+
   try {
-    const reportQueryResult = await db.query("SELECT * FROM report WHERE item_date BETWEEN $1 AND $2", [startDate, endDate]);
+    // Fetch the latest entry for each material_name for the final date
+    const reportQueryResult = await db.query(`
+      SELECT DISTINCT ON (material_name) *
+      FROM report
+      WHERE item_date::DATE = $1::DATE
+      ORDER BY material_name, item_date DESC
+    `, [endDate]);
+
     const reportData = reportQueryResult.rows;
 
-    let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
-
-    if (reportType === 'pdf') {
-      try {
-        const pdfPath = await generatePDF(reportData);
-        res.download(pdfPath, async err => {
-          if (err) {
-            throw err; // Handle error, but ensure the file is deleted if it was created.
-          }
-          fs.unlinkSync(pdfPath); // Delete the file after sending it
-        });
-        // Log success
-        await db.query(
-          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
-          [req.user.username, logDescription, req.user.picture_url]
-        );
-      } catch (pdfErr) {
-        console.error('Error generating PDF:', pdfErr);
-        res.status(500).send('Error generating PDF');
-        logDescription = `Failed to generate PDF report for period ${startDate} to ${endDate}`;
-        // Log failure
-        await db.query(
-          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
-          [req.user.username, logDescription, req.user.picture_url]
-        );
-      }
-    } else if (reportType === 'csv') {
-      const csvString = generateCSV(reportData);
-      const csvPath = join(__dirname, `report-${Date.now()}.csv`);
-      fs.writeFileSync(csvPath, csvString);
-      res.download(csvPath, async err => {
-        if (err) {
-          throw err; 
-        }
-        fs.unlinkSync(csvPath); 
-      });
-      // Log success
-      await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
-        [req.user.username, logDescription, req.user.picture_url]
-      );
+    if (reportData.length === 0) {
+      return res.status(404).send('No report found for the selected date.');
     }
+
+    // Proceed to pass reportData to the session or directly to the template
+    req.session.reportData = reportData;
+    res.redirect("/view-report");
   } catch (err) {
-    console.error('Error generating report:', err);
+    console.error('Error generating report page:', err);
     res.status(500).send('Internal Server Error');
-    logDescription = `Failed to generate report for period ${startDate} to ${endDate}`;
-    // Log failure
-    await db.query(
-      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
-      [req.user.username, logDescription, req.user.picture_url]
-    );
   }
 });
+
+
+
+// ... your existing code ...
+app.get("/view-report", (req, res) => {
+  const reportData = req.session.reportData;
+  const currentUser = req.session.username; // This should be set when the user logs in
+  const currentRole =req.session.roleOf;
+console.log(currentUser);
+console.log(currentRole);
+  if (!reportData) {
+    return res.status(404).send('No report available to view.');
+  }
+
+  res.render("report-page.ejs", { reportData, currentUser, currentRole });
+});
+
+
+
 
 import path from 'path';
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -618,7 +604,7 @@ app.get("/generate-report-page", async (req, res) => {
     try {
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
-      req.session.roleOf = roleOf;
+      req.session.roleOf = roleOf.rows[0].role;
       res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role });
       
     } catch (err) {
