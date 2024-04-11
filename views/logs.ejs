@@ -51,8 +51,10 @@
                 <img class="entry-icon" src="./assets/modified_icon.png"/>
               <% } else if (log.trans_type === 'Removed') { %>
                 <img class="entry-icon" src="./assets/arrowdown-1.png"/>
+              <% } else { %>
+                <img class="entry-icon" src="./assets/logsicon-1-Vzd.png"/>
               <% } %>
-            </div>
+              </div>
             <div class="date-portion">
               <p class="month-portion"><%= new Date(log.log_date).toLocaleString('default', { month: 'long' }) %> <%= new Date(log.log_date).getDate() %>,</p>
               <p class="year-portion"><%= new Date(log.log_date).getFullYear() %></p>
@@ -69,6 +71,7 @@
               </div>
             </div>
             <div class="name-portion">
+              <img class="user-image-template" src="./upload/picture-1712580662762-208828990" alt="<%= log.username %>"/>
               <p class="user-text-template"><%= log.username %></p>
             </div>
             <div class="rightmost-text-portion <%= log.trans_type === 'Modified' ? 'modified' : (log.trans_type === 'Added' ? 'added' : (log.trans_type === 'Removed' ? 'removed' : '')) %>">
