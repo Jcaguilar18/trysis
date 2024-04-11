@@ -283,13 +283,9 @@ app.get("/item", async (req, res) => {
   res.setHeader("Expires", "0");
   try {
 
-    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOfQueryResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.session.username]);
     var roleOf = roleOfQueryResult.rows[0]?.role;
-
-    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-    const user = userResult.rows[0];
-    const roleOfUser = user?.role;
-    const pictureUrl = user?.picture_url;
+    var pictureUrl = roleOfQueryResult.rows[0]?.picture_url;
 
     var itemOfQueryResult = await db.query(`
     SELECT 
@@ -332,7 +328,8 @@ app.get("/item", async (req, res) => {
     const cluster4 = allClusterQuery.rows;
     const item= itemOfQueryResult.rows;
 
-    res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, roleOfUser, cluster4});
+  res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, cluster4});
+
   } catch (err) {
     console.error(err);
     // res.redirect("/login");
