@@ -236,12 +236,7 @@ app.get("/dashboard", async (req, res) => {
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
       req.session.roleOf = roleOf;
-
-      
       //console.log('Accessed session username:', req.session.username);
-      
-       
-      
       res.render("dashboard.ejs", { roleOf: roleOf.rows[0].role });
       
     } catch (err) {
