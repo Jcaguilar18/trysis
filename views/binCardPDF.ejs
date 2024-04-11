@@ -1,59 +1,155 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Simple HTML Page</title>
     <style>
+      body {
+        font-family: Calibri;
+      }
       table, th, td {
-        border: 1px solid black;
+        border: 2px solid black;
         border-collapse: collapse;
+        text-align: center;
       }
       th, td {
         padding: 15px;
       }
+      .bold {
+        font-weight: bold;
+      }
+      .yellow {
+        background-color: yellow;
+        font-size: 2rem;
+      }
+      .green {
+        background-color: #e2efd9;
+      }
+      .white {
+        background-color: white;
+      }
+
+      .inventory-header {
+        font-weight: bold;
+        font-size: larger;
+        color: white;
+        background-color: black;
+      }
+
+      .cluster-description {
+        font-weight: bold;
+        font-size: larger;
+      }
+
     </style>
 </head>
 <body>
-    <h1>Welcome to My Simple HTML Page</h1>
-    <p>This is a paragraph.</p>
-    <table>
-      <tr>
-        <th colspan="7">INVENTORY BIN CARD</th>
-      </tr>
-      <tr>
-        <td>Name of Material:</td>
-        <td><%= clusterDescription %></td>
-        <td>Code:</td>
-        <td><%= clusterCode %></td>
-      </tr>
-      <tr>
-        <td>Item Description</td>
-        <td>Beginning Inventory</td>
-        <td>Total Incoming</td>
-        <td>Total Out-Going</td>
-        <td>Available</td>
-        <td>Unit Price</td>
-        <td>Value of Raw Mat. On Hand</td>
-      </tr>
-      <% productUpdates.forEach(function(product) { %>
-        <tr>
-          <td><%= product.material_name %></td>
-          <td>0</td>
-          <td>0</td>
-          <td>0</td>
-          <td><%= product.available %></td>
-          <td><%= product.price %></td>
-          <td><%= product.available * product.price %></td>
-        </tr>
-      <% }); %>
-      <tr>
-        <td>Php</td>
-        <td colspan="6">
-          <% var totalValue = productUpdates.reduce(function(total, product) {
-            return total + product.available * product.price;
-          }, 0); %>
-          <%= totalValue %>
-        </td>
-      </tr>
-    </table>
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+    <p><%= new Date().toLocaleDateString() %> <%= new Date().toLocaleTimeString() %></p> 
+    <h1 class="top-bin-card">INVENTORY BIN CARD</h1> 
+</div>
+
+<table>
+  <tr>
+    <td colspan="7" class="inventory-header">INVENTORY BIN CARD</td>
+  </tr>
+  <tr>
+    <td class="bold">Name of Material:</td>
+    <td colspan="3" class="cluster-description"><%= clusterDescription %></td>
+    <td class="bold">Code:</td>
+    <td class="yellow" colspan="2"><%= clusterCode %></td>
+  </tr>
+  <tr class="green">
+    <td class="bold">Item Description</td>
+    <td class="bold">Beginning Inventory</td>
+    <td class="bold">Total Incoming</td>
+    <td>Total Out-Going</td>
+    <td class="bold">Available</td>
+    <td>Unit Price</td>
+    <td class="bold">Value of Raw Mat. On Hand</td>
+  </tr>
+  <% productUpdates.forEach(function(product) { %>
+    <tr class="white">
+      <td class="bold"><%= product.material_name %></td>
+      <td>0</td>
+      <td>0</td>
+      <td>0</td>
+      <td class="bold"><%= product.available %></td>
+      <td>₱<%= product.price %></td>
+      <td class="bold">₱<%= product.available * product.price %></td>
+    </tr>
+  <% }); %>
+  <tr>
+    <td colspan="4"></td>
+    <td colspan="6" class="bold">
+      <% var totalValue = productUpdates.reduce(function(total, product) {
+        return total + product.available * product.price;
+      }, 0); %>
+      ₱<%= totalValue %>
+    </td>
+  </tr>
+  <tr class="green">
+    <td class="bold">Item Description</td>
+    <td class="bold">Beginning Inventory</td>
+    <td class="bold">Total Incoming</td>
+    <td>Total Out-Going</td>
+    <td class="bold">Available</td>
+    <td>Unit Price</td>
+    <td class="bold">Value of Raw Mat. On Hand</td>
+  </tr>
+  <tr class="green">
+    <td class="bold">Item Description</td>
+    <td class="bold">Beginning Inventory</td>
+    <td class="bold">Total Incoming</td>
+    <td>Total Out-Going</td>
+    <td class="bold">Available</td>
+    <td>Unit Price</td>
+    <td class="bold">Value of Raw Mat. On Hand</td>
+  </tr>
+  <tr class="green">
+    <td class="bold">Item Description</td>
+    <td class="bold">Beginning Inventory</td>
+    <td class="bold">Total Incoming</td>
+    <td>Total Out-Going</td>
+    <td class="bold">Available</td>
+    <td>Unit Price</td>
+    <td class="bold">Value of Raw Mat. On Hand</td>
+  </tr>
+
+  <tr class="green">
+    <td class="bold">Item Description</td>
+    <td class="bold">Beginning Inventory</td>
+    <td class="bold">Total Incoming</td>
+    <td>Total Out-Going</td>
+    <td class="bold">Available</td>
+    <td>Unit Price</td>
+    <td class="bold">Value of Raw Mat. On Hand</td>
+  </tr>
+  <tr class="green">
+    <td class="bold">Item Description</td>
+    <td class="bold">Beginning Inventory</td>
+    <td class="bold">Total Incoming</td>
+    <td>Total Out-Going</td>
+    <td class="bold">Available</td>
+    <td>Unit Price</td>
+    <td class="bold">Value of Raw Mat. On Hand</td>
+  </tr>
+</table>
+
+<button id="download">Download as PDF</button>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+<script>
+  var element = document.body;
+  document.getElementById("download").addEventListener("click", function () {
+    html2pdf().set({ 
+      margin: 0,
+      filename: 'myfile.pdf',
+      image: { type: 'jpeg', quality: 0.98 },
+      html2canvas: { scale: 2 },
+      jsPDF: { unit: 'in', format: 'letter', orientation: 'portrait' }
+    }).from(element).save();
+  });
+</script>
+
 </body>
 </html>
