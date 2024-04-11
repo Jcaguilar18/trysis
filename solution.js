@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 
-cron.schedule('10 11 * * *', async () => {
+cron.schedule('56 13 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -153,26 +153,30 @@ const generatePDF = (data) => {
   });
 };
 
-// Route handler for report generation
 app.post("/generate-report-page", async (req, res) => {
   const { endDate } = req.body;
 
   try {
-    // Fetch the latest entry for each material_name for the final date
+    // Modified query to select the most recent backup for each clustercode
     const reportQueryResult = await db.query(`
-      SELECT DISTINCT ON (material_name) *
+      SELECT DISTINCT ON (clustercode) classification_id, clustercode, material_name, price, description, available
       FROM report
-      WHERE item_date::DATE = $1::DATE
-      ORDER BY material_name, item_date DESC
+      WHERE item_date::DATE = $1
+      ORDER BY clustercode, item_date DESC
     `, [endDate]);
 
-    const reportData = reportQueryResult.rows;
+    // Since we're now directly fetching the most recent entry for each clustercode, 
+    // we can directly use the fetched rows without further aggregation.
+    const reportData = reportQueryResult.rows.map(item => ({
+      ...item,
+      total_amount: item.available * item.price
+    }));
 
     if (reportData.length === 0) {
       return res.status(404).send('No report found for the selected date.');
     }
 
-    // Proceed to pass reportData to the session or directly to the template
+    // Store in session or pass directly
     req.session.reportData = reportData;
     res.redirect("/view-report");
   } catch (err) {
@@ -180,6 +184,9 @@ app.post("/generate-report-page", async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
 
 
 
