@@ -441,10 +441,10 @@ white-space: nowrap;
     /* Modal Content/Box */
     .modal-content {
         background-color: #3b2f36;
-        margin: 5% 45% 10% 10%; /* top right bottom left */
+        margin: 5% 5% 10% 10%; /* top right bottom left */
         padding: 20px;
         border: 1px solid #888;
-        width: 75%; /* Could be more or less, depending on screen size */
+        width: 93%; /* Could be more or less, depending on screen size */
         border-radius: 2rem;
     }
   
@@ -718,6 +718,24 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   flex-shrink: 0;
 }
 
+.table-section .entry .status-dropdown {
+  margin-left: 2rem;
+  width: 7rem;
+  height: 3rem;
+  font-size: 1.2rem;
+  font-weight: 300;
+  line-height: 1.2125;
+  color: #000000;
+  font-family: Inter, 'Source Sans Pro';
+  background-color: #d9d9d9;
+  border-radius: 2rem;
+  flex-shrink: 0;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .classification_hidden{
   display: none;
 }
@@ -760,7 +778,8 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
   flex-shrink: 0;
 }
   
-.lower-section .save-button {
+.save-button {
+  margin-left: 2rem;
   width: 9rem;
   height: 3rem;
   font-size: 1.5rem;
@@ -935,15 +954,25 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 }
 
 .below-table-part-text {
+  padding: 0.5rem;
   margin-top: 0.5rem;
   margin-left: 0.4rem; 
-  font-size: 1rem;
+  font-size: 0.7rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
   white-space: nowrap;
   flex: 1;
+}
+
+.below-table-part-text2 {
+  /* Add your styles here */
+  font-size: 1rem;
+  font-weight: bold;
+  color: white;
+  margin-top: 0.5rem;
+  margin-left: 1rem;
 }
 
 .upper-table-part input {

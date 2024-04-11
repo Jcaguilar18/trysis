@@ -237,13 +237,13 @@ app.get("/logs", async (req, res) => {
 
     if (transTypeFilter) {
       query = {
-        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
+        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
         values: [transTypeFilter, logsPerPage, offset],
       };
       countResult = await db.query("SELECT COUNT(*) FROM logs WHERE trans_type = $1", [transTypeFilter]);
     } else {
       query = {
-        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, picture FROM logs ORDER BY log_id DESC LIMIT $1 OFFSET $2",
+        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs ORDER BY log_id DESC LIMIT $1 OFFSET $2",
         values: [logsPerPage, offset],
       };
       countResult = await db.query("SELECT COUNT(*) FROM logs");
@@ -291,18 +291,48 @@ app.get("/item", async (req, res) => {
     const roleOfUser = user?.role;
     const pictureUrl = user?.picture_url;
 
-    var itemOfQueryResult = await db.query("SELECT * FROM item");
-    var clusterquery = await db.query("SELECT * FROM cluster");
-    var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1");
-    var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2");
-    var clusterquery3 = await db.query("SELECT * FROM cluster WHERE classification_id = 3");
+    var itemOfQueryResult = await db.query(`
+    SELECT 
+    i.classification_id,
+    i.material_name AS item_description,
+    i.clustercode,
+    COALESCE(l2.logs_available, 0) AS beginning_inventory,
+    COALESCE(SUM(l.incoming), 0) AS total_incoming,
+    COALESCE(SUM(l.outgoing), 0) AS total_outgoing,
+    i.available,
+    i.price,
+    i.description,
+    ROUND((i.available * i.price)::numeric, 2) AS value_of_raw_material_on_hand
+  FROM item i
+  LEFT JOIN logs l ON i.clustercode = l.logs_clustercode AND i.material_name = l.logs_material_name
+  LEFT JOIN (
+    SELECT 
+      logs_material_name, 
+      logs_clustercode, 
+      logs_available 
+    FROM logs 
+    WHERE log_date < CURRENT_DATE
+    ORDER BY log_date DESC, log_id DESC 
+    LIMIT 1
+  ) l2 ON i.material_name = l2.logs_material_name AND i.clustercode = l2.logs_clustercode
+  LEFT JOIN cluster c ON i.clustercode = c.clustercode
+  WHERE c.status <> 'DESET'
+  GROUP BY i.classification_id, i.material_name, i.clustercode, l2.logs_available, i.available, i.price, i.description
+  ORDER BY MAX(l.log_id) DESC
+   `);
+    var clusterquery = await db.query("SELECT * FROM cluster WHERE status != 'DESET'");
+    var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1 AND status != 'DESET'");
+    var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2 AND status != 'DESET'");
+    var clusterquery3 = await db.query("SELECT * FROM cluster WHERE classification_id = 3 AND status != 'DESET'");
+    var allClusterQuery = await db.query("SELECT * FROM cluster");
     const cluster = clusterquery.rows;
     const cluster1 = clusterquery1.rows;
     const cluster2 = clusterquery2.rows;
     const cluster3 = clusterquery3.rows;
+    const cluster4 = allClusterQuery.rows;
     const item= itemOfQueryResult.rows;
 
-    res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, roleOfUser});
+    res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, roleOfUser, cluster4});
   } catch (err) {
     console.error(err);
     // res.redirect("/login");
@@ -561,13 +591,14 @@ app.post("/add-cluster", async (req, res) => {
 });
 
 app.post("/update-cluster", async (req, res) => {
-  const { classification_id, code, description } = req.body;
+  const { classification_id, code, description, status } = req.body;
 
   try {
     let updateFields = {
       classification_id: classification_id,
       clustercode: code,
       description: description,
+      status: status // Change 'SET' to 'DESET'
     };
 
     const setClause = Object.keys(updateFields)

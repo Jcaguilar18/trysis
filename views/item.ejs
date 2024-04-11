@@ -214,17 +214,20 @@
                 <p class="code-text">CODE</p>
                 <p class="description-text">DESCRIPTION</p>
             </div>
-            <% if (cluster && cluster.length > 0) { %>
-                <% cluster.forEach(cluster => { %>
+            <% if (cluster4 && cluster4.length > 0) { %>
+                <% cluster4.forEach(cluster => { %>
                   <form action="/update-cluster" method="POST" class="table">
                     <div class="entry">
-                        <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
-                        <div class="classification_hidden" id="cluster_cell" contenteditable="true"><%= cluster.classification_id %></div>
-                        <!-- <input type="text" class="classification_hidden" name="classification_id" id="cluster_cell" value="<%= cluster.classification_id %>"> -->
-                        <input type="text" class="code" name="code" id="cluster_cell" value="<%= cluster.clustercode %>">
-                        <input type="text" class="description" name="description" id="cluster_cell" value="<%= cluster.description %>">
-                        <img class="gear" id="cluster_cell" src="./assets/changinggear-1.png"/>
-                        <button type="submit">Save</button>
+                      <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
+                      <div class="classification_hidden" id="cluster_cell" contenteditable="true"><%= cluster.classification_id %></div>
+                      <input type="text" class="code" name="code" id="cluster_cell" value="<%= cluster.clustercode %>" style="text-align: center;">
+                      <input type="text" class="description" name="description" id="cluster_cell" value="<%= cluster.description %>">
+                      <img class="gear" id="cluster_cell" src="<%= cluster.status === 'SET' ? './assets/changinggear-1.png' : './assets/deset_icon.png' %>"/>
+                      <select class="status-dropdown" name="status" id="status_dropdown" onchange="updateIcon(this.value)">
+                        <option value="SET" <%= cluster.status === 'SET' ? 'selected' : '' %>>SET</option>
+                        <option value="DESET" <%= cluster.status === 'DESET' ? 'selected' : '' %>>DESET</option>
+                      </select>
+                      <button type="submit" class="save-button">Save</button>
                     </div>
                   </form>
                 <% }); %>
@@ -241,7 +244,6 @@
             <!-- <button onclick="discardChanges()" class="discard-button">Discard</button> -->
             <!-- <button onclick="saveChanges()" class="save-button">Save</button> -->
             <!-- <button onclick="window.open('/update-cluster', '_blank')" class="save-button">Update</button> -->
-            <button onclick="window.open('/update-cluster', '_blank')" class="save-button">Update</button>
             <!--- <button onclick="additemFunction('<%= cluster.clustercode %>')" class="add-item-button">Add Item</button> -->
         </div>
     </div>
@@ -286,7 +288,7 @@
           </div>
           <div class="table-cell"><%= item.available %></div>
           <div class="table-cell">₱<%= item.price %></div>
-          <div class="table-cell">₱<%= item.price * item.available %></div>
+          <div class="table-cell">₱<%= (item.price * item.available).toFixed(2) %></div>
         </div>
       <% }); %>
     <% } else { %>
@@ -328,12 +330,13 @@
           <% item.forEach(item => { %>
             <div class="table-row">
               <div class="table-cell2" style="display: none;"><%= item.clustercode %></div>
-              <div class="table-cell2"><%= item.material_name %></div>
-              <div class="table-cell2"><%= item.price %></div>
+              <div class="table-cell2">₱<%= item.item_description %></div>
+              <div class="table-cell2"><%= item.beginning_inventory %></div>
+              <div class="table-cell2"><%= item.total_incoming %></div>
+              <div class="table-cell2">₱<%= item.total_outgoing %></div>
+              <div class="table-cell2">₱<%= item.available %></div>
               <div class="table-cell2">₱<%= item.price %></div>
-              <div class="table-cell2">₱<%= item.price %></div>
-              <div class="table-cell2">₱<%= item.price %></div>
-              <div class="table-cell2">₱<%= item.price %></div>
+              <div class="table-cell2">₱<%= item.value_of_raw_material_on_hand %></div>
             </div>
           <% }); %>
         <% } else { %>
@@ -511,7 +514,7 @@ function binCardModalFunction(clustercode, cluster_description) {
         }
 
         // Add the price to totalAmount
-        var price = parseFloat($(this).find('.table-cell2:nth-child(4)').text().replace('₱', ''));
+        var price = parseFloat($(this).find('.table-cell2:nth-child(8)').text().replace('₱', ''));
         totalAmount += price;
     });
 
@@ -582,6 +585,15 @@ function myFunction2() {
     }
   }
 }
+
+function updateIcon(value) {
+    var gearIcon = document.getElementById('cluster_cell');
+    if (value === 'SET') {
+      gearIcon.src = './assets/changinggear-1.png';
+    } else if (value === 'DESET') {
+      gearIcon.src = './assets/deset_icon.png';
+    }
+  }
 
     </script>
 

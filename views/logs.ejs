@@ -33,10 +33,10 @@
           <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="toggleDropdown()" class="dropbtn" id="dropdownButton">
           <div id="dropdownContent" class="dropdown-content">
             <a href="?trans_type=Daily Transaction">Daily Transaction</a>
-            <a href="?trans_type=Modified">Modified</a>
-            <a href="?trans_type=Removed">Removed</a>
-            <a href="?trans_type=Added">Added</a>
-            <a href="?trans_type=Set Date">Set Date</a>
+            <a href="?trans_type=Modified">Modified/Updated</a>
+            <a href="?trans_type=Removed">Removed/Decreased</a>
+            <a href="?trans_type=Added">Added/Increased</a>
+           <!-- <a href="?trans_type=Set Date">Set Date</a> -->
           </div>
         </div>
       </div>
@@ -49,6 +49,8 @@
                 <img class="entry-icon" src="./assets/addition_transaction_icon.png"/>
               <% } else if (log.trans_type === 'Modified') { %>
                 <img class="entry-icon" src="./assets/modified_icon.png"/>
+              <% } else if (log.trans_type === 'Removed') { %>
+                <img class="entry-icon" src="./assets/arrowdown-1.png"/>
               <% } %>
             </div>
             <div class="date-portion">
@@ -58,18 +60,18 @@
             <div class="item-portion">
               <div class="upper-item-portion">
                 <!-- <p class="main-item"><%= log.main_item %></p> -->
-                <p class="main-item"><%= log.description %></p>
-                <img class="change-icon" src="./assets/change_icon_transac.png"/>
+                <p class="main-item"><%= log.description ? log.description : log.newvaluesummary %></p>
+                <!-- <img class="change-icon" src="./assets/change_icon_transac.png"/> -->
               </div>
               <div class="lower-item-portion">
                 <!-- <p class="sub-item"><%= log.sub_item %></p> -->
-                <p class="sub-item"><%= log.description %></p>
+                <p class="sub-item"><%= log.oldvaluesummary %></p>
               </div>
             </div>
             <div class="name-portion">
               <p class="user-text-template"><%= log.username %></p>
             </div>
-            <div class="rightmost-text-portion <%= log.trans_type === 'Modified' ? 'modified' : (log.trans_type === 'Added' ? 'added' : '') %>">
+            <div class="rightmost-text-portion <%= log.trans_type === 'Modified' ? 'modified' : (log.trans_type === 'Added' ? 'added' : (log.trans_type === 'Removed' ? 'removed' : '')) %>">
               <p class="rightmost-text"><%= log.trans_type %></p>
             </div>
           </div>

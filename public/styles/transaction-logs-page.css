@@ -261,6 +261,10 @@ body {
   background-color: green;
 }
 
+.rightmost-text-portion.removed {
+  background-color: red;
+}
+
 .month-portion{
   font-size: 1rem;
   line-height: 1;
@@ -312,7 +316,7 @@ body {
 }
 
 .upper-item-portion .main-item{
-  font-size: 1.2rem;
+  font-size: 0.8rem;
   line-height: 1;
   color: #ffffff;
   font-family: Inter, 'Source Sans Pro';
@@ -359,10 +363,10 @@ body {
   /***********************************Dropdown*****************/
 
   .dropdown {
-    margin-left: 24rem;
+    margin-left: 26rem;
     position: relative;
     display: inline-block;
-    width: 10rem;
+    width: 16rem;
     height: 4.7rem;
     /* background-color: blue; */
 }
