@@ -4,94 +4,132 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Manage Stock</title>
-    <style>
-         .inventory-table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .inventory-table th, .inventory-table td {
-            border: 1px solid #ddd;
-            padding: 8px;
-        }
-
-        .inventory-table th {
-            padding-top: 12px;
-            padding-bottom: 12px;
-            text-align: left;
-            background-color: #4CAF50;
-            color: white;
-        }
-    </style>
+    <link rel="stylesheet" href="./styles/manage-stock-page.css"/>
 </head>
 <body>
-    <h1>Manage Stock</h1>
-    <div>
-        <button onclick="filterTable('')">All</button>
-        <button onclick="filterTable(1)">Fabrication</button> 
-        <button onclick="filterTable(2)">Fire Protection</button> 
-        <button onclick="filterTable(3)">Electrical</button> 
-    </div>
+    <div class="web-page">
+        <div class="top-bar">
+            <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+            <div class="user-info">
+                <p class="current-user-text"><%= roleOf %></p>
+                <img class="profile-picture" src="<%= pictureUrl %>"/>
+            </div>
+        </div>
+        <div class="bottom-page-part">
+            <div class="upper-part">
+                <img class="item-icon" src="./assets/group.png"/>
+                <p class="manage-stock-text">Manage Stock</p>
+                <% 
+                var date = new Date();
+                var options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                var formattedDate = date.toLocaleDateString('en-US', options);
 
-    <div>
-        <span id="currentMonth"></span>
-        <span id="currentDay"></span>
+                var date2 = new Date();
+                var options2 = { month: 'long', day: 'numeric' };
+                var currentMonthDay = date.toLocaleDateString('en-US', options).replace(',', ''); // Remove the comma
+
+                %>
+                <p class="date-text"><%= formattedDate %></p>
+            </div>
+            <!-- Category buttons -->
+            <div class="middle-buttons-area">
+                <button class="all-text" onclick="filterTable('', this)">All</button>
+                <button class="fabrication-text" onclick="filterTable(1, this)">Fabrication</button> <!-- Pass classification id as argument -->
+                <button class="fire-protection-text" onclick="filterTable(2, this)">Fire Protection</button> <!-- Pass classification id as argument -->
+                <button class="electrical-text" onclick="filterTable(3, this)">Electrical</button> <!-- Pass classification id as argument -->
+                <div class="search-bar">
+                    <input class="search-input" type="text" placeholder="Search Code here..." onkeyup="searchTable()"/>
+                    <img class="search-icon" src="./assets/searchicon-1.png"/>
+                </div>
+                <img class="on-off-switch" src="./assets/onoffswitch-1.png"/>
+                <img class="a-to-z-icon" src="./assets/atoz.png"/>
+            </div>
+            <div class="upper-table-part">
+                <!--TASK: Month & Day Sorting Function + Add a Function that Can Sort Through by Code-->
+                <!--TASK: Error Handling if date is wrong-->
+                <p class="month-text">MONTH:</p>
+                <p class="date-text"><%= currentMonthDay.split(' ')[0] %></p> <!-- Display the month -->
+                <p class="day-text">DAY:</p>
+                <p class="date-text"><%= currentMonthDay.split(' ')[1] %></p> <!-- Display the day -->
+            </div>
+            <div class="table-section">
+                <table id = "itemTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>CODE</th>
+                            <th>MATERIAL</th>
+                            <th>ITEM DESCRIPTION</th>
+                            <th>BEGINNING</th>
+                            <th>INCOMING</th>
+                            <th>OUTGOING</th>
+                            <th>AVAILABLE</th>
+                            <th>PRICE</th>
+                            <th>TOTAL AMOUNT</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <% items.forEach((item, index) => { %>
+                            <tr class="<%= item.classification_id %>">
+                                <td><%= index + 1 %></td>
+                                <td><%= item.clustercode %></td>
+                                <td><%= item.cluster_description %></td>
+                                <td><%= item.material_name %></td>
+                                <td>0</td>
+                                <td>
+                                    <input type="number" class="incoming input-field" value="0" min="0" oninput="validateInput(this)"> <!-- Set default value to 0 -->
+                                </td>
+                                <td>
+                                    <input type="number" class="outgoing input-field" value="0" min="0" oninput="validateInput(this)"> <!-- Set default value to 0 -->
+                                </td>
+                                <td><%= item.available %></td>
+                                <td><%= item.price %></td>
+                                <td><%= (item.price * item.available).toFixed(2) %></td>
+                                <td>
+                                    <!-- Add this line for the Save button -->
+                                    <button class="save-button" onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
+                                </td>
+                            </tr>
+                        <% }); %>
+                    </tbody>
+                </table>
+                </div>
+        </div>
     </div>
-    <table id="itemTable" class="inventory-table">
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>CODE</th>
-                <th>MATERIAL</th>
-                <th>ITEM DESCRIPTION</th>
-                <th>BEGINNING</th>
-                <th>INCOMING</th>
-                <th>OUTGOING</th>
-                <th>AVAILABLE</th>
-                <th>PRICE</th>
-                <th>TOTAL AMOUNT</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% items.forEach((item, index) => { %>
-                <tr class="<%= item.classification_id %>">
-                    <td><%= index + 1 %></td>
-                    <td><%= item.clustercode %></td>
-                    <td><%= item.cluster_description %></td>
-                    <td><%= item.material_name %></td>
-                    <td><%= item.beginning_inventory %></td>
-                    <td>
-                        <input type="number" class="incoming" value="0"> <!-- Set default value to 0 -->
-                    </td>
-                    <td>
-                        <input type="number" class="outgoing" value="0"> <!-- Set default value to 0 -->
-                    </td>
-                    
-                    <td><%= item.available %></td>
-                    <td><%= item.price %></td>
-                    <td><%= (item.price * item.available).toFixed(2) %></td>
-                    <td>
-                        <!-- Add this line for the Save button -->
-                        <button onclick="saveRowData(this.parentNode.parentNode, '<%= item.no %>','<%= item.clustercode %>', '<%= item.material_name.replace(/'/g, "&apos;") %>')">Save</button>
-                    </td>
-                </tr>
-            <% }); %>
-            
-        </tbody>
-    </table>
+    <%- include('sidebar') %>
     <script>
-        
-        function filterTable(id) {
-            var rows = document.getElementById('itemTable').getElementsByTagName('tr');
-            for (var i = 1; i < rows.length; i++) { 
-                var rowId = rows[i].className;
-                if (id === '' || id.toString() === rowId) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
+
+        function populateMonthAndDay() {
+            var currentDate = new Date();
+            var month = currentDate.toLocaleString('en-US', { month: 'long' });
+            var day = currentDate.getDate();
+            document.getElementById('currentMonth').textContent = 'Month: ' + month;
+            document.getElementById('currentDay').textContent = 'Day: ' + day;
         }
+    
+        populateMonthAndDay();
+
+        function filterTable(id, clickedButton) {
+var rows = document.getElementById('itemTable').getElementsByTagName('tr');
+for (var i = 1; i < rows.length; i++) { 
+    var rowId = rows[i].className;
+    if (id === '' || id.toString() === rowId) {
+    rows[i].style.display = "";
+    } else {
+    rows[i].style.display = "none";
+    }
+}
+
+// Remove the bold-text class from all buttons
+var buttons = document.getElementsByClassName('middle-buttons-area')[0].getElementsByTagName('button');
+for (var i = 0; i < buttons.length; i++) {
+    buttons[i].classList.remove('active');
+}
+
+// Add the bold-text class to the clicked button
+clickedButton.classList.add('active');
+}
 
         function populateMonthAndDay() {
             var currentDate = new Date();
@@ -129,6 +167,35 @@
             document.body.appendChild(form);
             form.submit();
         }
+
+        function validateInput(input) {
+    input.value = input.value.replace(/[^0-9]/g, ''); // Remove all non-numeric characters
+    if (input.value === '') { // If the input is null or an empty string
+        input.value = '0'; // Set the value to 0
+    }
+}
+
+function searchTable() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementsByClassName("search-input")[0];
+    filter = input.value.toUpperCase();
+    table = document.getElementById("itemTable");
+    tr = table.getElementsByTagName("tr");
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 1; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td")[1];
+        if (td) {
+            txtValue = td.textContent || td.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                tr[i].style.display = "";
+            } else {
+                tr[i].style.display = "none";
+            }
+        }
+    }
+}
     </script>
 </body>
 </html>

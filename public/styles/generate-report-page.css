@@ -24,23 +24,29 @@ body {
     width: 100%;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     background-color: #3b2f36;
     flex-shrink: 0;
     height: 5rem;
-  }
+}
 
-  .web-page .top-bar .trisys-logo {
-    margin-right: 63rem;
+.web-page .top-bar .trisys-logo {
     width: 11rem;
     height: 11rem;
     object-fit: contain;
     vertical-align: top;
     flex-shrink: 0;
     padding-left: 2rem;
-  }
+}
 
-  .web-page .top-bar .current-user-text {
-    margin-right: 1.7rem;
+.web-page .top-bar .user-info {
+    /* background-color: pink; */
+    display: flex;
+    align-items: center;
+}
+
+.web-page .top-bar .current-user-text {
+    margin-right: 2rem;
     font-size: 1rem;
     line-height: 1;
     color: #ffffff;
@@ -48,15 +54,17 @@ body {
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: normal;
-  }
+    text-transform: uppercase;
+}
 
-  .web-page .top-bar .profile-picture {
+.web-page .top-bar .profile-picture {
+    margin-right: 7rem;
     width: 4rem;
     height: 4rem;
     object-fit: contain;
     vertical-align: top;
     flex-shrink: 0;
-  }
+}
 
   .web-page .bottom-page-part {
     width: 100%;
@@ -229,21 +237,23 @@ body {
   flex-direction: column;
   flex-shrink: 0;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .upper-textfield {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .upper-textfield,
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .lower-textfield {
   margin-bottom: 3rem;
   width: 100%;
   height: 3rem;
   background-color: #ffffff;
   flex-shrink: 0;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .lower-textfield {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .textfield-areas .textfield-input {
   width: 100%;
-  height: 3rem;
-  background-color: #ffffff;
-  flex-shrink: 0;
+  height: 100%;
+  border: none;
+  padding: 0.5rem;
 }
 
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area {
+  margin-left: 1rem;
   margin-top: 0.7rem;
   align-items: center;
   display: flex;
@@ -251,7 +261,8 @@ body {
   flex-shrink: 0;
   color: brown;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .upper-set-date-button {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area form .upper-set-date-button {
+  text-align: center;
   margin: 0rem 0.3rem 2rem 0rem;
   width: 15rem;
   height: 5rem;
@@ -270,7 +281,7 @@ body {
   border-radius: 3rem;
   flex-shrink: 0;
 }
-.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area .lower-set-date-button {
+.web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .date-frame .set-date-buttons-area form .lower-set-date-button {
   margin-left: 1rem;
   width: 15rem;
   height: 5rem;
@@ -336,6 +347,3 @@ body {
   white-space: nowrap;
   flex-shrink: 0;
 }
-
-
-

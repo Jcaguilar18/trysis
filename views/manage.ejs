@@ -1,55 +1,122 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Manage Accounts</title>
-<style>
-  form > div {
-    margin-bottom: 10px;
-  }
-  button[type="submit"], button.edit {
-    margin-right: 10px;
-  }
-  .hidden {
-    display: none;
-  }
-</style>
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    <title>Manage Accounts Page</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
+    <link rel="stylesheet" href="./styles/manage-accounts-page.css"/>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .edit-icon {
+            cursor: pointer;
+        }
+
+        .new-user-button {
+            cursor: pointer;
+            /* Add any additional styling for your button here */
+        }
+    </style>
 </head>
 <body>
-<h1>Manage Accounts</h1>
-<% users.forEach(user => { %>
-  <form action="/update-account" method="POST">
-    <input type="hidden" name="userId" value="<%= user.userid %>">
-    <div>
-      <label>Username:</label>
-      <input type="text" name="username" value="<%= user.username %>" readonly>
+    <div class="web-page">
+      <div class="top-bar">
+        <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+        <div class="user-info">
+            <p class="current-user-text"><%= roleOf %></p>
+            <img class="profile-picture" src="<%= pictureUrl %>"/>
+        </div>
     </div>
-    <div>
-      <label>Password:</label>
-      <input type="password" name="password" placeholder="New Password" readonly>
-    </div>
-    <div>
-      <label>Status:</label>
-      <select name="status" disabled>
-        <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
-        <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
-      </select>
-    </div>
-    <div>
-      <label>First Name:</label>
-      <input type="text" name="firstname" value="<%= user.firstname %>" readonly>
-    </div>
-    <div>
-      <label>Last Name:</label>
-      <input type="text" name="lastname" value="<%= user.lastname %>" readonly>
-    </div>
-    <button type="button" class="edit" onclick="enableEditing(this)">Edit</button>
-    <button type="submit" class="hidden">Save</button>
-  </form>
-<% }); %>
+        <div class="bottom-page-part">
+            <% const currentDate = new Date(); %>
+            <%- include('sidebar') %>
+            <div class="manage-accounts-header">
+                <div class="manage-accounts-text-bar">Manage Accounts</div>
+                <div class="table-area">
+                  <a href="/register" class="new-user-button">New User</a>
+                  <div class="users-table">
+                    <div class="row-header">
+                        <div class="cell-header">USERNAME</div>
+                        <div class="cell-header">PASSWORD</div>
+                        <div class="cell-header">ROLE</div>
+                        <div class="cell-header">STATUS</div>
+                        <div class="cell-header">EDIT</div>
+                    </div>
+                    <% users.forEach((user, index) => { %>
+                      <form action="/update-account" method="POST" class="table">
+                        <div class="<%= index % 2 === 0 ? 'row' : 'row-even' %>">
+                            <input type="hidden" name="userId" value="<%= user.userid %>">
+                          <div class="cell">
+                            <input type="text" class="input-field" name="username" value="<%= user.username %>" readonly>
+                          </div>
+                          <div class="cell">
+                            <input type="password" class="input-field hidden" id="password" name="password" placeholder="New Password" readonly>
+                            <input type="password" class="input-field hidden-confirm" id="confirm_password" name="confirm_password" placeholder="Confirm Password" readonly>
+                          </div>
+                          <div class="cell">
+                            <select class="select-field" name="role" disabled>
+                              <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
+                              <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
+                              <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                            </select>
+                          </div>
+                          <div class="cell">
+                            <% if (user.status === 'active') { %>
+                              <img src="./assets/green_dot.png" alt="Active" class="status-icon-active">
+                          <% } else if (user.status === 'inactive') { %>
+                              <img src="./assets/Basic_red_dot.png" alt="Inactive" class="status-icon-inactive">
+                          <% } %>
+                            <select class="select-field" name="status" disabled>
+                              <option value="active" <%= user.status === 'active' ? 'selected' : '' %>>Active</option>
+                              <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                            </select>
+                          </div>
+                            <input type="hidden" name="firstname" value="<%= user.firstname %>" readonly>
+                            <input type="hidden" name="lastname" value="<%= user.lastname %>" readonly>
+                          <div class="cell">
+                          <button type="button" class="edit" onclick="enableEditing(this)">
+                              <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon">
+                          </button>
+                          <button type="submit" class="save-button hidden" onclick="return validatePassword();">Save</button>
+                      </div>
+                      </div>
+                    </form>
+                    <% }); %>
+                </div>
+              </div>
+            </div>
 
-<script>
+            <!--------Modal-------->
+            <div id="myModal" class="modal">
+              <div class="modal-content">
+                <span class="close">&times;</span>
+                <p>Passwords do not match.</p>
+              </div>
+            </div>
+
+        </div>
+    </div>
+    <script>
+
+
 function enableEditing(editButton) {
   const form = editButton.closest('form');
   form.querySelectorAll('input, select').forEach(element => {
@@ -58,7 +125,32 @@ function enableEditing(editButton) {
   });
   editButton.classList.add('hidden');
   form.querySelector('button[type="submit"]').classList.remove('hidden');
+  form.querySelector('input[type="password"]').classList.remove('hidden');
+  form.querySelector('input[id="confirm_password"]').classList.remove('hidden-confirm');
 }
-</script>
+
+function validatePassword() {
+    const password = document.getElementById("password");
+    const confirm_password = document.getElementById("confirm_password");
+    const modal = document.getElementById("myModal");
+    const span = document.getElementsByClassName("close")[0];
+
+    if(password.value !== confirm_password.value) {
+        modal.style.display = "block";
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+        return false;
+    } else {
+        return true;
+    }
+}
+
+    </script>
 </body>
 </html>

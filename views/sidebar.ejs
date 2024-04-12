@@ -122,43 +122,52 @@
 </style>
 
 <div id="mySidenav" class="sidenav" onmouseleave="closeNav()" onmouseover="openNav()">
-  <a href="/dashboard">
-    <img class="dashboard-icon" src="./assets/dashboardicon-1-CWy.png"/>
-    <span class="sidenav-text hide-text">Dashboard</span>
-  </a>
+  <% if (roleOf === "manager" || roleOf === "warehouse" || roleOf === "HR Staff") { %>
+    <a href="/dashboard">
+      <img class="dashboard-icon" src="./assets/dashboardicon-1-CWy.png"/>
+      <span class="sidenav-text hide-text">Dashboard</span>
+    </a>
+  <% } %>
 
-  <a href="/item">
-    <img class="item-catalog-icon" src="./assets/itemcatalogicon-1-FJd.png"/>
-    <span class="sidenav-text hide-text">Item Catalog</span>
-  </a>
-  
-  <a href="/stock">
-    <img class="managestock-icon" src="./assets/managestock-icon-1-Sey.png"/>
-    <span class="sidenav-text hide-text">Manage Stock</span>
-  </a>
+  <% if (roleOf === "manager" || roleOf === "warehouse") { %>
+    <a href="/item">
+      <img class="item-catalog-icon" src="./assets/itemcatalogicon-1-FJd.png"/>
+      <span class="sidenav-text hide-text">Item Catalog</span>
+    </a>
+  <% } %>
 
-  <a href="/generate-report-page">
-    <img class="generate-report-icon" src="./assets/generatereporticon-1-sL1.png"/>
-    <span class="sidenav-text hide-text">Generate Report</span>
-  </a>
+  <% if (roleOf === "manager" || roleOf === "warehouse") { %>
+    <a href="/stock">
+      <img class="managestock-icon" src="./assets/managestock-icon-1-Sey.png"/>
+      <span class="sidenav-text hide-text">Manage Stock</span>
+    </a>
+  <% } %>
 
-  <a href="/logs">
-    <img class="logs-icon" src="./assets/logsicon-1-PTB.png"/>
-    <span class="sidenav-text hide-text">Logs</span>
-  </a>
+  <% if (roleOf === "manager" || roleOf === "company") { %>
+    <a href="/generate-report-page">
+      <img class="generate-report-icon" src="./assets/generatereporticon-1-sL1.png"/>
+      <span class="sidenav-text hide-text">Generate Report</span>
+    </a>
+  <% } %>
 
-  <%if (roleOf == "manager"){ %>
-  <a href="/manage">
-    <img class="settings-icon" src="./assets/settingsicon-1-cdT.png"/>
-    <span class="sidenav-text hide-text">Manage Accounts</span>
-  </a>
-  <% }%>
+  <% if (roleOf === "manager") { %>
+    <a href="/logs">
+      <img class="logs-icon" src="./assets/logsicon-1-PTB.png"/>
+      <span class="sidenav-text hide-text">Logs</span>
+    </a>
+  <% } %>
+
+  <% if (roleOf === "manager" || roleOf === "HR Staff") { %>
+    <a href="/manage">
+      <img class="settings-icon" src="./assets/settingsicon-1-cdT.png"/>
+      <span class="sidenav-text hide-text">Manage Accounts</span>
+    </a>
+  <% } %>
 
   <a href="/logout">
     <img class="logout-icon" src="./assets/logouticon-1-W8V.png"/>
     <span class="sidenav-text hide-text">Logout</span>
   </a>
-
 </div>
 
 <div id="hoverArea" style="position: fixed; top: 0; left: 0; height: 100%; width: 50px;" onmouseover="openNav()"></div>

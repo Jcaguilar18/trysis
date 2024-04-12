@@ -1,160 +1,118 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transaction Logs</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-    <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #F4F4F4;
-            margin: 0;
-            padding: 0;
-        }
-        .transaction-log-container {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            margin: 20px auto;
-            padding: 20px;
-            width: 80%;
-        }
-        .transaction-log-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .transaction-log-header h1 {
-            color: #333;
-        }
-        .dropdown {
-            position: relative;
-        }
-        .dropbtn {
-            background-color: #4CAF50;
-            border: none;
-            border-radius: 5px;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-            padding: 10px;
-            margin-right: 30px;
-        }
-        .dropdown-content {
-            background-color: #f9f9f9;
-            border-radius: 5px;
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-            display: none;
-            min-width: 160px;
-            overflow: auto;
-            position: absolute;
-            right: 0;
-            z-index: 1;
-        }
-        .dropdown-content a {
-            border-bottom: 1px solid #ddd;
-            color: black;
-            padding: 12px 16px;
-            text-decoration: none;
-            display: block;
-        }
-        .dropdown-content a:hover {
-            background-color: #f1f1f1;
-        }
-        .show {display: block;}
-        .log-entry {
-            align-items: center;
-            background-color: #f9f9f9;
-            border-left: 5px solid #4CAF50; /* Default color for no filter */
-            display: flex;
-            margin: 10px 0;
-            padding: 10px;
-        }
-        .log-entry:nth-child(even) {
-            background-color: #e9e9e9;
-        }
-        .log-entry img {
-            border-radius: 50%;
-            margin-right: 15px;
-            width: 50px; /* Adjust as necessary */
-        }
-        .log-details {
-            flex-grow: 1;
-        }
-        .pagination {
-            display: flex;
-            justify-content: center;
-            padding: 20px 0;
-        }
-        .pagination a {
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            color: #333;
-            margin: 0 5px;
-            padding: 10px 15px;
-            text-decoration: none;
-        }
-        .pagination a.active {
-            background-color: #4CAF50;
-            color: white;
-        }
-        .pagination a:hover:not(.active) {
-            background-color: #ddd;
-        }
-    </style>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Transaction Logs Page</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
+  <link rel="stylesheet" href="./styles/transaction-logs-page.css"/>
 </head>
 <body>
-    <div class="transaction-log-container">
-        <div class="transaction-log-header">
-            <h1>Transaction Logs</h1>
-            <div class="dropdown">
-                <button onclick="toggleDropdown()" class="dropbtn">Filter Transactions</button>
-                <div id="myDropdown" class="dropdown-content">
-                    <a href="?trans_type=Daily Transaction">Daily Transaction</a>
-                    <a href="?trans_type=Modified">Modified</a>
-                    <a href="?trans_type=Removed">Removed</a>
-                    <a href="?trans_type=Added">Added</a>
-                    <a href="?trans_type=Set Date">Set Date</a>
-                </div>
-            </div>
-        </div>
-
-        <% logs.forEach(function(log) { %>
-        <div class="log-entry">
-            <img src="<%= log.picture ? '/uploads/' + log.picture : 'default-image-path' %>" alt="User Image">
-            <div class="log-details">
-                <p><strong><%= log.material_name %></strong> - <%= log.description %></p>
-                <p>Transaction by <%= log.username %></p>
-                <!-- Added transaction date display -->
-                <p>Date: <%= new Date(log.log_date).toLocaleDateString("en-US") %></p>
-            </div>
-            <span class="trans-type <%= log.trans_type.toLowerCase() %>"><%= log.trans_type %></span>
-        </div>
-        <% }); %>
-
-        <div class="pagination">
-            <% for(let i = 1; i <= totalPages; i++) { %>
-                <a href="?page=<%= i %><%= transTypeFilter ? '&trans_type=' + transTypeFilter : '' %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
-            <% } %>
-        </div>
+<div class="web-page">
+  <div class="top-bar">
+    <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+    <div class="user-info">
+        <p class="current-user-text"><%= roleOfUser %></p>
+        <img class="profile-picture" src="<%= pictureUrl %>"/>
     </div>
+</div>
+  <div class="bottom-page-part">
+    <%- include('sidebar.ejs') %>
+    <div class="transaction-logs-title">Transaction Logs</div>
+    <div class="transaction-block">
+      <div class="upper-portion">
+        <div class="search-bar">
+          <!--TASK: Search Feature by User Code? -->
+          <input type="text" class="search-input" placeholder="Search...">
+          <img class="search-icon" src="./assets/searchicon-3.png"/>
+        </div>
+        <div class="dropdown">
+          <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="toggleDropdown()" class="dropbtn" id="dropdownButton">
+          <div id="dropdownContent" class="dropdown-content">
+            <a href="?trans_type=Daily Transaction">Daily Transaction</a>
+            <a href="?trans_type=Modified">Modified/Updated</a>
+            <a href="?trans_type=Removed">Removed/Decreased</a>
+            <a href="?trans_type=Added">Added/Increased</a>
+           <!-- <a href="?trans_type=Set Date">Set Date</a> -->
+          </div>
+        </div>
+      </div>
+      <div id="transaction-table-area" class="transaction-table-area">
+        <!--TASK: Get entries from the Change Log Table and Change some static fields-->
+        <% logs.forEach(log => { %>
+          <div class="transaction-table-entry">
+            <div class="leftmost-icon-portion">
+              <% if (log.trans_type === 'Added') { %>
+                <img class="entry-icon" src="./assets/addition_transaction_icon.png"/>
+              <% } else if (log.trans_type === 'Modified') { %>
+                <img class="entry-icon" src="./assets/modified_icon.png"/>
+              <% } else if (log.trans_type === 'Removed') { %>
+                <img class="entry-icon" src="./assets/arrowdown-1.png"/>
+              <% } else { %>
+                <img class="entry-icon" src="./assets/logsicon-1-Vzd.png"/>
+              <% } %>
+              </div>
+            <div class="date-portion">
+              <p class="month-portion"><%= new Date(log.log_date).toLocaleString('default', { month: 'long' }) %> <%= new Date(log.log_date).getDate() %>,</p>
+              <p class="year-portion"><%= new Date(log.log_date).getFullYear() %></p>
+            </div>
+            <div class="item-portion">
+              <div class="upper-item-portion">
+                <!-- <p class="main-item"><%= log.main_item %></p> -->
+                <p class="main-item"><%= log.description ? log.description : log.newvaluesummary %></p>
+                <!-- <img class="change-icon" src="./assets/change_icon_transac.png"/> -->
+              </div>
+              <div class="lower-item-portion">
+                <!-- <p class="sub-item"><%= log.sub_item %></p> -->
+                <p class="sub-item"><%= log.oldvaluesummary %></p>
+              </div>
+            </div>
+            <div class="name-portion">
+              <p class="user-text-template"><%= log.username %></p>
+            </div>
+            <div class="rightmost-text-portion <%= log.trans_type === 'Modified' ? 'modified' : (log.trans_type === 'Added' ? 'added' : (log.trans_type === 'Removed' ? 'removed' : '')) %>">
+              <p class="rightmost-text"><%= log.trans_type %></p>
+            </div>
+          </div>
+        <% }) %>
+      </div>
+      <!--TASK: Pagination Function, Pafix or Change if Ever-->
+      <div id="pagination-portion" class="pagination">
+        <% if (startPage > 1) { %>
+          <a href="?page=<%= startPage - 1 %><%= transTypeFilter ? '&trans_type=' + transTypeFilter : '' %>">Previous</a>
+        <% } %>
+        <% for(let i = startPage; i <= endPage; i++) { %>
+          <a href="?page=<%= i %><%= transTypeFilter ? '&trans_type=' + transTypeFilter : '' %>" class="<%= currentPage === i ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+        <% if (endPage < totalPages) { %>
+          <a href="?page=<%= endPage + 1 %><%= transTypeFilter ? '&trans_type=' + transTypeFilter : '' %>">Next</a>
+        <% } %>
+      </div>
+  </div>
+</div>
+<script>
 
-    <script>
-        function toggleDropdown() {
-            document.getElementById("myDropdown").classList.toggle("show");
+  function toggleDropdown() {
+    document.getElementById("dropdownContent").classList.toggle("show");
+  }
+  window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+      var dropdowns = document.getElementsByClassName("dropdown-content");
+      for (var i = 0; i < dropdowns.length; i++) {
+        var openDropdown = dropdowns[i];
+        if (openDropdown.classList.contains('show')) {
+          openDropdown.classList.remove('show');
         }
-        window.onclick = function(event) {
-            if (!event.target.matches('.dropbtn')) {
-                var dropdowns = document.getElementsByClassName("dropdown-content");
-                for (var i = 0; i < dropdowns.length; i++) {
-                    var openDropdown = dropdowns[i];
-                    if (openDropdown.classList.contains('show')) {
-                        openDropdown.classList.remove('show');
-                    }
-                }
-            }
-        }
-    </script>
+      }
+    }
+  }
+
+  function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+</script>
 </body>
 </html>
