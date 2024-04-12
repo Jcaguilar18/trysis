@@ -64,7 +64,6 @@ app.use(
     saveUninitialized: true,
   })
 );
-
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
@@ -91,7 +90,6 @@ app.get("/login", (req, res) => {
 });
 
 
-// Assuming all necessary imports are at the top of your solution.js file
 
 
 import { fileURLToPath } from "url";
@@ -126,7 +124,7 @@ const generatePDF = (data) => {
       classification_id: { columnWidth: 100, columnStart: 50 },
       material_name: { columnWidth: 150, columnStart: 150 },
       clustercode: { columnWidth: 100, columnStart: 300 },
-      // Add other columns as necessary
+     
     };
 
     // Draw the table header
@@ -471,146 +469,31 @@ app.get("/logs", async (req, res) => {
   }
 });
 
-
-app.get("/logs", async (req, res) => {
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-
-  const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
-  const transTypeFilter = req.query.trans_type || null;
-  const logsPerPage = 10;
-  const offset = (currentPage - 1) * logsPerPage;
-  let logsResult, countResult, totalLogs, query;
-
-  try {
-
-    const userResult = await db.query("SELECT picture_url, role FROM users WHERE username = $1", [req.user.username]);
-    const user = userResult.rows[0];
-    const pictureUrl = user?.picture_url;
-    const roleOfUser = user?.role;
-
-    var roleOfQueryResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.session.username]);
-    var roleOf = roleOfQueryResult.rows[0]?.role;
-
-    if (transTypeFilter) {
-      query = {
-        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
-        values: [transTypeFilter, logsPerPage, offset],
-      };
-      countResult = await db.query("SELECT COUNT(*) FROM logs WHERE trans_type = $1", [transTypeFilter]);
-    } else {
-      query = {
-        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs ORDER BY log_id DESC LIMIT $1 OFFSET $2",
-        values: [logsPerPage, offset],
-      };
-      countResult = await db.query("SELECT COUNT(*) FROM logs");
-    }
-
-    totalLogs = parseInt(countResult.rows[0].count, 10);
-    logsResult = await db.query(query);
-    const logs = logsResult.rows;
-    const totalPages = Math.ceil(totalLogs / logsPerPage);
-
-    // Calculate the start and end page for pagination
-    const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
-    const endPage = Math.min(startPage + 4, totalPages);
-
-    res.render("logs.ejs", {
-      roleOf,
-      pictureUrl: './uploads/' + pictureUrl,
-      roleOfUser,
-      logs,
-      currentPage,
-      startPage,
-      endPage,
-      totalPages,
-      logsPerPage,
-      transTypeFilter // Pass the current filter back to the template
-    });
-  } catch (err) {
-    // res.redirect("/login");
-    console.error("Error fetching logs:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
 app.get("/item", async (req, res) => {
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-  try {
-
-    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-    const user = userResult.rows[0];
-    const roleOf = user?.role;
-    const pictureUrl = user?.picture_url;
-
-    var itemOfQueryResult = await db.query(`
-    SELECT 
-    i.classification_id,
-    i.material_name AS item_description,
-    i.clustercode,
-    COALESCE(l2.logs_available, 0) AS beginning_inventory,
-    COALESCE(SUM(l.incoming), 0) AS total_incoming,
-    COALESCE(SUM(l.outgoing), 0) AS total_outgoing,
-    i.available,
-    i.price,
-    i.description,
-    ROUND((i.available * i.price)::numeric, 2) AS value_of_raw_material_on_hand
-  FROM item i
-  LEFT JOIN logs l ON i.clustercode = l.logs_clustercode AND i.material_name = l.logs_material_name
-  LEFT JOIN (
-    SELECT 
-      logs_material_name, 
-      logs_clustercode, 
-      logs_available 
-    FROM logs 
-    WHERE log_date < CURRENT_DATE
-    ORDER BY log_date DESC, log_id DESC 
-    LIMIT 1
-  ) l2 ON i.material_name = l2.logs_material_name AND i.clustercode = l2.logs_clustercode
-  LEFT JOIN cluster c ON i.clustercode = c.clustercode
-  WHERE c.status <> 'DESET'
-  GROUP BY i.classification_id, i.material_name, i.clustercode, l2.logs_available, i.available, i.price, i.description
-  ORDER BY MAX(l.log_id) DESC
-   `);
-    var clusterquery = await db.query("SELECT * FROM cluster WHERE status != 'DESET'");
-    var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1 AND status != 'DESET'");
-    var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2 AND status != 'DESET'");
-    var clusterquery3 = await db.query("SELECT * FROM cluster WHERE classification_id = 3 AND status != 'DESET'");
-    var allClusterQuery = await db.query("SELECT * FROM cluster");
-    const cluster = clusterquery.rows;
-    const cluster1 = clusterquery1.rows;
-    const cluster2 = clusterquery2.rows;
-    const cluster3 = clusterquery3.rows;
-    const cluster4 = allClusterQuery.rows;
-    const item= itemOfQueryResult.rows;
-
-  res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, cluster4});
-
-  } catch (err) {
-    console.error(err);
-    // res.redirect("/login");
-    res.status(500).send("Internal Server Error");
-  }
+  var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+  var roleOf = roleOfQueryResult.rows[0]?.role;
+  var itemOfQueryResult = await db.query("SELECT * FROM item ");
+  var clusterquery = await db.query("SELECT * FROM cluster");
+  const cluster = clusterquery.rows;
+      const item= itemOfQueryResult.rows;
+      //console.log(item);
+      //console.log(cluster); 
+      //console.log(roleOf);
+      res.render("item.ejs", {item, roleOf,cluster});
 });
 
 app.get("/manage", async (req, res) => {
   try {
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
-
-  const userResultToPage = await db.query("SELECT picture_url, role FROM users WHERE username = $1", [req.user.username]);
-  const user = userResultToPage.rows[0];
-  const pictureUrl = user?.picture_url;
-  const roleOf = user?.role;
   
       // Fetch user data from the database
       const usersResult = await db.query("SELECT * FROM users");
       const users = usersResult.rows;
-    
+      
+      var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+      var roleOf = roleOfQueryResult.rows[0]?.role;
       console.log("Start: testing in /manage");
       console.log(roleOf);
       console.log(req.session.username);////////////////////////////////////////////// important code take note!
@@ -618,67 +501,12 @@ app.get("/manage", async (req, res) => {
    
 
       // Render the "manage.ejs" template with the user data
-      res.render("manage.ejs", { users, roleOf, pictureUrl: './uploads/' + pictureUrl});
+      res.render("manage.ejs", { users, roleOf });
   } catch (err) {
       console.log(err);
       res.redirect("/login");
   }
 });
-
-app.post("/update-account", async (req, res) => {
-  const { userId, username, password, role, status, firstname, lastname } = req.body;
-  let logDescription = 'Account updated: '; // Initialize log description
-
-  try {
-    let updateFields = {
-      username: username,
-      role: role,
-      status: status,
-      firstname: firstname,
-      lastname: lastname
-    };
-
-    if (password && password.trim() !== '') {
-      const pepperedPassword = password + (process.env.PEPPER || '');
-      const hashedPassword = await bcrypt.hash(pepperedPassword, saltRounds);
-      updateFields.password = hashedPassword;
-      logDescription += 'password changed, ';
-    }
-
-    const setClause = Object.keys(updateFields)
-      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
-      .map((key, idx) => `${key} = $${idx + 1}`)
-      .join(', ');
-
-    const queryParams = Object.values(updateFields)
-      .filter(value => value !== undefined && value !== '') // Filter out empty strings
-      .concat(userId);
-
-    const sqlQuery = `UPDATE users SET ${setClause} WHERE userid = $${queryParams.length}`;
-
-    await db.query(sqlQuery, queryParams);
-
-    // Add more details to log description based on fields updated
-    if (updateFields.username) logDescription += `username to ${username}, `;
-    if (updateFields.firstname) logDescription += `firstname to ${firstname}, `;
-    if (updateFields.lastname) logDescription += `lastname to ${lastname}, `;
-    if (updateFields.status) logDescription += `status to ${status}, `;
-    logDescription = logDescription.slice(0, -2); // Remove the last comma and space
-
-    // Assuming you have a way to get the current user's username and picture_url
-    // Insert log entry
-    await db.query(
-      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Account Updated', CURRENT_DATE, $3)",
-      [req.user.username, logDescription, req.user.picture_url]
-    );
-
-    res.redirect("/manage");
-  } catch (err) {
-    console.error("Error updating account:", err);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
 
 
 // Route to render the form for adding an item
@@ -687,24 +515,13 @@ app.get("/add-item", (req, res) => {
   res.render("add-item.ejs", {clcode});
 });
 
-app.get("/update-item", (req, res) => {
-  res.render("update-item.ejs");
-});
-
-
 app.get("/stock", async (req, res) => {
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-
   try {
-  const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-  const user = userResult.rows[0];
-  const roleOf = user?.role;
-  const pictureUrl = user?.picture_url;
+    var roleOfQueryResult = await db.query("SELECT role FROM users WHERE username = $1", [req.session.username]);
+    var roleOf = roleOfQueryResult.rows[0]?.role;
     
-  var clusterquery = await db.query("SELECT * FROM cluster WHERE status != 'DESET'");
-  const cluster = clusterquery.rows;
+    var clusterquery = await db.query("SELECT * FROM cluster");
+    const cluster = clusterquery.rows;
 
     var itemOfQueryResult = await db.query(`
       SELECT item.*, cluster.description as cluster_description 
@@ -715,13 +532,16 @@ app.get("/stock", async (req, res) => {
     console.log(req.session.username);
     console.log("end /stock");
      
-    res.render("stock.ejs", {items, roleOf: roleOf, cluster, pictureUrl: './uploads/' + pictureUrl});
+    res.render("stock.ejs", {items, roleOf, cluster});
   } catch (error) {
-    // res.redirect("/login");
     console.error(`Error: ${error}`);
     res.status(500).send('An error occurred');
   }
 });
+
+
+
+
 
 app.get("/bin", async (req, res) => {
   var clustercode = req.query.clustercode;
@@ -736,186 +556,40 @@ app.get("/bin", async (req, res) => {
 });
 
 
+
 app.get("/add-cluster", (req, res) => {
   res.render("add-cluster.ejs");
 });
-
-app.get("/update-cluster", (req, res) => {
-  res.render("update-cluster.ejs");
-});
-
-// Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
-  const { materialName, clcode, price} = req.body;
+  const { materialName, clcode, price, available } = req.body;
 
   try {
-    // Get the classification_id based on the provided clustercode
-    const classificationQueryResult = await db.query("SELECT classification_id FROM cluster WHERE clustercode = $1", [clcode]);
-    if (classificationQueryResult.rows.length === 0) {
-      return res.status(400).send(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Invalid Cluster Code</title>
-            <style>
-                body {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                    background-color: #f8f9fa;
-                    font-family: Arial, sans-serif;
-                }
-                .container {
-                    text-align: center;
-                }
-                button {
-                    margin-top: 20px;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    cursor: pointer;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1>The cluster code ${clcode} is invalid.</h1>
-                <button onclick="location.href='/item'">Go Back</button>
-            </div>
-        </body>
-        </html>
-      `);
+    // Get the classification_id and description based on the provided clustercode
+    const clusterQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clcode]);
+    if (clusterQueryResult.rows.length === 0) {
+      return res.status(400).send("Invalid cluster code.");
     }
-    const classificationId = classificationQueryResult.rows[0].classification_id;
+    const classificationId = clusterQueryResult.rows[0].classification_id;
+    const clusterDescription = clusterQueryResult.rows[0].description;
 
-    // Insert the new item
+    // Insert the new item along with the cluster description
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, price) VALUES ($1, $2, $3, $4)",
-      [classificationId, materialName, clcode, price]
+      "INSERT INTO item (classification_id, material_name, clustercode, price, available, beginning_inventory, description) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+      [classificationId, materialName, clcode, price, available, available, clusterDescription] // setting beginning_inventory equal to available
     );
 
     if (req.isAuthenticated()) {
       const userPictureUrl = req.user.picture_url;
-      const logDescription = `${req.user.username} added a new item: ${materialName}`;
-      console.log(userPictureUrl);
+      const logDescription = `${req.user.username} added a new item: ${materialName} with cluster description: ${clusterDescription}`;
       await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture, dailyProdUpdate, logs_clustercode, logs_material_name) VALUES ($1, $2, 'Added', CURRENT_DATE, $3, 'Yes', $4, $5)",
-        [req.user.username, logDescription, userPictureUrl, clcode, materialName]
+        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Added', CURRENT_DATE, $3)",
+        [req.user.username, logDescription, userPictureUrl]
       );
     }
-
-    // Redirect back to the item page
+    
     res.redirect("/item");
   } catch (error) {
     console.error("Error adding item:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-app.post("/update-item", async (req, res) => {
-  const { materialName, price} = req.body;
-
-  try {
-    const materialQueryResult = await db.query("SELECT material_name FROM item WHERE material_name = $1", [materialName]);
-    if (materialQueryResult.rows.length === 0) {
-      return res.status(400).send(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Invalid Cluster Code</title>
-            <style>
-                body {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                    background-color: #f8f9fa;
-                    font-family: Arial, sans-serif;
-                }
-                .container {
-                    text-align: center;
-                }
-                button {
-                    margin-top: 20px;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    cursor: pointer;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1> ${materialName} is invalid or do not exist.</h1>
-                <button onclick="location.href='/item'">Go Back</button>
-            </div>
-        </body>
-        </html>
-      `);
-    }
-
-  await db.query(
-    "UPDATE item SET price = $1 WHERE material_name = $2",
-    [price, materialName]
-  );
-  
-  if (req.isAuthenticated()) {
-    const userPictureUrl = req.user.picture_url;
-    const logDescription = `${req.user.username} updated the price of ${materialName}`;
-    console.log(userPictureUrl);
-    await db.query(
-      "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Modified', CURRENT_DATE, $3, $4)",
-      [req.user.username, logDescription, userPictureUrl, materialName]
-    );
-  }
-
-    // Redirect back to the item page
-    res.redirect("/item");
-  } catch (error) {
-    console.error("Error updating item:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
-
-app.post("/delete-item", async (req, res) => {
-  const { materialName } = req.body;
-
-  try {
-    const materialQueryResult = await db.query("SELECT material_name FROM item WHERE material_name = $1", [materialName]);
-    if (materialQueryResult.rows.length === 0) {
-      return res.status(400).send(`
-        <!DOCTYPE html>
-        ...
-        <h1> ${materialName} is invalid or do not exist.</h1>
-        ...
-      `);
-    }
-
-    // Delete the item
-    await db.query(
-      "DELETE FROM item WHERE material_name = $1",
-      [materialName]
-    );
-  
-    if (req.isAuthenticated()) {
-      const userPictureUrl = req.user.picture_url;
-      const logDescription = `${req.user.username} deleted the item: ${materialName}`;
-      console.log(userPictureUrl);
-      await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Deleted', CURRENT_DATE, $3, $4)",
-        [req.user.username, logDescription, userPictureUrl, materialName]
-      );
-    }
-
-    // Redirect back to the item page
-    res.redirect("/item");
-  } catch (error) {
-    console.error("Error deleting item:", error);
     res.status(500).send("Internal Server Error");
   }
 });
@@ -965,49 +639,6 @@ app.post("/add-cluster", async (req, res) => {
   }
 });
 
-app.post("/update-cluster", async (req, res) => {
-  const { classification_id, code, description, status } = req.body;
-
-  try {
-    let updateFields = {
-      classification_id: classification_id,
-      clustercode: code,
-      description: description,
-      status: status // Change 'SET' to 'DESET'
-    };
-
-    const setClause = Object.keys(updateFields)
-      .filter(key => updateFields[key] !== undefined && updateFields[key] !== '') // Make sure we don't update with empty strings
-      .map((key, idx) => `${key} = $${idx + 1}`)
-      .join(', ');
-
-    const queryParams = Object.values(updateFields)
-      .filter(value => value !== undefined && value !== '') // Filter out empty strings
-      .concat(code);
-
-    const sqlQuery = `UPDATE cluster SET ${setClause} WHERE clustercode = $${queryParams.length}`;
-
-    await db.query(sqlQuery, queryParams);
-
-    // If the user is authenticated, log the action
-    if (req.isAuthenticated()) {
-        const currentUser = req.user; // The current logged-in user
-        const logDescription = `${currentUser.username} updated cluster: ${code}`;
-
-        // Insert the log entry into the logs table
-        await db.query(
-            "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Updated', CURRENT_DATE, $3)",
-            [currentUser.username, logDescription, currentUser.picture_url] // Use the current user's picture_url
-        );
-    }
-
-    // Redirect back to the original page after updating the item
-    res.redirect("/item");
-  } catch (error) {
-    console.error("Error updating cluster:", error);
-    res.status(500).send("Internal Server Error");
-  }
-});
 
 
 
@@ -1027,40 +658,16 @@ app.get("/dashboard", async (req, res) => {
 
   if (req.isAuthenticated()) {
     try {
-
-  // Getting the Picture and Role of the USer
-  const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-  const user = userResult.rows[0];
-  const roleOf = user?.role;
-  const pictureUrl = user?.picture_url;
+      const roleOfResult = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
+      const roleOf = roleOfResult.rows[0]?.role;
 
       // Fetch the latest updates for products
       const productUpdatesResult = await db.query(`
-      SELECT * FROM logs 
-      WHERE dailyprodupdate = 'Yes'
-      ORDER BY log_id DESC
-      LIMIT 4
-    `);
-    const productUpdates = productUpdatesResult.rows.map(row => {
-      let productUpdate = {};
-      productUpdate.materialName = row.logs_clustercode;
-      productUpdate.itemName = row.logs_material_name;
-      if (row.trans_type === 'Added' && row.incoming === null && row.outgoing === null) {
-        productUpdate.productUpdate = 'Stock Added';
-        productUpdate.quantity = '';
-      } else if (row.trans_type === 'Added' && row.incoming !== null && row.outgoing !== null) {
-        productUpdate.productUpdate = 'Stock Increased';
-        productUpdate.quantity = row.incoming - row.outgoing;
-      } else if (row.trans_type === 'Removed' && row.incoming !== null && row.outgoing !== null) {
-        productUpdate.productUpdate = 'Stock Decreased';
-        productUpdate.quantity = row.incoming - row.outgoing;
-      }
-      else if (row.trans_type === 'Modified' && row.incoming !== null && row.outgoing !== null) {
-        productUpdate.productUpdate = 'Stock Unchanged';
-        productUpdate.quantity = row.incoming - row.outgoing;
-      }
-      return productUpdate;
-    });
+        SELECT * FROM logs 
+        ORDER BY log_date DESC, log_id DESC
+        LIMIT 3  -- Adjust the number as per your needs
+      `);
+      const productUpdates = productUpdatesResult.rows;
 
       // Calculate inventory subtotals
       const inventorySubtotalsResult = await db.query(`
@@ -1073,53 +680,12 @@ app.get("/dashboard", async (req, res) => {
 
       // Render the dashboard with all necessary data
       res.render("dashboard.ejs", {
-        pictureUrl: './uploads/' + pictureUrl,  // Prepend the base directory
-        productUpdates: productUpdates,
         roleOf: roleOf,
         productUpdates: productUpdates,
         inventorySubtotals: inventorySubtotals,
-        // ... pass other necessary data as well
+      
       });
 
-    } catch (err) {
-      console.error("Error accessing the dashboard:", err);
-      res.status(500).send("Internal Server Error");
-    }
-  } else {
-    res.redirect("/login");
-  }
-});
-
-app.get("/binCardPDF", async (req, res) => {
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
-
-  if (req.isAuthenticated()) {
-    try {
-      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-      const user = userResult.rows[0];
-      const roleOf = user?.role;
-      const pictureUrl = user?.picture_url;
-
-      const clustercode = req.query.clustercode; // Get the clustercode from the query parameters
-      const productUpdatesResult = await db.query(`
-        SELECT i.clustercode, c.description, i.material_name, i.available, i.price
-        FROM item i
-        INNER JOIN cluster c ON i.clustercode = c.clustercode
-        WHERE i.clustercode=$1
-      `, [clustercode]); // Use the clustercode in the query
-      const productUpdates = productUpdatesResult.rows;
-      const clusterDescription = productUpdates[0]?.description;
-      const clusterCode = productUpdates[0]?.clustercode;
-
-      res.render("binCardPDF.ejs", {
-        pictureUrl: './uploads/' + pictureUrl,
-        productUpdates: productUpdates,
-        roleOf: roleOf,
-        clusterDescription: clusterDescription,
-        clusterCode: clusterCode
-      });
     } catch (err) {
       console.error("Error accessing the dashboard:", err);
       res.status(500).send("Internal Server Error");
@@ -1137,17 +703,11 @@ app.get("/generate-report-page", async (req, res) => {
   res.setHeader("Expires", "0");
 
   if (req.isAuthenticated()) {
-    
     try {
-      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-      const user = userResult.rows[0];
-      const roleOfUser = user?.role;
-      const pictureUrl = user?.picture_url;
-
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
-      req.session.roleOf = roleOf;
-      res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role, roleOfUser: roleOfUser, pictureUrl: './uploads/' + pictureUrl});
+      req.session.roleOf = roleOf.rows[0].role;
+      res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role });
       
     } catch (err) {
       console.log(err);
@@ -1159,34 +719,21 @@ app.get("/generate-report-page", async (req, res) => {
 });
 
 app.post('/login',
-  function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
-      if (err) { return next(err); }
-      if (!user) { return res.render('login.ejs', { error: info.message }); }
-      req.logIn(user, function(err) {
-        if (err) { return next(err); }
-        return res.redirect('/dashboard');
-      });
-    })(req, res, next);
+  passport.authenticate('local', { failureRedirect: '/login-failed' }),
+  function(req, res) {
+    res.redirect('/dashboard');
   }
 );
 
 app.get('/login-failed', function(req, res) {
-  res.render('login.ejs', { error: 'Enter Correct Credentials' });
+  const error = req.session.messages || 'Login failed';
+  res.render('login.ejs', { error: error });
 });
 
 app.post('/addstock', async (req, res) => {
   const { clustercode, incoming, outgoing, itemDescription } = req.body;
 
   try {
-    // Check if the item with the given itemDescription exists in the database
-    const checkResult = await db.query("SELECT * FROM item WHERE material_name = $1", [itemDescription]);
-
-    if (checkResult.rows.length === 0) {
-      res.status(400).send('Item not found');
-      return;
-    }
-
     // Parse incoming and outgoing as integers
     const parsedIncoming = parseInt(incoming, 10);
     const parsedOutgoing = parseInt(outgoing, 10);
@@ -1201,36 +748,19 @@ app.post('/addstock', async (req, res) => {
     const itemCheckQuery = `SELECT * FROM item WHERE material_name = $1`;
     const itemCheckResult = await db.query(itemCheckQuery, [itemDescription]);
 
-    const fetchPriceQuery = `SELECT price FROM item WHERE material_name = $1`;
-    const fetchPriceResult = await db.query(fetchPriceQuery, [itemDescription]);
-    const current_price = fetchPriceResult.rows[0].available;
-
-    // Calculate new available value
-    let newAvailable = available + parsedIncoming - parsedOutgoing;
-
-    if (newAvailable < 0) {
-      newAvailable = 0;
+    if (itemCheckResult.rows.length === 0) {
+      res.status(404).send('Item not found');
+      return;
     }
 
-    // Determine the transaction type and log description
-    let transType;
-    let logDescription;
-    const currentUser = req.user;
-    if (newAvailable > available) {
-      transType = 'Added';
-      logDescription = `${currentUser.username} added stock for item: ${itemDescription}`;
-    } else if (newAvailable === available){
-      transType = 'Modified';
-      logDescription = `${currentUser.username} added not stock for item: ${itemDescription}`;
-    }
-    else if (newAvailable < available){
-      transType = 'Removed';
-      logDescription = `${currentUser.username} decreased stock for item: ${itemDescription}`;
-    }
+    // Get the current available, total incoming, and total outgoing for the item
+    const currentItem = itemCheckResult.rows[0];
+    const newTotalIncoming = currentItem.total_incoming + parsedIncoming;
+    const newTotalOutgoing = currentItem.total_outgoing + parsedOutgoing;
+    const newAvailable = currentItem.available + parsedIncoming - parsedOutgoing;
 
-    const oldlogDescription = `${itemDescription} had an availability of ${available}`;
-    // Update the item table
-    const updateQuery = `
+    // Update the item with new totals
+    const updateItemQuery = `
       UPDATE item
       SET available = $1,
           total_incoming = $2,
@@ -1251,15 +781,6 @@ app.post('/addstock', async (req, res) => {
       );
     }
 
-    // If the user is authenticated, log the action
-    if (req.isAuthenticated()) {
-      // Insert the log entry into the logs table
-      await db.query(
-        "INSERT INTO logs (username, newvaluesummary, trans_type, log_date, picture, logs_clustercode, logs_material_name, logs_available, outgoing, incoming, logs_price, dailyprodupdate, oldvaluesummary) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
-        [currentUser.username, logDescription, transType, currentUser.picture_url, clustercode, itemDescription, newAvailable, parsedOutgoing, parsedIncoming, current_price, 'Yes', oldlogDescription]
-      );
-    }
-
     res.redirect("/stock");
   } catch (err) {
     console.error('Error updating stock:', err);
@@ -1267,6 +788,18 @@ app.post('/addstock', async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
+
+
+
+//////////////
 app.post("/register", upload.single('picture'), async (req, res) => {
   const newUsername = req.body.username; // New user's username
   const password = req.body.password;
@@ -1299,7 +832,7 @@ app.post("/register", upload.single('picture'), async (req, res) => {
       }
 
       // Redirect to a page indicating successful registration
-      res.redirect("/manage");
+      res.redirect("/dashboard");
     }
   } catch (err) {
     console.error(err);
@@ -1308,19 +841,24 @@ app.post("/register", upload.single('picture'), async (req, res) => {
 });
 
 
+
+
+
 passport.use(new Strategy(
   async function(username, password, done) {
     try {
       const userQueryResult = await db.query("SELECT * FROM users WHERE username = $1", [username]);
       if (userQueryResult.rows.length > 0) {
         const user = userQueryResult.rows[0];
+        
+        // Check if the user's account status is 'inactive'
         if (user.status === 'inactive') {
-          // User is inactive
-          return done(null, false, { message: 'User does not exist anymore.' });
+          return done(null, false, { message: 'Account is inactive.' });
         }
+        
         const validPassword = await bcrypt.compare(password, user.password);
         if (validPassword) {
-          // User authenticated successfully, return the user object including the picture_url
+          // User authenticated successfully, return the user object
           return done(null, {
             userid: user.userid,
             username: user.username,
@@ -1328,11 +866,11 @@ passport.use(new Strategy(
           });
         } else {
           // Password did not match
-          return done(null, false, { message: 'Incorrect password.' });
+          return done(null, false, { message: 'Incorrect username or password.' });
         }
       } else {
         // No user found with that username
-        return done(null, false, { message: 'Incorrect username.' });
+        return done(null, false, { message: 'Incorrect username or password.' });
       }
     } catch (err) {
       return done(err);
@@ -1340,6 +878,8 @@ passport.use(new Strategy(
   }
 ));
 
+
+// Specify how to serialize the user for the session
 passport.serializeUser((user, done) => {
   // Save only the userid in the session to keep the session size small
   done(null, user.userid);
