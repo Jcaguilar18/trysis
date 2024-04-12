@@ -50,7 +50,7 @@ body {
     font-size: 1rem;
     line-height: 1;
     color: #ffffff;
-    font-family: Inter, 'Source Sans Pro';
+    font-family: 'Helvetica', sans-serif;
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: normal;
@@ -90,7 +90,7 @@ body {
     font-weight: 700;
     line-height: 1;
     color: #ffffff;
-    font-family: Inter, 'Source Sans Pro';
+    font-family: 'Helvetica', sans-serif;
     white-space: nowrap;
     background-color: #a6a6a6;
     flex-shrink: 0;
@@ -114,7 +114,7 @@ body {
     font-weight: 700;
     line-height: 1.2125;
     color: #ffffff;
-    font-family: Inter, 'Source Sans Pro';
+    font-family: 'Helvetica', sans-serif;
     white-space: nowrap;
     display: flex;
     align-items: center;
@@ -234,7 +234,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -301,7 +301,7 @@ body {
   padding: 10px;
   font-size: 16px;
   background-color: #f2f2f2;
-  font-family: Inter, 'Source Sans Pro'; /* Change the font to match the button */
+  font-family: 'Helvetica', sans-serif; /* Change the font to match the button */
   text-align: center;
 }
 
@@ -316,7 +316,7 @@ body {
   -webkit-appearance: none;
   -moz-appearance: none;
   background: url('dropdown-arrow.png') no-repeat right center;
-  font-family: Inter, 'Source Sans Pro'; /* Change the font to match the button */
+  font-family: 'Helvetica', sans-serif; /* Change the font to match the button */
 }
 
 .hidden {

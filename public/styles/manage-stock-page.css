@@ -57,7 +57,7 @@ button:hover {
     font-size: 1rem;
     line-height: 1;
     color: #ffffff;
-    font-family: Inter, 'Source Sans Pro';
+    font-family: 'Helvetica', sans-serif;
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: normal;
@@ -104,7 +104,7 @@ button:hover {
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -115,7 +115,7 @@ button:hover {
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -138,7 +138,7 @@ button:hover {
   font-size: 1.5rem;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -152,7 +152,7 @@ button:hover {
   font-size: 1.5rem;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -166,7 +166,7 @@ button:hover {
   font-size: 1.5rem;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -180,7 +180,7 @@ button:hover {
   font-size: 1.5rem;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -252,7 +252,7 @@ button:hover {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
 }
 
@@ -263,7 +263,7 @@ button:hover {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
 }
 
@@ -274,7 +274,7 @@ button:hover {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
 }
 
@@ -317,7 +317,7 @@ button:hover {
   font-weight: 400;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
 }
 

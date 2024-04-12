@@ -50,7 +50,7 @@ body {
     font-size: 1rem;
     line-height: 1;
     color: #ffffff;
-    font-family: Inter, 'Source Sans Pro';
+    font-family: 'Helvetica', sans-serif;
     white-space: nowrap;
     flex-shrink: 0;
     font-weight: normal;
@@ -102,7 +102,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -157,7 +157,7 @@ body {
   font-weight: 700;
   line-height: 0.9;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   flex-shrink: 0;
 }
 .web-page .bottom-page-part .below-top-bar .inner-frame .upper-inner .button-associated-texts .bin-card-report-text {
@@ -166,7 +166,7 @@ body {
   font-weight: 700;
   line-height: 0.9;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   flex-shrink: 0;
 }
 
@@ -195,7 +195,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffbd59;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -205,7 +205,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -215,7 +215,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffbd59;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -224,7 +224,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #ffffff;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -270,7 +270,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -289,7 +289,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   display: flex;
   align-items: center;
@@ -307,7 +307,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -334,7 +334,7 @@ body {
   line-height: 1.2125;
   text-decoration-line: underline;
   color: #1d1ba2;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
@@ -343,7 +343,7 @@ body {
   font-weight: 700;
   line-height: 1.2125;
   color: #000000;
-  font-family: Inter, 'Source Sans Pro';
+  font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
 }
