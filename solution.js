@@ -225,18 +225,17 @@ WHERE item_date::DATE = $1
     res.status(500).send('Internal Server Error');
   }
 });
+
+
 app.post('/generate-bincard', async (req, res) => {
-  const { endDate } = req.body;
-  const currentUser = req.session.username;
-  const currentRole = req.session.role;
+  
 
   try {
     const bincardDataQuery = await db.query(`
       SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
       FROM item
-      WHERE item_date <= $1
       ORDER BY clustercode
-    `, [endDate]);
+    `);
 
     let bincards = {};
 
@@ -260,8 +259,8 @@ app.post('/generate-bincard', async (req, res) => {
 
     res.render('bincard.ejs', {
       bincards: bincards,
-      currentUser: currentUser,
-      currentRole: currentRole
+      currentUser: req.session.username,
+  currentRole: req.session.roleOf,
     });
   } catch (err) {
     console.error('Error generating bin card:', err);
@@ -269,26 +268,36 @@ app.post('/generate-bincard', async (req, res) => {
   }
 });
 
+async function downloadCSV() {
+  try {
+    const response = await fetch('/path/to/bincards/data');
+    const bincards = await response.json();
+
+    let csvContent = "data:text/csv;charset=utf-8,";
+    csvContent += "Cluster Code,Name of Material,Description,Beginning Inventory,Total Incoming,Total Outgoing,Available,Unit Price,Total Value\n";
+
+    Object.keys(bincards).forEach(clusterCode => {
+      bincards[clusterCode].items.forEach(item => {
+        const row = `${clusterCode},${item.name},${item.description},${item.beginningInventory},${item.totalIncoming},${item.totalOutgoing},${item.available},"₱${item.unitPrice.toFixed(2)}","₱${item.totalValue.toFixed(2)}"`;
+        csvContent += row + "\n";
+      });
+    });
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "bin_cards_data.csv");
+    document.body.appendChild(link);
+    link.click();
+  } catch (error) {
+    console.error('Error fetching bincards data:', error);
+  }
+}
 
 
 
 
-// app.get("/view-report", (req, res) => {
-//   const reportData = req.session.reportData;
-//   const currentUser = req.session.username;
-//   const currentRole =req.session.roleOf;
-//   const subtotals = req.session.subtotals;
-//   const grandTotal = req.session.grandTotal;
 
-// console.log(currentUser);
-// console.log(currentRole);
-//   if (!reportData) {
-//     return res.status(404).send('No report available to view.');
-//   }
-
-//   res.render("report-page.ejs", { reportData, currentUser, currentRole,  subtotals,
-//   grandTotal });
-// });
 
 
 
