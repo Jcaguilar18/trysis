@@ -671,8 +671,8 @@ app.post("/add-cluster", async (req, res) => {
 
       // Insert the cluster into the database
       await db.query(
-          "INSERT INTO cluster (clustercode, description, classification_id) VALUES ($1, $2, $3)",
-          [clustercode, description, classificationid]
+          "INSERT INTO cluster (clustercode, description, classification_id, status) VALUES ($1, $2, $3, $4)",
+          [clustercode, description, classificationid,'SET' ]
       );
 
       // If the user is authenticated, log the action
