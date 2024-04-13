@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 
-cron.schedule('55 23 * * *', async () => {
+cron.schedule('14 18 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
