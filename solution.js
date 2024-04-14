@@ -8,15 +8,47 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('44 13 * * *', async () => {
+cron.schedule('58 10 * * *', async () => {
   try {
-    // Copy data from items to report
-    await db.query('INSERT INTO report SELECT *, CURRENT_DATE AS item_date FROM item');
-    console.log('Data copied from items to report successfully at 11:59 PM.');
+    // Begin transaction
+    await db.query('BEGIN');
+
+    // Insert the backup into the report table with the current timestamp, including the status from the cluster table
+    const backupQuery = `
+      INSERT INTO report (classification_id, material_name, clustercode, price, description, item_id, total_incoming, total_outgoing, beginning_inventory, item_date, available, status) 
+      SELECT i.classification_id, i.material_name, i.clustercode, i.price, i.description, i.item_id, i.total_incoming, i.total_outgoing, i.available, NOW(), i.available, c.status
+      FROM item i
+      JOIN cluster c ON i.clustercode = c.clustercode
+    `;
+    await db.query(backupQuery);
+    console.log('Data backed up successfully.');
+
+    // Update the beginning_inventory to the most recent backup's available for each item
+    const updateBeginningInventoryQuery = `
+      UPDATE item i
+      SET beginning_inventory = (
+        SELECT r.available
+        FROM report r
+        WHERE r.material_name = i.material_name AND r.clustercode = i.clustercode
+        ORDER BY r.item_date DESC
+        LIMIT 1
+      )
+    `;
+    await db.query(updateBeginningInventoryQuery);
+
+    // Reset incoming and outgoing totals
+    await db.query('UPDATE item SET total_incoming = 0, total_outgoing = 0');
+    console.log('Incoming and outgoing totals reset to zero.');
+
+    // Commit transaction
+    await db.query('COMMIT');
   } catch (error) {
-    console.error('Error copying data:', error);
+    // Rollback transaction in case of error
+    await db.query('ROLLBACK');
+    console.error('Error during backup process:', error);
   }
 });
+
 
 const app = express();
 const port = 3000;
@@ -126,65 +158,135 @@ const generatePDF = (data) => {
 };
 
 // Route handler for report generation
-app.post("/generate-report", async (req, res) => {
-  const { startDate, endDate, reportType } = req.body;
+app.post("/generate-report-page", async (req, res) => {
+  const { startDate } = req.body;
+  const { endDate } = req.body;
+  const currentUser = req.session.username;
+const currentRole =req.session.roleOf;
+const reportType ='notyet';
+let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
+const marker = new Date(req.body.endDate).toISOString().split('T')[0];
+//console.log(currentRole);
+console.log(currentUser);
+//console.log(marker);
   try {
-    const reportQueryResult = await db.query("SELECT * FROM report WHERE item_date BETWEEN $1 AND $2", [startDate, endDate]);
-    const reportData = reportQueryResult.rows;
+    const reportQueryResult = await db.query(`
+SELECT classification_id, clustercode, description, available, price, item_date, status
+FROM report
+WHERE item_date::DATE = $1 AND status = 'SET'
+`, [endDate]);
+    console.log(reportQueryResult);
 
-    let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
-
-    if (reportType === 'pdf') {
-      try {
-        const pdfPath = await generatePDF(reportData);
-        res.download(pdfPath, async err => {
-          if (err) {
-            throw err; // Handle error, but ensure the file is deleted if it was created.
-          }
-          fs.unlinkSync(pdfPath); // Delete the file after sending it
-        });
-        // Log success
-        await db.query(
-          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
-          [req.user.username, logDescription, req.user.picture_url]
-        );
-      } catch (pdfErr) {
-        console.error('Error generating PDF:', pdfErr);
-        res.status(500).send('Error generating PDF');
-        logDescription = `Failed to generate PDF report for period ${startDate} to ${endDate}`;
-        // Log failure
-        await db.query(
-          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
-          [req.user.username, logDescription, req.user.picture_url]
-        );
-      }
-    } else if (reportType === 'csv') {
-      const csvString = generateCSV(reportData);
-      const csvPath = join(__dirname, `report-${Date.now()}.csv`);
-      fs.writeFileSync(csvPath, csvString);
-      res.download(csvPath, async err => {
-        if (err) {
-          throw err; // Handle error, but ensure the file is deleted if it was created.
-        }
-        fs.unlinkSync(csvPath); // Delete the file after sending it
-      });
-      // Log success
-      await db.query(
-        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
-        [req.user.username, logDescription, req.user.picture_url]
-      );
+    if (reportQueryResult.rows.length === 0) {
+      return res.status(404).send('No report found for the selected date.');
     }
+
+    let aggregatedData = {};
+    reportQueryResult.rows.forEach(item => {
+      const key = item.clustercode;
+      if (!aggregatedData[key]) {
+        aggregatedData[key] = {
+          classification_id: item.classification_id,
+          clustercode: item.clustercode,
+          descriptions: new Set(),
+          total_amount: 0
+        };
+      }
+      aggregatedData[key].descriptions.add(item.description);
+      aggregatedData[key].total_amount += (item.available * item.price);
+    });
+
+    const reportData = Object.values(aggregatedData).map(item => ({
+      ...item,
+      description: Array.from(item.descriptions).join(", ")
+    }));
+
+    // Calculate subtotals for each classification
+    let subtotals = reportData.reduce((acc, item) => {
+      const classification = item.classification_id.toString();
+      acc[classification] = (acc[classification] || 0) + item.total_amount;
+      return acc;
+    }, {});
+
+    
+    
+
+    // Calculate the grand total
+    let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
+    //console.log(reportData[0].item_date);
+    //console.log(reportQueryResult.rows);
+    //console.log(reportData);
+    await db.query(
+      "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
+      [req.user.username, logDescription, req.user.picture_url]
+    );
+    res.render("report-page.ejs", {
+      reportData,
+      subtotals,
+      grandTotal,
+      currentUser: req.session.username,
+  currentRole: req.session.roleOf,
+      marker
+    });
   } catch (err) {
-    console.error('Error generating report:', err);
+    console.error('Error generating report page:', err);
     res.status(500).send('Internal Server Error');
-    logDescription = `Failed to generate report for period ${startDate} to ${endDate}`;
-    // Log failure
+    logDescription = `Failed to generate PDF report for period ${startDate} to ${endDate}`;
     await db.query(
       "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
       [req.user.username, logDescription, req.user.picture_url]
     );
   }
 });
+
+app.post('/generate-bincard', async (req, res) => {
+  const { clusterCode } = req.body; // Capture the clusterCode from the form submission
+
+  try {
+    // Modify your query to select only items with the provided clusterCode
+    const bincardDataQuery = await db.query(`
+      SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
+      FROM item
+      WHERE clustercode = $1
+      ORDER BY material_name
+    `, [clusterCode]); // Use the clusterCode in the query
+
+    let bincards = {};
+
+    bincardDataQuery.rows.forEach(item => {
+      // Since we're filtering by clustercode, we know there's only one bincard
+      if (!bincards[clusterCode]) {
+        bincards[clusterCode] = { items: [] };
+      }
+
+      bincards[clusterCode].items.push({
+        name: item.material_name,
+        description: item.description,
+        beginningInventory: item.beginning_inventory,
+        totalIncoming: item.total_incoming,
+        totalOutgoing: item.total_outgoing,
+        available: item.available,
+        unitPrice: item.price,
+        totalValue: item.available * item.price
+      });
+    });
+
+    // Check if we actually have a bincard with that clusterCode
+    if (!bincards[clusterCode] || bincards[clusterCode].items.length === 0) {
+      return res.status(404).send('No bin card found for the provided cluster code.');
+    }
+
+    res.render('bincard.ejs', {
+      bincards: bincards, // This now only contains the bincard(s) for the provided clusterCode
+      currentUser: req.session.username,
+      currentRole: req.session.roleOf,
+    });
+  } catch (err) {
+    console.error('Error generating bin card:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 import path from 'path';
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -353,10 +455,10 @@ app.get("/manage", async (req, res) => {
       const usersResult = await db.query("SELECT * FROM users");
       const users = usersResult.rows;
     
-      console.log("Start: testing in /manage");
-      console.log(roleOf);
-      console.log(req.session.username);////////////////////////////////////////////// important code take note!
-      console.log("end of testing: /manage")
+     // console.log("Start: testing in /manage");
+      //console.log(roleOf);
+      //console.log(req.session.username);////////////////////////////////////////////// important code take note!
+      //console.log("end of testing: /manage")
    
 
       // Render the "manage.ejs" template with the user data
@@ -453,9 +555,9 @@ app.get("/stock", async (req, res) => {
       FROM item 
       INNER JOIN cluster ON item.clustercode = cluster.clustercode`);
     const items = itemOfQueryResult.rows;
-      console.log("testStock uname");
-    console.log(req.session.username);
-    console.log("end /stock");
+      //console.log("testStock uname");
+    //console.log(req.session.username);
+    //console.log("end /stock");
      
     res.render("stock.ejs", {items, roleOf: roleOf, cluster, pictureUrl: './uploads/' + pictureUrl});
   } catch (error) {
@@ -492,7 +594,7 @@ app.post("/add-item", async (req, res) => {
 
   try {
     // Get the classification_id based on the provided clustercode
-    const classificationQueryResult = await db.query("SELECT classification_id FROM cluster WHERE clustercode = $1", [clcode]);
+    const classificationQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clcode]);
     if (classificationQueryResult.rows.length === 0) {
       return res.status(400).send(`
         <!DOCTYPE html>
@@ -532,17 +634,17 @@ app.post("/add-item", async (req, res) => {
       `);
     }
     const classificationId = classificationQueryResult.rows[0].classification_id;
-
+    const clusterDescription = classificationQueryResult.rows[0].description;
     // Insert the new item
     await db.query(
-      "INSERT INTO item (classification_id, material_name, clustercode, price) VALUES ($1, $2, $3, $4)",
-      [classificationId, materialName, clcode, price]
+      "INSERT INTO item (classification_id, material_name, clustercode, price, description, beginning_inventory, total_incoming, total_outgoing, available) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
+      [classificationId, materialName, clcode, price, clusterDescription, '0', '0', '0','0']
     );
-
+  
     if (req.isAuthenticated()) {
       const userPictureUrl = req.user.picture_url;
       const logDescription = `${req.user.username} added a new item: ${materialName}`;
-      console.log(userPictureUrl);
+      //console.log(userPictureUrl);
       await db.query(
         "INSERT INTO logs (username, description, trans_type, log_date, picture, dailyProdUpdate, logs_clustercode, logs_material_name) VALUES ($1, $2, 'Added', CURRENT_DATE, $3, 'Yes', $4, $5)",
         [req.user.username, logDescription, userPictureUrl, clcode, materialName]
@@ -609,7 +711,7 @@ app.post("/update-item", async (req, res) => {
   if (req.isAuthenticated()) {
     const userPictureUrl = req.user.picture_url;
     const logDescription = `${req.user.username} updated the price of ${materialName}`;
-    console.log(userPictureUrl);
+    //console.log(userPictureUrl);
     await db.query(
       "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Modified', CURRENT_DATE, $3, $4)",
       [req.user.username, logDescription, userPictureUrl, materialName]
@@ -647,7 +749,7 @@ app.post("/delete-item", async (req, res) => {
     if (req.isAuthenticated()) {
       const userPictureUrl = req.user.picture_url;
       const logDescription = `${req.user.username} deleted the item: ${materialName}`;
-      console.log(userPictureUrl);
+      //console.log(userPictureUrl);
       await db.query(
         "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Deleted', CURRENT_DATE, $3, $4)",
         [req.user.username, logDescription, userPictureUrl, materialName]
@@ -873,7 +975,8 @@ app.get("/generate-report-page", async (req, res) => {
 
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
-      req.session.roleOf = roleOf;
+      req.session.roleOf = roleOf.rows[0].role;
+      
       res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role, roleOfUser: roleOfUser, pictureUrl: './uploads/' + pictureUrl});
       
     } catch (err) {
@@ -908,6 +1011,7 @@ app.post('/addstock', async (req, res) => {
   try {
     // Check if the item with the given itemDescription exists in the database
     const checkResult = await db.query("SELECT * FROM item WHERE material_name = $1", [itemDescription]);
+    
 
     if (checkResult.rows.length === 0) {
       res.status(400).send('Item not found');
@@ -919,7 +1023,7 @@ app.post('/addstock', async (req, res) => {
     const parsedOutgoing = parseInt(outgoing, 10);
 
     // Check if parsing is successful
-    if (isNaN(parsedIncoming) || isNaN(parsedOutgoing)) {
+    if (isNaN(parsedIncoming) || isNaN(parsedOutgoing)) { 
       res.status(400).send('Invalid incoming or outgoing value');
       return;
     }
@@ -928,10 +1032,20 @@ app.post('/addstock', async (req, res) => {
     const fetchAvailableQuery = `SELECT available FROM item WHERE material_name = $1`;
     const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
     const available = fetchAvailableResult.rows[0].available;
+    
 
+    
     const fetchPriceQuery = `SELECT price FROM item WHERE material_name = $1`;
     const fetchPriceResult = await db.query(fetchPriceQuery, [itemDescription]);
-    const current_price = fetchPriceResult.rows[0].available;
+    const current_price = fetchPriceResult.rows[0].price;
+
+
+    const itemCheckQuery = `SELECT * FROM item WHERE material_name = $1`;
+    const itemCheckResult = await db.query(itemCheckQuery, [itemDescription]);
+    const currentItem = itemCheckResult.rows[0];
+    const newTotalIncoming = currentItem.total_incoming + parsedIncoming;
+    const newTotalOutgoing = currentItem.total_outgoing + parsedOutgoing;
+
 
     // Calculate new available value
     let newAvailable = available + parsedIncoming - parsedOutgoing;
@@ -960,20 +1074,19 @@ app.post('/addstock', async (req, res) => {
     // Update the item table
     const updateQuery = `
       UPDATE item
-      SET beginning_inventory = $1,
-          available = $2,
-          total_outgoing = total_outgoing + $3,
-          total_incoming = total_incoming + $4
-      WHERE material_name = $5
+      SET available = $1,
+          total_outgoing = $2,
+          total_incoming = $3
+      WHERE material_name = $4
     `;
-    await db.query(updateQuery, [newAvailable, newAvailable, parsedOutgoing, parsedIncoming, itemDescription]);
+    await db.query(updateQuery, [newAvailable,  newTotalOutgoing,newTotalIncoming, itemDescription]);
 
     // If the user is authenticated, log the action
     if (req.isAuthenticated()) {
       // Insert the log entry into the logs table
       await db.query(
         "INSERT INTO logs (username, newvaluesummary, trans_type, log_date, picture, logs_clustercode, logs_material_name, logs_available, outgoing, incoming, logs_price, dailyprodupdate, oldvaluesummary) VALUES ($1, $2, $3, CURRENT_DATE, $4, $5, $6, $7, $8, $9, $10, $11, $12)",
-        [currentUser.username, logDescription, transType, currentUser.picture_url, clustercode, itemDescription, newAvailable, parsedOutgoing, parsedIncoming, current_price, 'Yes', oldlogDescription]
+        [currentUser.username, logDescription, transType, currentUser.picture_url, clustercode, itemDescription, newAvailable, newTotalOutgoing, newTotalIncoming, current_price, 'Yes', oldlogDescription]
       );
     }
 
