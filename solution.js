@@ -315,6 +315,135 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+app.post('/generate-report', async (req, res) => {
+  const { startDate, endDate, clusterCode, reportType } = req.body;
+
+  if (reportType === 'final') {
+    const currentUser = req.session.username;
+    const currentRole =req.session.roleOf;
+    const reportType ='notyet';
+    let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
+    const marker = new Date(req.body.endDate).toISOString().split('T')[0];
+    //console.log(currentRole);
+    console.log(currentUser);
+    //console.log(marker);
+      try {
+        const reportQueryResult = await db.query(`
+    SELECT classification_id, clustercode, description, available, price, item_date, status
+    FROM report
+    WHERE item_date::DATE = $1 AND status = 'SET'
+    `, [endDate]);
+        console.log(reportQueryResult);
+    
+        if (reportQueryResult.rows.length === 0) {
+          return res.status(404).send('No report found for the selected date.');
+        }
+    
+        let aggregatedData = {};
+        reportQueryResult.rows.forEach(item => {
+          const key = item.clustercode;
+          if (!aggregatedData[key]) {
+            aggregatedData[key] = {
+              classification_id: item.classification_id,
+              clustercode: item.clustercode,
+              descriptions: new Set(),
+              total_amount: 0
+            };
+          }
+          aggregatedData[key].descriptions.add(item.description);
+          aggregatedData[key].total_amount += (item.available * item.price);
+        });
+    
+        const reportData = Object.values(aggregatedData).map(item => ({
+          ...item,
+          description: Array.from(item.descriptions).join(", ")
+        }));
+    
+        // Calculate subtotals for each classification
+        let subtotals = reportData.reduce((acc, item) => {
+          const classification = item.classification_id.toString();
+          acc[classification] = (acc[classification] || 0) + item.total_amount;
+          return acc;
+        }, {});
+    
+        
+        
+    
+        // Calculate the grand total
+        let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
+        //console.log(reportData[0].item_date);
+        //console.log(reportQueryResult.rows);
+        //console.log(reportData);
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
+          [req.user.username, logDescription, req.user.picture_url]
+        );
+        res.render("report-page.ejs", {
+          reportData,
+          subtotals,
+          grandTotal,
+          currentUser: req.session.username,
+      currentRole: req.session.roleOf,
+          marker
+        });
+      } catch (err) {
+        console.error('Error generating report page:', err);
+        res.status(500).send('Internal Server Error');
+        logDescription = `Failed to generate PDF report for period ${startDate} to ${endDate}`;
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
+          [req.user.username, logDescription, req.user.picture_url]
+        );
+      }
+  } else if (reportType === 'bincard') {
+    try {
+      // Modify your query to select only items with the provided clusterCode
+      const bincardDataQuery = await db.query(`
+        SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
+        FROM item
+        WHERE clustercode = $1
+        ORDER BY material_name
+      `, [clusterCode]); // Use the clusterCode in the query
+  
+      let bincards = {};
+  
+      bincardDataQuery.rows.forEach(item => {
+        // Since we're filtering by clustercode, we know there's only one bincard
+        if (!bincards[clusterCode]) {
+          bincards[clusterCode] = { items: [] };
+        }
+  
+        bincards[clusterCode].items.push({
+          name: item.material_name,
+          description: item.description,
+          beginningInventory: item.beginning_inventory,
+          totalIncoming: item.total_incoming,
+          totalOutgoing: item.total_outgoing,
+          available: item.available,
+          unitPrice: item.price,
+          totalValue: item.available * item.price
+        });
+      });
+  
+      // Check if we actually have a bincard with that clusterCode
+      if (!bincards[clusterCode] || bincards[clusterCode].items.length === 0) {
+        return res.status(404).send('No bin card found for the provided cluster code.');
+      }
+  
+      res.render('bincard.ejs', {
+        bincards: bincards, // This now only contains the bincard(s) for the provided clusterCode
+        currentUser: req.session.username,
+        currentRole: req.session.roleOf,
+      });
+    } catch (err) {
+      console.error('Error generating bin card:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  } else {
+    res.status(400).send('Invalid report type.');
+  }
+});
+
 
 app.get("/logs", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
