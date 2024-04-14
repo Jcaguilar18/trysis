@@ -581,8 +581,11 @@ app.get("/bin", async (req, res) => {
 
 
 app.get("/add-cluster", (req, res) => {
-  res.render("add-cluster.ejs");
+  const classificationId = req.query.classification_id || 'default-value'; // Use a fallback if necessary
+  res.render("add-cluster.ejs", { classificationId: classificationId });
 });
+
+
 
 app.get("/update-cluster", (req, res) => {
   res.render("update-cluster.ejs");
