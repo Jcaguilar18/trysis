@@ -607,8 +607,8 @@ app.post("/update-account", async (req, res) => {
       username: username,
       role: role,
       status: status,
-      firstname: JSON.parse(firstname),
-      lastname: JSON.parse(lastname)
+      firstname: firstname,
+      lastname: lastname
     };
 
     if (password && password.trim() !== '') {
