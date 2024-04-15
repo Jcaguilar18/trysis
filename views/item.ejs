@@ -51,7 +51,9 @@
                       <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                     </div>
                     <p class="left-legend-text">Legend (Fabrication)</p>
+                    <% if (roleOf !== 'warehouse') { %>
                     <img class="pencil-icon-left-legend" src="./assets/pencil-icon-item.png" onclick="openModal('1')"/>
+                    <% } %>
                   </div>
                   <div class="tables-area-left">
                     <table id="itemTable" class="item-catalog-table">
@@ -69,7 +71,9 @@
                               <td><%= cluster1.clustercode %></td>
                               <td><%= cluster1.description %></td>
                               <td>
+                                <% if (roleOf !== 'warehouse') { %>
                                 <button class="action-buttons" onclick="editItemModal('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
+                                <% } %>
                                 <button class="action-buttons" onclick="binCardModalFunction('<%= cluster1.clustercode %>', '<%= cluster1.description %>')" style="font-family: FontAwesome;"></button>
                               </td>
                             </tr>
@@ -91,7 +95,9 @@
                         <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                       </div>
                       <p class="right-legend-text">Legend (Firepro)</p>
+                      <% if (roleOf !== 'warehouse') { %>
                       <img class="pencil-icon-right-legend" src="./assets/pencil-icon-item.png" onclick="openModal('2')"/>
+                      <% } %>
                     </div>
                     <div class="tables-area-upper-right">
                       <table id="itemTable3" class="item-catalog-table">
@@ -110,7 +116,9 @@
                                 <td><%= cluster2.description %></td>
                                 <td>
                                   <!--TASK: Filter based on Classification Clicked-->
+                                  <% if (roleOf !== 'warehouse') { %>
                                   <button class="action-buttons" onclick="editItemModal('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
+                                  <% } %>
                                   <button class="action-buttons" onclick="binCardModalFunction('<%= cluster2.clustercode %>', '<%= cluster2.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
                               </tr>
@@ -131,7 +139,9 @@
                         <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                       </div>
                       <p class="right-legend-text">Legend (Electrical)</p>
+                      <% if (roleOf !== 'warehouse') { %>
                       <img class="pencil-icon-right-legend" src="./assets/pencil-icon-item.png" onclick="openModal('3')"/>
+                      <% } %>
                     </div>
                     <div class="tables-area-lower-right">
                       <table id="itemTable4" class="item-catalog-table">
@@ -149,7 +159,9 @@
                                 <td><%= cluster3.clustercode %></td>
                                 <td><%= cluster3.description %></td>
                                 <td>
+                                  <% if (roleOf !== 'warehouse') { %>
                                   <button class="action-buttons" onclick="editItemModal('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
+                                  <% } %>
                                   <button class="action-buttons" onclick="binCardModalFunction('<%= cluster3.clustercode %>', '<%= cluster3.description %>')" style="font-family: FontAwesome;"></button>
                                 </td>
                               </tr>
@@ -181,7 +193,9 @@
                         <td><%= cluster.clustercode %></td>
                         <td><%= cluster.description %></td>
                         <td>
+                          <% if (roleOf !== 'warehouse') { %>
                           <button class="action-buttons" onclick="editItemModal('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
+                          <% } %>
                           <button class="action-buttons" onclick="binCardModalFunction('<%= cluster.clustercode %>', '<%= cluster.description %>')" style="font-family: FontAwesome;"></button>
                         </td>
                       </tr>

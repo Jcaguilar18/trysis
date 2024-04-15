@@ -28,12 +28,20 @@
         <div class="upper-inner">
           <div class="buttons-frame">
             <!-- Report Function & Make it Required for one to be picked before downloading-->
+            <% if (roleOf !== 'engineer') { %>
             <input type="radio" id="final" name="reportType" value="final" class="button-north" required>
-            <input type="radio" id="bincard" name="reportType" value="bincard" class="button-south" required>
+            <% } %>
+            <% if (roleOf !== 'company') { %>
+              <input type="radio" id="bincard" name="reportType" value="bincard" class="button-south" required>
+            <% } %>
           </div>
           <div class="button-associated-texts">
+            <% if (roleOf !== 'engineer') { %>
             <p class="final-report-text">Final Report</p>
+            <% } %>
+            <% if (roleOf !== 'company') { %>
             <p class="bin-card-report-text">BIN Card Report</p>
+            <% } %>
           </div>
           <div class="date-frame">
             <div class="date-text-area">

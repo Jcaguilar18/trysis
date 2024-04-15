@@ -55,8 +55,6 @@
                   <div class="users-table">
                     <div class="row-header">
                         <div class="cell-header">USERNAME</div>
-                        <div class="cell-header">FIRSTNAME</div>
-                        <div class="cell-header">LASTNAME</div>
                         <div class="cell-header">PASSWORD</div>
                         <div class="cell-header">ROLE</div>
                         <div class="cell-header">STATUS</div>
@@ -70,12 +68,6 @@
                             <input type="text" class="input-field" name="username" value="<%= user.username %>" readonly>
                           </div>
                           <div class="cell">
-                            <input type="text" class="input-field" name="firstname" value="<%= user.firstname %>" readonly>
-                          </div>
-                          <div class="cell">
-                            <input type="text" class="input-field" name="lastname" value="<%= user.lastname %>" readonly>
-                          </div>
-                          <div class="cell">
                             <input type="password" class="input-field hidden" id="password" name="password" placeholder="New Password" readonly>
                             <input type="password" class="input-field hidden-confirm" id="confirm_password" name="confirm_password" placeholder="Confirm Password" readonly>
                           </div>
@@ -84,6 +76,8 @@
                               <option value="company" <%= user.role === 'company' ? 'selected' : '' %>>Company</option>
                               <option value="warehouse" <%= user.role === 'warehouse' ? 'selected' : '' %>>Warehouse</option>
                               <option value="manager" <%= user.role === 'manager' ? 'selected' : '' %>>Manager</option>
+                              <option value="hr staff" <%= user.role === 'hr staff' ? 'selected' : '' %>>HR Staff</option>
+                              <option value="engineer" <%= user.role === 'engineer' ? 'selected' : '' %>>Engineer</option>
                             </select>
                           </div>
                           <div class="cell">

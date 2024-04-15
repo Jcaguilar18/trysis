@@ -458,13 +458,10 @@ app.get("/logs", async (req, res) => {
 
   try {
 
-    const userResult = await db.query("SELECT picture_url, role FROM users WHERE username = $1", [req.user.username]);
+    const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
     const user = userResult.rows[0];
+    const roleOf = user?.role;
     const pictureUrl = user?.picture_url;
-    const roleOfUser = user?.role;
-
-    var roleOfQueryResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.session.username]);
-    var roleOf = roleOfQueryResult.rows[0]?.role;
 
     if (transTypeFilter) {
       query = {
@@ -492,7 +489,6 @@ app.get("/logs", async (req, res) => {
     res.render("logs.ejs", {
       roleOf,
       pictureUrl: './uploads/' + pictureUrl,
-      roleOfUser,
       logs,
       currentPage,
       startPage,
@@ -1027,7 +1023,7 @@ app.get("/dashboard", async (req, res) => {
 
       // Calculate inventory subtotals
       const inventorySubtotalsResult = await db.query(`
-        SELECT classification.classification_name, SUM(item.price * item.beginning_inventory) AS subtotal
+        SELECT classification.classification_name, SUM(item.price * item.available) AS subtotal
         FROM item 
         INNER JOIN classification ON item.classification_id = classification.classification_id
         GROUP BY classification.classification_name
@@ -1121,13 +1117,32 @@ app.get("/generate-report-page", async (req, res) => {
 });
 
 app.post('/login',
-  function(req, res, next) {
-    passport.authenticate('local', function(err, user, info) {
+  async function(req, res, next) {
+    passport.authenticate('local', async function(err, user, info) {
       if (err) { return next(err); }
       if (!user) { return res.render('login.ejs', { error: info.message }); }
-      req.logIn(user, function(err) {
+      req.logIn(user, async function(err) {
         if (err) { return next(err); }
-        return res.redirect('/dashboard');
+
+        const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+        const user = userResult.rows[0];
+        const roleOf = user?.role;
+        const pictureUrl = user?.picture_url;
+
+        if (roleOf === 'company') {
+          return res.redirect('/generate-report-page');
+        } 
+        if (roleOf === 'warehouse') {
+          return res.redirect('/stock');
+        } 
+        if (roleOf === 'hr staff') {
+          return res.redirect('/manage');
+        } 
+        if (roleOf === 'engineer') {
+          return res.redirect('/generate-report-page');
+        } else {
+          return res.redirect('/dashboard');
+        }
       });
     })(req, res, next);
   }
