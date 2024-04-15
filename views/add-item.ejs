@@ -55,11 +55,11 @@
 <body>
     <form action="/add-item" method="POST">
         <h1>Add Item</h1>
+        
+            <input type="hidden"  name="clcode" value='<%=clcode%>'>
+     
         <div class="form-group">
-            <label for="clcode">Cluster Code:</label>
-            <input type="text" class="form-control" id="clcode" name="clcode" required>
-        </div>
-        <div class="form-group">
+            <p><%=clcode%></p>
             <label for="materialName">Material Name:</label>
             <input type="text" class="form-control" id="materialName" name="materialName" required>
         </div>

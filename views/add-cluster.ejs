@@ -63,12 +63,10 @@
             <label for="description">Description:</label>
             <input type="text" class="form-control" id="description" name="description" required>
         </div>
-<p><%=classificationId %></p>
 
-        <div class="form-group">
-            <label for="classificationid">Classification ID:</label>
-            <input type="number" class="form-control" id="classificationid" name="classificationid" required>
-        </div>
+
+            <input type="hidden"  id="classificationid" name="classificationid" value="<%=classificationId %>">
+ 
         <button type="submit">Add</button>
     </form>
 </body>

@@ -7,6 +7,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="./styles/item-catalog-page.css"/>
+    <script>
+      var mamamo = '0'; // Initialize mamamo with the default value
+    
+     
+    </script>
+    
 </head>
 
 <body>
@@ -51,7 +57,8 @@
                       <img class="search-icon-legend" src="./assets/searchicon-1.png"/>
                     </div>
                     <p class="left-legend-text">Legend (Fabrication)</p>
-                    <img class="pencil-icon-left-legend" src="./assets/pencil-icon-item.png" onclick="openModal('1')"/>
+                    <img class="pencil-icon-left-legend" src="./assets/pencil-icon-item.png" onclick="openModal('1')" />
+
                   </div>
                   <div class="tables-area-left">
                     <table id="itemTable" class="item-catalog-table">
@@ -202,6 +209,7 @@
 <!---------------------------------------------------------------------------------------------->
 
 <!-- openModal() -->
+
 <div id="myModal" class="modal">
 <div class="modal-content">
     <span class="close">×</span>
@@ -216,33 +224,42 @@
                 <p class="description-text">DESCRIPTION</p>
             </div>
             <% if (cluster4 && cluster4.length > 0) { %>
-                <% cluster4.forEach(cluster => { %>
+                <%cluster4.forEach(cluster => { %>
                   
                   <form action="/update-cluster" method="POST" class="table">
                     <div class="entry">
+       
                       <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
                       <div class="classification_hidden" id="cluster_cell" contenteditable="true"><%= cluster.classification_id %></div>
                       <input type="text" class="code" name="code" id="cluster_cell" value="<%= cluster.clustercode %>" style="text-align: center;">
                       <input type="text" class="description" name="description" id="cluster_cell" value="<%= cluster.description %>">
                       <img class="gear" id="cluster_cell" src="<%= cluster.status === 'SET' ? './assets/changinggear-1.png' : './assets/deset_icon.png' %>"/>
+                      
                       <select class="status-dropdown" name="status" id="status_dropdown" onchange="updateIcon(this.value)">
                         <option value="SET" <%= cluster.status === 'SET' ? 'selected' : '' %>>SET</option>
                         <option value="DESET" <%= cluster.status === 'DESET' ? 'selected' : '' %>>DESET</option>
                       </select>
                       <button type="submit" class="save-button">Save</button>
+                     
                     </div>
+                    
                   </form>
+                  
+                  
                 <% }); %>
             <% } else { %>
                 <div>No items found</div>
             <% } %>
         </div>
         <div class="add-section">
-          <!-- Directly append a default classification_id in the URL -->
-          <button class="add-button" onclick="window.location.href='/add-cluster?classification_id=1'">
-            <img class="add-cluster-icon" src="./assets/additionicon-1.png" />
-          </button>
+          <form action="/add-cluster" method="GET">
+            <input type="hidden" name="classificationId" value="0"> <!-- Initialized with 0, but will be updated by JS -->
+            <button type="submit" class="add-button">
+              <img class="add-cluster-icon" src="./assets/additionicon-1.png" alt="Add Cluster"/>
+            </button>
+          </form>
         </div>
+        
         
         <div class="lower-section">
             <!-- <button onclick="discardChanges()" class="discard-button">Discard</button> -->
@@ -270,7 +287,14 @@
       <input type="text" id="material" name="material" placeholder="Search material..."> 
     </div>
     <div class="below-upper-table-part">
-      <button id="addItem" class="below-table-part-text" onclick="location.href='/add-item'">+ Add Item</button> 
+      <div class="below-upper-table-part">
+        <p></p>
+        <form action="/add-item" method="GET">
+            <input type="hidden" id="addFormClustercode" name="clustercode" value="">
+            <button type="submit" id="code" onclick="setClustercodeForAddingItem('<%= cluster.clustercode %>')" class="below-table-part-text">+ Add Item</button>
+        </form>
+    </div>
+    
       <p class="below-table-part-text">ITEM DESCRIPTION</p>
       <p class="below-table-part-text">ACTION</p>
       <p class="below-table-part-text">AVAILABLE</p>
@@ -286,9 +310,21 @@
           <div class="table-cell"><%= item.item_description %></div>
           <div class="table-cell">
             <!--TASK: Create Edit Item Function (Total Amount is Note Editable)-->
-            <button onclick="location.href='/update-item'"><img src="./assets/edit_icon_pencil.png" alt="Edit"></button>
+            <form action="/update-item" method="GET">
+              <input type="hidden" name="item_id" value="<%= item.item_id %>">
+              <button type="submit" style="border: none; background: none; padding: 0;">
+                  <img src="./assets/edit_icon_pencil.png" alt="Edit">
+              </button>
+          </form>
+            
             <!--TASK: Create Delete Item Function-->
-            <button onclick="deleteItem('<%= item.id %>')"><img src="./assets/trash_icon.png" alt="Delete"></button>
+            <!-- <button onclick="deleteItem('<%= item.item_id %>', this)">
+              <img src="./assets/trash_icon.png" alt="Delete">
+          </button> -->
+          
+          <button onclick="deleteItem(<%= item.item_id %>, this)">
+            <i class="fa fa-trash"></i>
+          </button>
           </div>
           <div class="table-cell"><%= item.available %></div>
           <div class="table-cell">₱<%= item.price %></div>
@@ -360,6 +396,33 @@
 
 
 <script>
+  // Example function that sets the hidden input field's value
+  function setClustercodeForAddingItem(clustercode) {
+    document.getElementById('addFormClustercode').value = clustercode;
+}
+
+
+ function deleteItem(itemId, buttonElement) {
+  if (confirm('Are you sure you want to delete this item?')) {
+    $.ajax({
+      type: 'POST',
+      url: '/delete-item',
+      data: { item_id: itemId },
+      success: function(response) {
+        // Remove the row from the table
+        $(buttonElement).closest('tr').remove();
+        alert('Item deleted successfully.');
+        // Reload the page to reflect the changes
+        location.reload(); // Add this line
+      },
+      error: function(xhr, status, error) {
+        alert('Error deleting item: ' + xhr.responseText);
+      }
+    });
+  }
+}
+
+
 
 function populateForm(clustercode, description, classificationid) {
     document.getElementById('clustercode').value = clustercode;
@@ -438,6 +501,8 @@ window.onclick = function(event) {
 
 // Function to open the modal and filter items based on the clustercode
 function openModal(classification_id) {
+  mamamo = classification_id; // Update mamamo with the classificationId
+    document.querySelector('input[name="classificationId"]').value = mamamo;
 // Filter the items based on the clustercode
 
 /* var items = $('#myModal tbody tr').filter(function() {

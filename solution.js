@@ -167,7 +167,7 @@ const reportType ='notyet';
 let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
 const marker = new Date(req.body.endDate).toISOString().split('T')[0];
 //console.log(currentRole);
-console.log(currentUser);
+//console.log(currentUser);
 //console.log(marker);
   try {
     const reportQueryResult = await db.query(`
@@ -175,7 +175,7 @@ SELECT classification_id, clustercode, description, available, price, item_date,
 FROM report
 WHERE item_date::DATE = $1 AND status = 'SET'
 `, [endDate]);
-    console.log(reportQueryResult);
+    //console.log(reportQueryResult);
 
     if (reportQueryResult.rows.length === 0) {
       return res.status(404).send('No report found for the selected date.');
@@ -315,6 +315,138 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+<<<<<<< Updated upstream
+=======
+app.post('/generate-report', async (req, res) => {
+  const { startDate, endDate, clusterCode, reportType } = req.body;
+
+  if (reportType === 'final') {
+    const currentUser = req.session.username;
+    const currentRole =req.session.roleOf;
+    const reportType ='notyet';
+    let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
+    const marker = new Date(req.body.endDate).toISOString().split('T')[0];
+    //console.log(currentRole);
+    //console.log(currentUser);
+    //console.log(marker);
+      try {
+        const reportQueryResult = await db.query(`
+    SELECT classification_id, clustercode, description, available, price, item_date, status
+    FROM report
+    WHERE item_date::DATE = $1 AND status = 'SET'
+    `, [endDate]);
+        //console.log(reportQueryResult);
+    
+        if (reportQueryResult.rows.length === 0) {
+          return res.status(404).send('No report found for the selected date.');
+        }
+    
+        let aggregatedData = {};
+        reportQueryResult.rows.forEach(item => {
+          const key = item.clustercode;
+          if (!aggregatedData[key]) {
+            aggregatedData[key] = {
+              classification_id: item.classification_id,
+              clustercode: item.clustercode,
+              descriptions: new Set(),
+              total_amount: 0
+            };
+          }
+          aggregatedData[key].descriptions.add(item.description);
+          aggregatedData[key].total_amount += (item.available * item.price);
+        });
+    
+        const reportData = Object.values(aggregatedData).map(item => ({
+          ...item,
+          description: Array.from(item.descriptions).join(", ")
+        }));
+    
+        // Calculate subtotals for each classification
+        let subtotals = reportData.reduce((acc, item) => {
+          const classification = item.classification_id.toString();
+          acc[classification] = (acc[classification] || 0) + item.total_amount;
+          return acc;
+        }, {});
+    
+        
+        
+    
+        // Calculate the grand total
+        let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
+        //console.log(reportData[0].item_date);
+        //console.log(reportQueryResult.rows);
+        //console.log(reportData);
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generated', CURRENT_DATE, $3)",
+          [req.user.username, logDescription, req.user.picture_url]
+        );
+        res.render("report-page.ejs", {
+          reportData,
+          subtotals,
+          grandTotal,
+          currentUser: req.session.username,
+      currentRole: req.session.roleOf,
+          marker
+        });
+      } catch (err) {
+        console.error('Error generating report page:', err);
+        res.status(500).send('Internal Server Error');
+        logDescription = `Failed to generate PDF report for period ${startDate} to ${endDate}`;
+        await db.query(
+          "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Report Generation Failed', CURRENT_DATE, $3)",
+          [req.user.username, logDescription, req.user.picture_url]
+        );
+      }
+  } else if (reportType === 'bincard') {
+    try {
+      // Modify your query to select only items with the provided clusterCode
+      const bincardDataQuery = await db.query(`
+        SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
+        FROM item
+        WHERE clustercode = $1
+        ORDER BY material_name
+      `, [clusterCode]); // Use the clusterCode in the query
+  
+      let bincards = {};
+  
+      bincardDataQuery.rows.forEach(item => {
+        // Since we're filtering by clustercode, we know there's only one bincard
+        if (!bincards[clusterCode]) {
+          bincards[clusterCode] = { items: [] };
+        }
+  
+        bincards[clusterCode].items.push({
+          name: item.material_name,
+          description: item.description,
+          beginningInventory: item.beginning_inventory,
+          totalIncoming: item.total_incoming,
+          totalOutgoing: item.total_outgoing,
+          available: item.available,
+          unitPrice: item.price,
+          totalValue: item.available * item.price
+        });
+      });
+  
+      // Check if we actually have a bincard with that clusterCode
+      if (!bincards[clusterCode] || bincards[clusterCode].items.length === 0) {
+        return res.status(404).send('No bin card found for the provided cluster code.');
+      }
+  
+      res.render('bincard.ejs', {
+        bincards: bincards, // This now only contains the bincard(s) for the provided clusterCode
+        currentUser: req.session.username,
+        currentRole: req.session.roleOf,
+      });
+    } catch (err) {
+      console.error('Error generating bin card:', err);
+      res.status(500).send('Internal Server Error');
+    }
+  } else {
+    res.status(400).send('Invalid report type.');
+  }
+});
+
+>>>>>>> Stashed changes
 
 app.get("/logs", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -392,6 +524,7 @@ app.get("/item", async (req, res) => {
 
     var itemOfQueryResult = await db.query(`
     SELECT 
+    i.item_id,
     i.classification_id,
     i.material_name AS item_description,
     i.clustercode,
@@ -402,22 +535,23 @@ app.get("/item", async (req, res) => {
     i.price,
     i.description,
     ROUND((i.available * i.price)::numeric, 2) AS value_of_raw_material_on_hand
-  FROM item i
-  LEFT JOIN logs l ON i.clustercode = l.logs_clustercode AND i.material_name = l.logs_material_name
-  LEFT JOIN (
+FROM item i
+LEFT JOIN logs l ON i.clustercode = l.logs_clustercode AND i.material_name = l.logs_material_name
+LEFT JOIN (
     SELECT 
-      logs_material_name, 
-      logs_clustercode, 
-      logs_available 
+        logs_material_name, 
+        logs_clustercode, 
+        logs_available 
     FROM logs 
     WHERE log_date < CURRENT_DATE
     ORDER BY log_date DESC, log_id DESC 
     LIMIT 1
-  ) l2 ON i.material_name = l2.logs_material_name AND i.clustercode = l2.logs_clustercode
-  LEFT JOIN cluster c ON i.clustercode = c.clustercode
-  WHERE c.status <> 'DESET'
-  GROUP BY i.classification_id, i.material_name, i.clustercode, l2.logs_available, i.available, i.price, i.description
-  ORDER BY MAX(l.log_id) DESC
+) l2 ON i.material_name = l2.logs_material_name AND i.clustercode = l2.logs_clustercode
+LEFT JOIN cluster c ON i.clustercode = c.clustercode
+WHERE c.status <> 'DESET'
+GROUP BY i.item_id, i.classification_id, i.material_name, i.clustercode, l2.logs_available, i.available, i.price, i.description
+ORDER BY MAX(l.log_id) DESC;
+
    `);
     var clusterquery = await db.query("SELECT * FROM cluster WHERE status != 'DESET'");
     var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1 AND status != 'DESET'");
@@ -523,17 +657,32 @@ app.post("/update-account", async (req, res) => {
   }
 });
 
+app.post('/delete-item', async (req, res) => {
+  const { item_id } = req.body;
+  try {
+    await db.query('DELETE FROM item WHERE item_id = $1', [item_id]);
+    res.json({ message: 'Item deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting item:', error);
+    res.status(500).json({ error: 'Failed to delete item.' });
+  }
+});
 
 
 // Route to render the form for adding an item
 app.get("/add-item", (req, res) => {
+  
   const clcode = req.query.clustercode;
+  console.log(clcode);
   res.render("add-item.ejs", {clcode});
 });
 
-app.get("/update-item", (req, res) => {
-  res.render("update-item.ejs");
+app.get('/update-item', async (req, res) => {
+  const itemId = req.query.item_id;
+  console.log(itemId);
+  res.render('update-item.ejs', { itemId });
 });
+
 
 
 app.get("/stock", async (req, res) => {
@@ -581,9 +730,13 @@ app.get("/bin", async (req, res) => {
 
 
 app.get("/add-cluster", (req, res) => {
-  const classificationId = req.query.classification_id || 'default-value'; // Use a fallback if necessary
+  const { classificationId, cluster } = req.query; // Use req.query for GET requests
+  console.log('Received classificationId:', classificationId);
+  console.log('Received classificationId:', cluster);
+  
   res.render("add-cluster.ejs", { classificationId: classificationId });
 });
+
 
 
 
@@ -594,7 +747,7 @@ app.get("/update-cluster", (req, res) => {
 // Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
   const { materialName, clcode, price} = req.body;
-
+  console.log(clcode);
   try {
     // Get the classification_id based on the provided clustercode
     const classificationQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clcode]);
@@ -663,71 +816,66 @@ app.post("/add-item", async (req, res) => {
 });
 
 app.post("/update-item", async (req, res) => {
-  const { materialName, price} = req.body;
+  // Destructure the itemId, materialName, and price from the request body
+  
 
+  const { itemId, materialName, price } = req.body;
+  console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAA');
+  console.log(itemId);
   try {
-    const materialQueryResult = await db.query("SELECT material_name FROM item WHERE material_name = $1", [materialName]);
-    if (materialQueryResult.rows.length === 0) {
-      return res.status(400).send(`
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Invalid Cluster Code</title>
-            <style>
-                body {
-                    display: flex;
-                    justify-content: center;
-                    align-items: center;
-                    height: 100vh;
-                    margin: 0;
-                    background-color: #f8f9fa;
-                    font-family: Arial, sans-serif;
-                }
-                .container {
-                    text-align: center;
-                }
-                button {
-                    margin-top: 20px;
-                    padding: 10px 20px;
-                    font-size: 16px;
-                    cursor: pointer;
-                }
-            </style>
-        </head>
-        <body>
-            <div class="container">
-                <h1> ${materialName} is invalid or do not exist.</h1>
-                <button onclick="location.href='/item'">Go Back</button>
-            </div>
-        </body>
-        </html>
-      `);
+    // Ensure itemId is provided to identify the correct item
+    if (!itemId) {
+      return res.status(400).send("Missing item identifier.");
     }
 
-  await db.query(
-    "UPDATE item SET price = $1 WHERE material_name = $2",
-    [price, materialName]
-  );
-  
-  if (req.isAuthenticated()) {
-    const userPictureUrl = req.user.picture_url;
-    const logDescription = `${req.user.username} updated the price of ${materialName}`;
-    //console.log(userPictureUrl);
-    await db.query(
-      "INSERT INTO logs (username, description, trans_type, log_date, picture, logs_material_name) VALUES ($1, $2, 'Modified', CURRENT_DATE, $3, $4)",
-      [req.user.username, logDescription, userPictureUrl, materialName]
-    );
-  }
+    // Initialize variables for the dynamic query construction
+    let query = "UPDATE item SET";
+    const queryValues = [];
+    let setClauses = [];
 
-    // Redirect back to the item page
+    // Append material name to the query if provided
+    if (materialName && materialName.trim()) {
+      queryValues.push(materialName);
+      setClauses.push(` material_name = $${queryValues.length}`);
+    }
+
+    // Append price to the query if provided
+    if (price && price.trim()) {
+      queryValues.push(price);
+      setClauses.push(` price = $${queryValues.length}`);
+    }
+
+    // Ensure at least one field is provided for update
+    if (setClauses.length === 0) {
+      return res.redirect("/item"); // Redirect without updating if no fields provided
+    }
+
+    // Complete the query with where clause using itemId
+    query += setClauses.join(", ");
+    query += ` WHERE item_id = $${queryValues.length + 1}`;
+    queryValues.push(itemId);
+
+    // Execute the update query
+    await db.query(query, queryValues);
+
+    // Optionally, log the update action if needed
+    if (req.isAuthenticated()) {
+      const userPictureUrl = req.user.picture_url;
+      const logDescription = `${req.user.username} updated item ID: ${itemId}`;
+      await db.query(
+        "INSERT INTO logs (username, description, trans_type, log_date, picture) VALUES ($1, $2, 'Modified', CURRENT_DATE, $3)",
+        [req.user.username, logDescription, userPictureUrl]
+      );
+    }
+
+    // Redirect back to the item listing page
     res.redirect("/item");
   } catch (error) {
     console.error("Error updating item:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 app.post("/delete-item", async (req, res) => {
   const { materialName } = req.body;
@@ -772,12 +920,13 @@ app.post("/delete-item", async (req, res) => {
 app.post("/add-cluster", async (req, res) => {
   try {
       // Extract data from the request body
+      
       const { clustercode, description, classificationid } = req.body;
-
+      console.log(classificationid);
       // Insert the cluster into the database
       await db.query(
-          "INSERT INTO cluster (clustercode, description, classification_id) VALUES ($1, $2, $3)",
-          [clustercode, description, classificationid]
+          "INSERT INTO cluster (clustercode, description, classification_id, status) VALUES ($1, $2, $3, $4)",
+          [clustercode, description, classificationid,'SET']
       );
 
       // If the user is authenticated, log the action
