@@ -104,6 +104,7 @@ body {
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
+    overflow: auto;
   }
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .new-user-button {
@@ -151,6 +152,8 @@ body {
   }
   
   .users-table .cell-header {
+    padding: 1rem;
+    margin-left: 2.9rem;
     flex: 1;
     text-align: center;
     font-weight: bold;
@@ -220,6 +223,12 @@ body {
 }
 
 /* Add a class for the edit icon */
+
+.edit
+{
+  margin-left: 3rem;
+}
+
 .edit-icon {
   height: 28px; /* Adjust as needed */
   width: 28px; /* Adjust as needed */
@@ -227,9 +236,9 @@ body {
 }
 
 .save-button {
-  margin: 0rem 0rem 2rem 3rem;
-  width: 11rem;
-  height: 5rem;
+  margin: 0rem 0rem 2rem 1.8rem;
+  width: 8rem;
+  height: 4rem;
   font-size: 1.5rem;
   font-weight: 700;
   line-height: 1.2125;
