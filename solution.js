@@ -449,7 +449,7 @@ app.get("/logs", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
-
+  
   const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
   const transTypeFilter = req.query.trans_type || null;
   const logsPerPage = 10;
@@ -486,6 +486,7 @@ app.get("/logs", async (req, res) => {
     // Calculate the start and end page for pagination
     const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
     const endPage = Math.min(startPage + 4, totalPages);
+/////////////////////
 
     res.render("logs.ejs", {
       roleOf,
@@ -559,6 +560,9 @@ ORDER BY MAX(l.log_id) DESC;
     const cluster4 = allClusterQuery.rows;
     const item= itemOfQueryResult.rows;
 
+
+
+   
   res.render("item.ejs", {item, roleOf, cluster, cluster1, cluster2, cluster3, pictureUrl: './uploads/' + pictureUrl, cluster4});
 
   } catch (err) {
