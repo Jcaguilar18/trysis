@@ -1,28 +1,83 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Generate Report</title>
+  <meta charset="utf-8" />
+  <link rel="icon" href="/favicon.ico" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#000000" />
+  <title>Generate Report Page</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter%3A700"/>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro%3A700"/>
+  <link rel="stylesheet" href="./styles/generate-report-page.css"/>
 </head>
 <body>
-  <h1>Generate Report</h1>
-  <form id="reportForm" action="/generate-report-page" method="POST">
-    <label for="startDate">Start Date:</label>
-    <input type="date" id="startDate" name="startDate">
-  
-    <label for="endDate">End Date:</label>
-    <input type="date" id="endDate" name="endDate" required>
-  
-    <button type="submit">Generate Report</button>
+<div class="web-page">
+  <div class="top-bar">
+    <img class="trisys-logo" src="./assets/trisys-logo-XA5.png"/>
+    <div class="user-info">
+        <p class="current-user-text"><%= roleOf %></p>
+        <img class="profile-picture" src="<%= pictureUrl %>"/>
+    </div>
+</div>
+  <div class="bottom-page-part">
+    <%- include('sidebar') %>
+    <form id="reportForm" action="/generate-report" method="POST">
+    <div class="below-top-bar">
+      <div class="inner-frame">
+        <p class="generate-report-title">Generate Report</p>
+        <div class="upper-inner">
+          <div class="buttons-frame">
+            <!-- Report Function & Make it Required for one to be picked before downloading-->
+            <% if (roleOf !== 'engineer') { %>
+            <input type="radio" id="final" name="reportType" value="final" class="button-north" required>
+            <% } %>
+            <% if (roleOf !== 'company') { %>
+              <input type="radio" id="bincard" name="reportType" value="bincard" class="button-south" required>
+            <% } %>
+          </div>
+          <div class="button-associated-texts">
+            <% if (roleOf !== 'engineer') { %>
+            <p class="final-report-text">Final Report</p>
+            <% } %>
+            <% if (roleOf !== 'company') { %>
+            <p class="bin-card-report-text">BIN Card Report</p>
+            <% } %>
+          </div>
+          <div class="date-frame">
+            <div class="date-text-area">
+              <p class="from-text">From:</p>
+              <p class="date-upper-text">Date:</p>
+              <p class="to-text">To:</p>
+              <p class="date-lower-text">Date:</p>
+            </div>
+            <div class="textfield-areas">
+              <!-- Set Date Function-->
+              <div class="upper-textfield">
+                <input type="date" id="startDate" name="startDate" class="textfield-input">
+              </div>
+              <div class="lower-textfield">
+                <input type="date" id="endDate" name="endDate" class="textfield-input">
+              </div>
+            </div>
+            <div class="set-date-buttons-area">
+              <input type="text" id="clusterCode" name="clusterCode" class="upper-set-date-button">
+                <button type="submit" class="lower-set-date-button">Set Code</button>
+            </div>
+          </div>
+        </div>
+        <p class="preview-final-report-text">Preview Final Report:</p>
+        <div class="preview-area">
+          <!-- Preview Feature-->
+        </div>
+      </div>
+      <div class="right-corner-side">
+        <p class="search-text">Search</p>
+        <p class="download-text">Download</p>
+        <button type="submit">Generate Report</button>
+    </div>
+    </div>
   </form>
-
-  <h2>Generate Bin Card</h2>
-  <form id="binCardForm" action="/generate-bincard" method="POST">
-  
-    <label for="clusterCode">Cluster Code:</label>
-    <input type="text" id="clusterCode" name="clusterCode" required>
-  
-    <button type="submit">Generate Bin Card</button>
-  </form>
+  </div>
+</div>
 </body>
 </html>
