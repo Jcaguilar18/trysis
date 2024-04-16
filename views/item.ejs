@@ -270,6 +270,9 @@
 
 <!-- editItemModal() -->
 <div id="myModal2" class="modal">
+  <form id="addItemForm" action="/add-item" method="GET">
+  <input type="hidden" id="code" name="clustercode">
+  <input type="hidden" id="material" name="cluster_description">
   <div class="modal-content2">
     <!-- <span class="close">×</span> -->
     <div class="upper-section-modal">
@@ -284,7 +287,8 @@
       <input type="text" id="material" name="material" placeholder="Search material..."> 
     </div>
     <div class="below-upper-table-part">
-      <button id="addItem" class="below-table-part-text" onclick="location.href='/add-item'">+ Add Item</button> 
+      <button type="submit" id="addItem" class="below-table-part-text">+ Add Item</button>
+    </form>
       <p class="below-table-part-text">ITEM DESCRIPTION</p>
       <p class="below-table-part-text">ACTION</p>
       <p class="below-table-part-text">AVAILABLE</p>
@@ -495,6 +499,7 @@ function editItemModal(clustercode, cluster_description) {
             $(this).find('.table-cell').css('background-color', 'white'); // even rows
         }
     });
+    
 
     // Set the values of the input fields
     $('#code').val(clustercode);

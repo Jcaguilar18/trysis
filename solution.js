@@ -662,13 +662,15 @@ app.post('/delete-item', async (req, res) => {
 });
 
 
-// Route to render the form for adding an item
-app.get("/add-item", (req, res) => {
-  
+
+
+app.get('/add-item', (req, res) => {
   const clcode = req.query.clustercode;
+  const clusterDescription = req.query.cluster_description;
   console.log(clcode);
   res.render("add-item.ejs", {clcode});
 });
+
 
 app.get('/update-item', async (req, res) => {
   const itemId = req.query.item_id;
