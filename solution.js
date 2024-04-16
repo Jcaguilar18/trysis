@@ -1269,6 +1269,8 @@ app.post("/register", upload.single('picture'), async (req, res) => {
   const role = req.body.roles;
   const status = req.body.status;
   const picture = req.file ? req.file.filename : null; // New user's picture
+  const firstname = req.body.firstname;
+  const lastname = req.body.lastname;
 
   try {
     const checkResult = await db.query("SELECT * FROM users WHERE username = $1", [newUsername]);
@@ -1279,8 +1281,8 @@ app.post("/register", upload.single('picture'), async (req, res) => {
     } else {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       await db.query(
-        "INSERT INTO users (username, password, role, status, picture_url) VALUES ($1, $2, $3, $4, $5)",
-        [newUsername, hashedPassword, role, status, picture]
+        "INSERT INTO users (username, password, role, status, picture_url, firstname, lastname) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+        [newUsername, hashedPassword, role, status, picture, firstname, lastname]
       );
 
       // Log the action using the current session user's picture
