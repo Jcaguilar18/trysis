@@ -594,7 +594,18 @@ app.post("/update-account", async (req, res) => {
   let logDescription = 'Account updated: '; // Initialize log description
 
   try {
+    if (role === 'manager' && status === 'inactive') {
+      const { rowCount: activeManagersCount } = await db.query(`
+        SELECT userid FROM users WHERE role = 'manager' AND status = 'active' AND userid != $1
+      `, [userId]);
+      
+      // If there's only one active manager left, refuse to update
+      if (activeManagersCount < 2) {
+        return res.status(400).send("Cannot deactivate the last active manager.");
+      }
+    }
     let updateFields = {
+
       username: username,
       role: role,
       status: status,
