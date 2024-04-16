@@ -278,8 +278,8 @@ app.post('/generate-bincard', async (req, res) => {
 
     res.render('bincard.ejs', {
       bincards: bincards, // This now only contains the bincard(s) for the provided clusterCode
-      currentUser: req.session.username,
-      currentRole: req.session.roleOf,
+      currentUser: req.session.firstname + ' ' + req.session.lastname, 
+      currentRole: req.session.roleOf.toUpperCase(),
     });
   } catch (err) {
     console.error('Error generating bin card:', err);
@@ -324,9 +324,8 @@ app.post('/generate-report', async (req, res) => {
     const reportType ='notyet';
     let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
     const marker = new Date(req.body.endDate).toISOString().split('T')[0];
-    //console.log(currentRole);
-    //console.log(currentUser);
-    //console.log(marker);
+    console.log(req.session.firstname);
+    console.log(req.session.lastname);
       try {
         const reportQueryResult = await db.query(`
     SELECT classification_id, clustercode, description, available, price, item_date, status
@@ -382,8 +381,8 @@ app.post('/generate-report', async (req, res) => {
           reportData,
           subtotals,
           grandTotal,
-          currentUser: req.session.username,
-      currentRole: req.session.roleOf,
+          currentUser: req.session.firstname + ' ' + req.session.lastname,
+      currentRole: req.session.roleOf.toUpperCase(),
           marker
         });
       } catch (err) {
@@ -432,8 +431,8 @@ app.post('/generate-report', async (req, res) => {
   
       res.render('bincard.ejs', {
         bincards: bincards, // This now only contains the bincard(s) for the provided clusterCode
-        currentUser: req.session.username,
-        currentRole: req.session.roleOf,
+        currentUser: req.session.firstname + ' ' + req.session.lastname,
+        currentRole: req.session.roleOf.toUpperCase(),
       });
     } catch (err) {
       console.error('Error generating bin card:', err);
@@ -1123,6 +1122,10 @@ app.get("/generate-report-page", async (req, res) => {
       const roleOf = await db.query("SELECT role FROM users WHERE username = $1", [req.user.username]);
       req.session.username = req.user.username;
       req.session.roleOf = roleOf.rows[0].role;
+      const first = await db.query("SELECT firstname FROM users WHERE username = $1", [req.user.username]);
+      const last = await db.query("SELECT lastname FROM users WHERE username = $1", [req.user.username]);
+      req.session.firstname = first.rows[0].firstname;
+      req.session.lastname = last.rows[0].lastname;
       
       res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role, roleOfUser: roleOfUser, pictureUrl: './uploads/' + pictureUrl});
       
