@@ -83,9 +83,21 @@
         margin-top: 10px;
         margin-bottom: 0px;
       }
+      @media print {
+        body {
+          counter-reset: page; /* Create a counter named 'page' and set its value to 0 */
+        }
+        /* Increment the counter for every page */
+        @page {
+          @bottom-right {
+            content: "Page " counter(page); /* Display the counter */
+            margin-right: 1cm; /* Adjust as needed */
+            font-size: 12pt; /* Adjust as needed */
+          }
+          counter-increment: page; /* Increment the counter by 1 for each page */
+        }
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
-    
 </head>
 <body>
     <div class="report-container" id="report">
