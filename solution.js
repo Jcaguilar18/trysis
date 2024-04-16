@@ -315,6 +315,8 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
+<<<<<<< Updated upstream
+=======
 app.post('/generate-report', async (req, res) => {
   const { startDate, endDate, clusterCode, reportType } = req.body;
 
@@ -444,6 +446,7 @@ app.post('/generate-report', async (req, res) => {
   }
 });
 
+>>>>>>> Stashed changes
 
 app.get("/logs", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
