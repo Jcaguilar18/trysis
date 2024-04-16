@@ -444,6 +444,7 @@ app.post('/generate-report', async (req, res) => {
 });
 
 
+
 app.get("/logs", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
@@ -461,6 +462,7 @@ app.get("/logs", async (req, res) => {
     const user = userResult.rows[0];
     const roleOf = user?.role;
     const pictureUrl = user?.picture_url;
+    
 
     if (transTypeFilter) {
       query = {
@@ -601,7 +603,7 @@ app.post("/update-account", async (req, res) => {
       
       // If there's only one active manager left, refuse to update
       if (activeManagersCount < 2) {
-        return res.status(400).send("Cannot deactivate the last active manager.");
+        return res.status(400).send("Cannot deactivate the last two active manager.");
       }
     }
     let updateFields = {
