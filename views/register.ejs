@@ -75,7 +75,7 @@
         <!-- Add file input for user picture -->
         <div class="form-group">
             <label for="picture">Picture</label>
-            <input type="file" class="form-control" name="picture" accept="image/*">
+            <input type="file" class="form-control" name="picture" accept="image/*" required>
         </div>
 
         <div>
@@ -92,13 +92,8 @@
             <label for="warehouse">Engineer</label>
         </div>
 
-        <div>
-            <h2>Status</h2>
-            <input type="radio" id="active" name="status" value="active" checked>
-            <label for="active">Active</label><br>
-            <input type="radio" id="unactive" name="status" value="inactive">
-            <label for="unactive">Inactive</label>
-        </div>
+        
+        <input type="hidden" name="status" value="active">
 
         <br>
         <br>
