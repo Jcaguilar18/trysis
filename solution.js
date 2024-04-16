@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('58 10 * * *', async () => {
+cron.schedule('52 9 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -25,14 +25,14 @@ cron.schedule('58 10 * * *', async () => {
 
     // Update the beginning_inventory to the most recent backup's available for each item
     const updateBeginningInventoryQuery = `
-      UPDATE item i
-      SET beginning_inventory = (
-        SELECT r.available
-        FROM report r
-        WHERE r.material_name = i.material_name AND r.clustercode = i.clustercode
-        ORDER BY r.item_date DESC
-        LIMIT 1
-      )
+    UPDATE item i
+    SET beginning_inventory = COALESCE((
+      SELECT r.available
+      FROM report r
+      WHERE r.material_name = i.material_name AND r.clustercode = i.clustercode
+      ORDER BY r.item_date DESC
+      LIMIT 1
+    ), 0)    
     `;
     await db.query(updateBeginningInventoryQuery);
 

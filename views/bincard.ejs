@@ -33,15 +33,21 @@
       background-color: #f2f2f2;
     }
     .print-button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      cursor: pointer;
-      text-align: center;
-      display: block;
-      width: 100%;
-    }
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  text-align: center;
+  /* Set a max-width for the buttons */
+  max-width: 200px; /* Adjust this value as needed */
+  /* Auto margins to center the buttons */
+  margin: 0 auto;
+  display: block;
+  /* Add some margin to the bottom of each button for spacing */
+  margin-bottom: 10px;
+}
+
   </style>
   <script>var bincards = <%- JSON.stringify(bincards) %>;</script>
   
@@ -54,6 +60,7 @@
         <div class="bin-card-title">
           <h1>Inventory Bin Card</h1>
           <h2>Cluster Code: <%= clusterCode %></h2>
+          <p id="generatedOn"></p>
         </div>
         <table class="bin-card-table">
           <thead>
@@ -133,6 +140,17 @@
     document.body.appendChild(link); // Required for Firefox
     link.click(); // This will download the data file named "bin_cards_data.csv".
   }
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+    // Create a new Date object for the current date and time
+    const now = new Date();
+    // Format the date and time. Adjust the format as needed
+    const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true };
+    const formattedDateTime = now.toLocaleDateString('en-US', options);
+    // Set the text content of the 'generatedOn' element
+    document.getElementById('generatedOn').textContent = 'Generated on: ' + formattedDateTime;
+});
+
   </script>
 </body>
 </html>
