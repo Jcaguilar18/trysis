@@ -581,12 +581,6 @@ app.get("/manage", async (req, res) => {
       const usersResult = await db.query("SELECT * FROM users");
       const users = usersResult.rows;
     
-     // console.log("Start: testing in /manage");
-      //console.log(roleOf);
-      //console.log(req.session.username);////////////////////////////////////////////// important code take note!
-      //console.log("end of testing: /manage")
-   
-
       // Render the "manage.ejs" template with the user data
       res.render("manage.ejs", { users, roleOf, pictureUrl: './uploads/' + pictureUrl});
   } catch (err) {
@@ -648,6 +642,12 @@ app.post("/update-account", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+
+
+
+
+
 
 app.post('/delete-item', async (req, res) => {
   const { item_id } = req.body;

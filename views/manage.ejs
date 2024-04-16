@@ -68,6 +68,13 @@
                             <input type="text" class="input-field" name="username" value="<%= user.username %>" readonly>
                           </div>
                           <div class="cell">
+                            <input type="text" class="input-field" name="firstname" value="<%= user.firstname %>" readonly>
+                          </div>
+                          <div class="cell">
+                            <input type="text" class="input-field" name="lastname" value="<%= user.lastname %>" readonly>
+                          </div>
+                
+                          <div class="cell">
                             <input type="password" class="input-field hidden" id="password" name="password" placeholder="New Password" readonly>
                             <input type="password" class="input-field hidden-confirm" id="confirm_password" name="confirm_password" placeholder="Confirm Password" readonly>
                           </div>
@@ -91,8 +98,6 @@
                               <option value="inactive" <%= user.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
                             </select>
                           </div>
-                            <input type="hidden" name="firstname" value="<%= user.firstname %>" readonly>
-                            <input type="hidden" name="lastname" value="<%= user.lastname %>" readonly>
                           <div class="cell">
                           <button type="button" class="edit" onclick="enableEditing(this)">
                               <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon">
