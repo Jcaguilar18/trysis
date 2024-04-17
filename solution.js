@@ -166,7 +166,7 @@ const generatePDF = (data) => {
 };
 
 // Route handler for report generation
-app.post("/generate-report-page", async (req, res) => {
+app.post("/generate-report-page", ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -271,13 +271,30 @@ const storage = multer.diskStorage({
         callback(null, file.fieldname + '-' + uniqueSuffix);
     }
 });
-
+// Middleware to ensure user is authenticated
+function ensureAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+      return next();
+  }
+  // If not authenticated, redirect to login page
+  res.redirect('/login');
+}
+function checkRole(roles) {
+  return function(req, res, next) {
+      if (req.isAuthenticated() && roles.includes(req.user.role)) {
+        console.log(req.session.roleOf);
+          return next();
+      }
+      // Optionally, you could log this attempt or notify the user they don't have access
+      res.redirect('/login');
+  }
+}
 const upload = multer({ storage: storage });
-app.use('/uploads', express.static('uploads'));
+app.use('/uploads', ensureAuthenticated, express.static('uploads'));
 // ... (rest of your express app logic)
 
 
-app.get("/register", (req, res) => {
+app.get("/register", ensureAuthenticated,checkRole(['manager']), (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -285,7 +302,7 @@ app.get("/register", (req, res) => {
   res.render("register.ejs");
 });
 
-app.post('/generate-report', async (req, res) => {
+app.post('/generate-report', ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -541,7 +558,7 @@ app.post('/generate-report', async (req, res) => {
 });
 
 
-app.get("/logs", async (req, res) => {
+app.get("/logs", ensureAuthenticated,checkRole(['manager']), async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -609,7 +626,7 @@ app.get("/logs", async (req, res) => {
 });
 
 
-app.get("/item", async (req, res) => {
+app.get("/item", ensureAuthenticated,checkRole(['manager', 'warehouse']),async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -646,7 +663,7 @@ app.get("/item", async (req, res) => {
   }
 });
 
-app.get("/manage", async (req, res) => {
+app.get("/manage", ensureAuthenticated,checkRole(['manager', 'hr staff']), async (req, res) => {
   try {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
@@ -669,7 +686,7 @@ app.get("/manage", async (req, res) => {
   }
 });
 
-app.post("/update-account", async (req, res) => {
+app.post("/update-account", ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -820,7 +837,7 @@ app.post("/update-account", async (req, res) => {
 
 
 
-app.post('/delete-item', async (req, res) => {
+app.post('/delete-item', ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -838,7 +855,7 @@ app.post('/delete-item', async (req, res) => {
 
 
 
-app.get('/add-item', (req, res) => {
+app.get('/add-item', ensureAuthenticated,checkRole(['manager']), (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -850,7 +867,7 @@ app.get('/add-item', (req, res) => {
 });
 
 
-app.get('/update-item', async (req, res) => {
+app.get('/update-item', ensureAuthenticated,checkRole(['manager']), async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -862,7 +879,7 @@ app.get('/update-item', async (req, res) => {
 
 
 
-app.get("/stock", async (req, res) => {
+app.get("/stock", ensureAuthenticated,checkRole(['manager', 'warehouse']), async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -893,7 +910,7 @@ app.get("/stock", async (req, res) => {
   }
 });
 
-app.get("/bin", async (req, res) => {
+app.get("/bin", ensureAuthenticated,checkRole(['manager']), async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -910,7 +927,7 @@ app.get("/bin", async (req, res) => {
 });
 
 
-app.get("/add-cluster", (req, res) => {
+app.get("/add-cluster", ensureAuthenticated,checkRole(['manager']), (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -925,7 +942,7 @@ app.get("/add-cluster", (req, res) => {
 
 
 
-app.get("/update-cluster", (req, res) => {
+app.get("/update-cluster", ensureAuthenticated,checkRole(['manager']), (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -934,7 +951,7 @@ app.get("/update-cluster", (req, res) => {
 });
 
 // Route to handle form submission for adding an item
-app.post("/add-item", async (req, res) => {
+app.post("/add-item", ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -1049,7 +1066,7 @@ app.post("/add-item", async (req, res) => {
   }
 });
 
-app.post("/update-item", async (req, res) => {
+app.post("/update-item", ensureAuthenticated, async (req, res) => {
   // Destructure the itemId, materialName, and price from the request body
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
@@ -1114,7 +1131,7 @@ app.post("/update-item", async (req, res) => {
 });
 
 
-app.post("/delete-item", async (req, res) => {
+app.post("/delete-item", ensureAuthenticated, async (req, res) => {
   const { materialName } = req.body;
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
@@ -1157,7 +1174,7 @@ app.post("/delete-item", async (req, res) => {
 
 
 
-app.post("/add-cluster", async (req, res) => {
+app.post("/add-cluster", ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -1239,7 +1256,7 @@ app.post("/add-cluster", async (req, res) => {
   }
 });
 
-app.post("/update-cluster", async (req, res) => {
+app.post("/update-cluster", ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -1297,7 +1314,7 @@ app.get("/logout", (req, res) => {
   });
 });
 
-app.get("/dashboard", async (req, res) => {
+app.get("/dashboard", ensureAuthenticated, checkRole(['manager', 'warehouse']),async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -1352,7 +1369,7 @@ app.get("/dashboard", async (req, res) => {
         GROUP BY classification.classification_name
       `);
       const inventorySubtotals = inventorySubtotalsResult.rows;
-console.log("Current:", inventorySubtotals);
+//console.log("Current:", inventorySubtotals);
       ////
       const currentSubtotals = inventorySubtotalsResult.rows;
       const latestBackupDateResult = await db.query(`
@@ -1373,7 +1390,7 @@ console.log("Current:", inventorySubtotals);
 
      
       const backupSubtotals = backupSubtotalsResult.rows;
-      console.log(backupSubtotals );
+      //console.log(backupSubtotals );
       //console.log("Latest backup date:", backupSubtotals);
 
     
@@ -1404,7 +1421,7 @@ console.log("Current:", inventorySubtotals);
     percentageChange: percentageChange.toFixed(2)  // Keep two decimals
   };
 });
-console.log(inventorySubtotalsWithChanges);
+//console.log(inventorySubtotalsWithChanges);
 
       // Render the dashboard with all necessary data
       res.render("dashboard.ejs", {
@@ -1467,7 +1484,7 @@ console.log(inventorySubtotalsWithChanges);
 //   }
 // });
 
-app.get("/generate-report-page", async (req, res) => {
+app.get("/generate-report-page", ensureAuthenticated,checkRole(['manager', 'company']), async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -1545,7 +1562,7 @@ app.get('/login-failed', function(req, res) {
   res.render('login.ejs', { error: 'Enter Correct Credentials' });
 });
 
-app.post('/addstock', async (req, res) => {
+app.post('/addstock', ensureAuthenticated, async (req, res) => {
   const { no, clustercode, incoming, outgoing, itemDescription } = req.body;
 
   try {
@@ -1675,7 +1692,7 @@ app.post('/addstock', async (req, res) => {
   }
 });
 
-app.post("/register", upload.single('picture'), async (req, res) => {
+app.post("/register", ensureAuthenticated, upload.single('picture'), async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
@@ -1789,24 +1806,26 @@ passport.use(new Strategy(
   }
 ));
 
+
 passport.serializeUser((user, done) => {
-  // Save only the userid in the session to keep the session size small
-  done(null, user.userid);
+  done(null, { userid: user.userid, role: user.role }); // Include the role here
 });
 
-passport.deserializeUser(async (userid, done) => {
+passport.deserializeUser(async (id, done) => {
   try {
-    const userQueryResult = await db.query("SELECT userid, username, picture_url FROM users WHERE userid = $1", [userid]);
-    if (userQueryResult.rows.length > 0) {
-      const user = userQueryResult.rows[0];
-      done(null, user);
-    } else {
-      done(null, false);
-    }
+      // Adjust the query to fetch the user's role
+      const userQueryResult = await db.query("SELECT userid, username, picture_url, role FROM users WHERE userid = $1", [id.userid]);
+      if (userQueryResult.rows.length > 0) {
+          const user = userQueryResult.rows[0];
+          done(null, user);
+      } else {
+          done(null, false);
+      }
   } catch (err) {
-    done(err);
+      done(err, false);
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
