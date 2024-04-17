@@ -448,49 +448,54 @@ app.post('/generate-report', async (req, res) => {
 });
 
 
-
 app.get("/logs", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
-  
+
+  const searchQuery = req.query.search; // Get the search query from the URL parameter
   const currentPage = req.query.page ? parseInt(req.query.page, 10) : 1;
   const transTypeFilter = req.query.trans_type || null;
   const logsPerPage = 10;
   const offset = (currentPage - 1) * logsPerPage;
-  let logsResult, countResult, totalLogs, query;
+  let logsResult, countResult, totalLogs;
+  let queryParams = [];
+  let baseQuery = `SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs`;
+  let whereClause = ``;
+  let countBaseQuery = `SELECT COUNT(*) FROM logs`;
 
   try {
-
     const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
     const user = userResult.rows[0];
     const roleOf = user?.role;
     const pictureUrl = user?.picture_url;
-    
 
-    if (transTypeFilter) {
-      query = {
-        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs WHERE trans_type = $1 ORDER BY log_id DESC LIMIT $2 OFFSET $3",
-        values: [transTypeFilter, logsPerPage, offset],
-      };
-      countResult = await db.query("SELECT COUNT(*) FROM logs WHERE trans_type = $1", [transTypeFilter]);
-    } else {
-      query = {
-        text: "SELECT log_id, username, description, material_name, log_date, quantity, trans_type, oldvaluesummary, newvaluesummary, picture FROM logs ORDER BY log_id DESC LIMIT $1 OFFSET $2",
-        values: [logsPerPage, offset],
-      };
-      countResult = await db.query("SELECT COUNT(*) FROM logs");
+    if (searchQuery) {
+      // Add search to where clause
+      whereClause += ` WHERE (username ILIKE $1 OR logs_material_name ILIKE $1 OR logs_clustercode ILIKE $1)`;
+    queryParams.push(`%${searchQuery}%`);
     }
 
+    if (transTypeFilter) {
+      // Add transaction type filter to where clause
+      whereClause += searchQuery ? ` AND trans_type = $2` : ` WHERE trans_type = $1`;
+      queryParams.push(transTypeFilter);
+    }
+
+    const finalQuery = `${baseQuery} ${whereClause} ORDER BY log_id DESC LIMIT $${queryParams.length + 1} OFFSET $${queryParams.length + 2}`;
+  queryParams.push(logsPerPage, offset);
+
+    const finalCountQuery = `${countBaseQuery} ${whereClause}`;
+    logsResult = await db.query(finalQuery, queryParams);
+    countResult = await db.query(finalCountQuery, queryParams.slice(0, -2)); // Remove limit and offset params for count query
+
     totalLogs = parseInt(countResult.rows[0].count, 10);
-    logsResult = await db.query(query);
     const logs = logsResult.rows;
     const totalPages = Math.ceil(totalLogs / logsPerPage);
 
     // Calculate the start and end page for pagination
     const startPage = Math.floor((currentPage - 1) / 5) * 5 + 1;
     const endPage = Math.min(startPage + 4, totalPages);
-/////////////////////
 
     res.render("logs.ejs", {
       roleOf,
@@ -501,14 +506,15 @@ app.get("/logs", async (req, res) => {
       endPage,
       totalPages,
       logsPerPage,
-      transTypeFilter // Pass the current filter back to the template
+      transTypeFilter,
+      searchQuery // Pass the search query back to the template
     });
   } catch (err) {
-    // res.redirect("/login");
     console.error("Error fetching logs:", err);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 app.get("/item", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
@@ -1147,7 +1153,6 @@ app.get("/generate-report-page", async (req, res) => {
   res.setHeader("Expires", "0");
 
   if (req.isAuthenticated()) {
-    
     try {
       const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
       const user = userResult.rows[0];
@@ -1161,17 +1166,28 @@ app.get("/generate-report-page", async (req, res) => {
       const last = await db.query("SELECT lastname FROM users WHERE username = $1", [req.user.username]);
       req.session.firstname = first.rows[0].firstname;
       req.session.lastname = last.rows[0].lastname;
-      
-      res.render("generate-report-page.ejs", { roleOf: roleOf.rows[0].role, roleOfUser: roleOfUser, pictureUrl: './uploads/' + pictureUrl});
+
+      // Query for available report dates
+      const reportDatesResult = await db.query("SELECT DISTINCT item_date FROM report ORDER BY item_date DESC");
+      const reportDates = reportDatesResult.rows.map(row => row.item_date);
+
+      // Pass the available dates to the template
+      res.render("generate-report-page.ejs", { 
+        roleOf: roleOf.rows[0].role, 
+        roleOfUser: roleOfUser, 
+        pictureUrl: './uploads/' + pictureUrl, 
+        reportDates: reportDates  // Add this line
+      });
       
     } catch (err) {
-      console.log(err);
+      console.error(err);
       res.redirect("/login");
     }
   } else {
     res.redirect("/login");
   }
 });
+
 
 app.post('/login',
   async function(req, res, next) {

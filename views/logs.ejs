@@ -25,10 +25,14 @@
     <div class="transaction-block">
       <div class="upper-portion">
         <div class="search-bar">
-          <!--TASK: Search Feature by User Code? -->
-          <input type="text" class="search-input" placeholder="Search...">
-          <img class="search-icon" src="./assets/searchicon-3.png"/>
+          <form action="/logs" method="GET">
+            <input type="text" class="search-input" name="search" placeholder="Search...">
+            <button type="submit" class="search-icon-button">
+              <img class="search-icon" src="./assets/searchicon-3.png"/>
+            </button>
+          </form>
         </div>
+        
         <div class="dropdown">
           <img class="settings-icon" src="./assets/settingsicon-1.png" onclick="toggleDropdown()" class="dropbtn" id="dropdownButton">
           <div id="dropdownContent" class="dropdown-content">
