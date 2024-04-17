@@ -1325,8 +1325,7 @@ app.post('/addstock', async (req, res) => {
   try {
     // Check if the item with the given itemDescription exists in the database
     const checkResult = await db.query("SELECT * FROM item WHERE material_name = $1", [itemDescription]);
-    
-
+  
     if (checkResult.rows.length === 0) {
       res.status(400).send('Item not found');
       return;
@@ -1341,13 +1340,17 @@ app.post('/addstock', async (req, res) => {
       res.status(400).send('Invalid incoming or outgoing value');
       return;
     }
+  
 
     // Fetch the available value from the item table
     const fetchAvailableQuery = `SELECT available FROM item WHERE material_name = $1`;
     const fetchAvailableResult = await db.query(fetchAvailableQuery, [itemDescription]);
     const available = fetchAvailableResult.rows[0].available;
     
-
+    if (parsedOutgoing > available) {
+      // Here we'll send an HTTP 409 Conflict status code, but you can choose what's appropriate for your application
+      return res.status(409).send('Error: Outgoing cannot be greater than available stock.');
+  }
     
     const fetchPriceQuery = `SELECT price FROM item WHERE material_name = $1`;
     const fetchPriceResult = await db.query(fetchPriceQuery, [itemDescription]);
