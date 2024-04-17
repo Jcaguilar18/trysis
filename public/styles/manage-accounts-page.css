@@ -153,11 +153,12 @@ body {
   
   .users-table .cell-header {
     padding: 1rem;
-    /* margin-left: 2.9rem; */
+    margin-left: 2.9rem; 
     flex: 1;
     text-align: center;
     font-weight: bold;
   }
+  
 
 .users-table .row {
     display: flex;
@@ -224,6 +225,10 @@ body {
 
 /* Add a class for the edit icon */
 
+.edit{
+  margin-left: 2rem;
+  }
+
 .edit-icon {
   height: 28px; /* Adjust as needed */
   width: 28px; /* Adjust as needed */
@@ -231,7 +236,7 @@ body {
 }
 
 .save-button {
-  margin: 0rem 0rem 2rem 4rem;
+  margin: 0rem 0rem 2rem 1rem;
   width: 8rem;
   height: 4rem;
   font-size: 1.5rem;

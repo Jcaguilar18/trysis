@@ -66,6 +66,7 @@
                     <% }) %>
 
                   </div>
+                  <% if (roleOf === "manager") { %>
                   <p class="inventory-overview-title">Inventory Overview</p>
                   <% 
                 var date2 = new Date();
@@ -73,6 +74,7 @@
                 var formattedDate2 = date2.toLocaleDateString('en-US', options2);
                 %>
                   <p class="date-below-inventory-overview"><%= formattedDate2 %></p>
+                  
                   <div class="classification-area">
 
                     <% inventorySubtotals.forEach(subtotal => { %>
@@ -85,6 +87,7 @@
                     <% }) %>
 
                   </div>
+                  <% } %>
                 </div>
               </div>
         </div>

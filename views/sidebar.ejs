@@ -122,14 +122,14 @@
 </style>
 
 <div id="mySidenav" class="sidenav" onmouseleave="closeNav()" onmouseover="openNav()">
-  <% if (roleOf === "manager") { %>
+  <% if (roleOf === "manager" || roleOf === "warehouse") { %>
     <a href="/dashboard">
       <img class="dashboard-icon" src="./assets/dashboardicon-1-CWy.png"/>
       <span class="sidenav-text hide-text">Dashboard</span>
     </a>
   <% } %>
 
-  <% if (roleOf === "manager" || roleOf === "warehouse" || roleOf === "company") { %>
+  <% if (roleOf === "manager" || roleOf === "warehouse"|| roleOf === "engineer") { %>
     <a href="/item">
       <img class="item-catalog-icon" src="./assets/itemcatalogicon-1-FJd.png"/>
       <span class="sidenav-text hide-text">Item Catalog</span>
@@ -143,7 +143,7 @@
     </a>
   <% } %>
 
-  <% if (roleOf === "manager" || roleOf === "company" || roleOf === "engineer") { %>
+  <% if (roleOf === "manager" || roleOf === "company") { %>
     <a href="/generate-report-page">
       <img class="generate-report-icon" src="./assets/generatereporticon-1-sL1.png"/>
       <span class="sidenav-text hide-text">Generate Report</span>

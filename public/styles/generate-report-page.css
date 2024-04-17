@@ -173,6 +173,7 @@ body {
 }
 
 .web-page .bottom-page-part form .below-top-bar .inner-frame .upper-inner .date-frame {
+  margin-top: 4rem;
   margin-bottom: 0.8rem;
   box-sizing: border-box;
   padding: 1rem 1rem 1rem 1rem;

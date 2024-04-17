@@ -45,6 +45,18 @@
     flex-shrink: 0;
 }
 
+.login-website .left-half .trisys-logo-text-extra {
+  margin-right: 3.5rem;
+  max-width: 42.8rem;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.2373046875;
+  color: #ffffff;
+  font-family: 'Helvetica', sans-serif;
+  flex-shrink: 0;
+}
+
  .login-website .right-half {
   width: 89.7rem;
   height: 100vh;

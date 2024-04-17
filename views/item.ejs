@@ -342,9 +342,9 @@
     </div>
     <div class="upper-table-part">
       <p class="upper-table-part-text">Name of Material:</p>
-      <input type="text" id="material2" name="material2" placeholder="Material ID"> 
+      <input type="text" id="material3" name="material3" placeholder="Material ID"> 
       <p class="upper-table-part-text">Code:</p>
-      <input type="text" id="code2" name="code2" placeholder="Code ID"> 
+      <input type="text" id="code3" name="code3" placeholder="Code ID"> 
     </div>
     <div class="below-upper-table-part">
         <p class="below-table-part-text">ITEM DESCRIPTION</p>
@@ -353,7 +353,6 @@
         <p class="below-table-part-text">TOTAL-OUTGOING</p>
         <p class="below-table-part-text">AVAILABLE</p>
         <p class="below-table-part-text">UNIT PRICE</p>
-        <p class="below-table-part-text">VALUE OF RAW MAT. ON HAND</p>
     </div>
     <div class="modal-table-part">
       <div class="inventory-table">
@@ -368,16 +367,12 @@
               <div class="table-cell2">₱<%= item.total_outgoing %></div>
               <div class="table-cell2">₱<%= item.available %></div>
               <div class="table-cell2">₱<%= item.price %></div>
-              <div class="table-cell2">₱<%= item.value_of_raw_material_on_hand %></div>
             </div>
           <% }); %>
         <% } else { %>
           <div>No items found</div>
         <% } %>
       </div>
-    </div>
-    <div class="below-upper-table-part">
-      <p class="below-table-part-text2">TOTAL AMOUNT: ₱<%= totalAmount %></p>
     </div>
   </div>  
 </div>
@@ -584,12 +579,12 @@ function binCardModalFunction(clustercode, cluster_description) {
     });
 
     // Set the values of the input fields
-    $('#code2').val(clustercode);
-    $('#material2').val(cluster_description);
+    $('#code3').val(clustercode);
+    $('#material3').val(cluster_description);
 
     // Make the input fields read-only
-    $('#code2').prop('readonly', true);
-    $('#material2').prop('readonly', true);
+    $('#code3').prop('readonly', true);
+    $('#material3').prop('readonly', true);
 
     // Show the modal
     binCardModal.style.display = "block";
