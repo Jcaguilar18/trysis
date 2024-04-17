@@ -1349,7 +1349,42 @@ app.post('/addstock', async (req, res) => {
     
     if (parsedOutgoing > available) {
       // Here we'll send an HTTP 409 Conflict status code, but you can choose what's appropriate for your application
-      return res.status(409).send('Error: Outgoing cannot be greater than available stock.');
+      return res.status(409).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Username Duplicate</title>
+          <style>
+              body {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                  margin: 0;
+                  background-color: #f8f9fa;
+                  font-family: Arial, sans-serif;
+              }
+              .container {
+                  text-align: center;
+              }
+              button {
+                  margin-top: 20px;
+                  padding: 10px 20px;
+                  font-size: 16px;
+                  cursor: pointer;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h1>Outgoing Exceeds available.</h1>
+              <button onclick="location.href='/stock'">Go Back</button>
+          </div>
+      </body>
+      </html>
+    `);
   }
     
     const fetchPriceQuery = `SELECT price FROM item WHERE material_name = $1`;
