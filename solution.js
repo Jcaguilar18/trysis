@@ -498,7 +498,7 @@ app.post('/generate-report', async (req, res) => {
         </head>
         <body>
             <div class="container">
-                <h1>The Material code input was wrong.</h1>
+                <h1>The Material code input was wrong or was deactivated.</h1>
                 <button onclick="location.href='/generate-report-page'">Go Back</button>
             </div>
         </body>
