@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('50 18 * * *', async () => {
+cron.schedule('55 11 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -282,7 +282,7 @@ function ensureAuthenticated(req, res, next) {
 function checkRole(roles) {
   return function(req, res, next) {
       if (req.isAuthenticated() && roles.includes(req.user.role)) {
-        console.log(req.session.roleOf);
+        console.log(req.user.role);
           return next();
       }
       // Optionally, you could log this attempt or notify the user they don't have access
