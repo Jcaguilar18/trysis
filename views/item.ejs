@@ -281,10 +281,10 @@
     <div class="upper-table-part">
       <p class="upper-table-part-text">Code:</p>
       <!--TASK: Sort by Code-->
-      <input type="text" id="code2" name="code" placeholder="Search code..." readonly> 
+      <input type="text" id="code4" name="code" placeholder="Search code..." readonly> 
       <p class="upper-table-part-text">Material:</p> 
       <!--TASK: Sort by Material Name-->
-      <input type="text" id="material2" name="material" placeholder="Search material..." readonly> 
+      <input type="text" id="material4" name="material" placeholder="Search material..." readonly> 
     </div>
     <div class="below-upper-table-part">
       <button type="submit" id="addItem" class="below-table-part-text">+ Add Item</button>
@@ -545,6 +545,12 @@ function editItemModal(clustercode, cluster_description) {
     // Make the input fields read-only
     $('#code2').prop('readonly', true);
     $('#material2').prop('readonly', true);
+    $('#code4').val(clustercode);
+    $('#material4').val(cluster_description);
+
+    // Make the input fields read-only
+    $('#code4').prop('readonly', true);
+    $('#material4').prop('readonly', true);
 
     // Show the modal
     modal2.style.display = "block";
