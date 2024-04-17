@@ -75,8 +75,8 @@
               </div>
             </div>
             <div class="name-portion">
-              <p class="user-text-template"><%= log.username %></p>
               <img src="<%= log.picture ? '/uploads/' + log.picture : 'default-image-path' %>" alt="User Image">
+              <p class="user-text-template"><%= log.username %></p>
             </div>
             <div class="rightmost-text-portion <%= log.trans_type === 'Modified' ? 'modified' : (log.trans_type === 'Added' ? 'added' : (log.trans_type === 'Removed' ? 'removed' : '')) %>">
               <p class="rightmost-text"><%= log.trans_type %></p>

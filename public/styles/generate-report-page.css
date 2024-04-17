@@ -99,17 +99,21 @@ body {
 }
 
 .web-page .bottom-page-part form .below-top-bar .inner-frame .generate-report-title {
-  margin: 0rem 55rem 0.9rem 0rem;
+  padding-left: 2rem;
+  margin: 0rem 0rem 0.9rem 75rem;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1.2125;
   color: #1e1e1e;
   font-family: 'Helvetica', sans-serif;
-  white-space: nowrap;
-  flex-shrink: 0;
+  white-space: nowrap; 
+  /* flex-shrink: 0; */
+  background-color: rgb(213, 204, 252);
+  width: 150rem;
 }
 
 .web-page .bottom-page-part form .below-top-bar .inner-frame .upper-inner {
+  margin-top: 3rem;
   margin-bottom: 1.1rem;
   width: 100%;
   display: flex;
@@ -329,6 +333,7 @@ body {
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
+   /* background-color: #ffbd59; */
 }
 .web-page .bottom-page-part form .below-top-bar .right-corner-side .search-text {
   margin-bottom: 14rem;
@@ -349,4 +354,25 @@ body {
   font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+/**********************Generate Button***********************************************/
+
+.generate-button {
+  margin-right: 3rem;
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 12px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 12px;
+}
+
+.generate-button:hover {
+  background-color: #45a049;
 }

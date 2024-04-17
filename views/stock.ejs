@@ -50,9 +50,9 @@
                 <p class="day-text">DAY:</p>
                 <p class="date-text"><%= currentMonthDay.split(' ')[1] %></p> <!-- Display the day -->
             </div>
-            <div class="table-section">
+            <div class="table-section" style="position: relative; padding-top: 0px;">
                 <table id = "itemTable">
-                    <thead>
+                    <thead style="position: sticky; top: 0; background-color: white;">
                         <tr>
                             <th>No.</th>
                             <th>CODE</th>
@@ -92,7 +92,7 @@
                         <% }); %>
                     </tbody>
                 </table>
-                </div>
+            </div>
         </div>
     </div>
     <%- include('sidebar') %>

@@ -363,6 +363,22 @@ body {
   font-family: 'Helvetica', sans-serif;
   white-space: nowrap;
 }
+
+
+.web-page .bottom-page-part .dashboard-area .classification-area .classification-box .percentage-text-in-box {
+  width: 7.9rem;
+  height: 3.9rem;
+  /* position: absolute; */
+  left: 3.2;
+  top: 0;
+  font-size: 2rem;
+  font-weight: bold; /* Make the text bold */
+  line-height: 1.2125;
+  color: #145358bf;
+  font-family: 'Helvetica', sans-serif;
+  white-space: nowrap;
+}
+
 .web-page .bottom-page-part .dashboard-area .classification-area .classification-box .quantity-state {
   /* background-color: #7b1680; */
   margin-left: 1.6rem;
