@@ -71,4 +71,20 @@
   </div>
 </div>
 </body>
+<script>
+  // Find the date inputs
+  const startDateInput = document.getElementById('startDate');
+  const endDateInput = document.getElementById('endDate');
+
+  // Update the 'endDate' min attribute when 'startDate' changes
+  startDateInput.addEventListener('change', function() {
+    endDateInput.setAttribute('min', startDateInput.value);
+  });
+
+  // Update the 'startDate' max attribute when 'endDate' changes
+  endDateInput.addEventListener('change', function() {
+    startDateInput.setAttribute('max', endDateInput.value);
+  });
+</script>
+
 </html>

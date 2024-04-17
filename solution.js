@@ -163,6 +163,7 @@ app.post("/generate-report-page", async (req, res) => {
   const { endDate } = req.body;
   const currentUser = req.session.username;
 const currentRole =req.session.roleOf;
+
 const reportType ='notyet';
 let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
 const marker = new Date(req.body.endDate).toISOString().split('T')[0];
@@ -209,7 +210,7 @@ WHERE item_date::DATE = $1 AND status = 'SET'
     }, {});
 
     
-    
+    let start = { startDate };
 
     // Calculate the grand total
     let grandTotal = Object.values(subtotals).reduce((total, current) => total + current, 0);
@@ -226,7 +227,8 @@ WHERE item_date::DATE = $1 AND status = 'SET'
       grandTotal,
       currentUser: req.session.username,
   currentRole: req.session.roleOf,
-      marker
+      marker,
+      start 
     });
   } catch (err) {
     console.error('Error generating report page:', err);
@@ -324,6 +326,7 @@ app.post('/generate-report', async (req, res) => {
     const reportType ='notyet';
     let logDescription = `Report generated for period ${startDate} to ${endDate} as ${reportType.toUpperCase()}`;
     const marker = new Date(req.body.endDate).toISOString().split('T')[0];
+    const start = startDate;
     console.log(req.session.firstname);
     console.log(req.session.lastname);
       try {
@@ -383,7 +386,8 @@ app.post('/generate-report', async (req, res) => {
           grandTotal,
           currentUser: req.session.firstname + ' ' + req.session.lastname,
       currentRole: req.session.roleOf.toUpperCase(),
-          marker
+          marker,
+          start
         });
       } catch (err) {
         console.error('Error generating report page:', err);
@@ -1048,13 +1052,12 @@ app.get("/dashboard", async (req, res) => {
       `);
      
       const latestBackupDate = latestBackupDateResult.rows[0].max_date;
-     
+     console.log(latestBackupDate);
 
       const backupSubtotalsResult = await db.query(`
-        SELECT classification_id, SUM(available * price) AS subtotal
+        SELECT *
         FROM report
         WHERE item_date = $1
-        GROUP BY classification_id
       `, [latestBackupDate]);
 
       //  console.log(backupSubtotalsResult);
