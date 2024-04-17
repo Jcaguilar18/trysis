@@ -1182,13 +1182,13 @@ app.post('/login',
           return res.redirect('/generate-report-page');
         } 
         if (roleOf === 'warehouse') {
-          return res.redirect('/stock');
+          return res.redirect('/dashboard');
         } 
         if (roleOf === 'hr staff') {
           return res.redirect('/manage');
         } 
         if (roleOf === 'engineer') {
-          return res.redirect('/generate-report-page');
+          return res.redirect('/item');
         } else {
           return res.redirect('/dashboard');
         }
