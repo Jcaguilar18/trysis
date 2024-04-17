@@ -506,7 +506,42 @@ app.post('/generate-report', async (req, res) => {
   
       // Check if we actually have a bincard with that clusterCode
       if (!bincards[clusterCode] || bincards[clusterCode].items.length === 0) {
-        return res.status(404).send('No bin card found for the provided cluster code.');
+        return res.status(404).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Error Page</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>The Material code input was wrong.</h1>
+                <button onclick="location.href='/generate-report-page'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
       }
   
       res.render('bincard.ejs', {
