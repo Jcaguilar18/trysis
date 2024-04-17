@@ -377,7 +377,7 @@ app.post('/generate-report', async (req, res) => {
     WHERE item_date::DATE = $1 AND status = 'SET'
     `, [endDate]);
     
-    if (reportType === 'final') {
+    
         if (reportQueryResult.rows.length === 0) {
           return res.status(404).send(`
           <!DOCTYPE html>
@@ -416,8 +416,7 @@ app.post('/generate-report', async (req, res) => {
           </html>
         `);
         }
-      }
-    
+      
         let aggregatedData = {};
         reportQueryResult.rows.forEach(item => {
           const key = item.clustercode;
