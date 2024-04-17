@@ -361,12 +361,12 @@
           <% item.forEach(item => { %>
             <div class="table-row">
               <div class="table-cell2" style="display: none;"><%= item.clustercode %></div>
-              <div class="table-cell2">₱<%= item.item_description %></div>
+              <div class="table-cell2"><%= item.item_description %></div>
               <div class="table-cell2"><%= item.beginning_inventory %></div>
               <div class="table-cell2"><%= item.total_incoming %></div>
-              <div class="table-cell2">₱<%= item.total_outgoing %></div>
-              <div class="table-cell2">₱<%= item.available %></div>
-              <div class="table-cell2">₱<%= item.price %></div>
+              <div class="table-cell2"><%= item.total_outgoing %></div>
+              <div class="table-cell2"><%= item.available %></div>
+              <div class="table-cell2">₱ <%= item.price %></div>
             </div>
           <% }); %>
         <% } else { %>

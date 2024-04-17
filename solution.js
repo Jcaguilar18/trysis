@@ -999,6 +999,11 @@ app.get("/dashboard", async (req, res) => {
   const roleOf = user?.role;
   const pictureUrl = user?.picture_url;
 
+  if (roleOf !== 'manager' && roleOf !== 'warehouse') {
+    console.error("Access denied: User does not have the required role");
+    return res.redirect("/login");  // Redirect to login if the user does not have the required role
+  }
+
       // Fetch the latest updates for products
       const productUpdatesResult = await db.query(`
       SELECT * FROM logs 
