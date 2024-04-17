@@ -708,7 +708,7 @@ app.post("/update-account", async (req, res) => {
         <head>
             <meta charset="UTF-8">
             <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Username Duplicate</title>
+            <title>Error Page</title>
             <style>
                 body {
                     display: flex;
@@ -930,6 +930,47 @@ app.post("/add-item", async (req, res) => {
         </html>
       `);
     }
+
+    const itemQueryResult = await db.query("SELECT * FROM item WHERE material_name = $1", [materialName]);
+    if (itemQueryResult.rows.length > 0) {
+      return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Error Page</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>The item ${materialName} already exists.</h1>
+                <button onclick="location.href='/item'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
+    }
+
     const classificationId = classificationQueryResult.rows[0].classification_id;
     const clusterDescription = classificationQueryResult.rows[0].description;
     // Insert the new item
@@ -1065,6 +1106,52 @@ app.post("/add-cluster", async (req, res) => {
       const { clustercode, description, classificationid } = req.body;
       console.log(classificationid);
       // Insert the cluster into the database
+
+      const result = await db.query(
+        "SELECT * FROM cluster WHERE clustercode = $1",
+        [clustercode]
+    );
+
+    if (result.rows.length > 0) {
+        // If the cluster already exists, send an error response
+        return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Error Page</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Cluster code already exists.</h1>
+                <button onclick="location.href='/item'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
+    }
+
       await db.query(
           "INSERT INTO cluster (clustercode, description, classification_id, status) VALUES ($1, $2, $3, $4)",
           [clustercode, description, classificationid,'SET']
@@ -1428,7 +1515,7 @@ app.post('/addstock', async (req, res) => {
       <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
-          <title>Username Duplicate</title>
+          <title>Error Page</title>
           <style>
               body {
                   display: flex;
