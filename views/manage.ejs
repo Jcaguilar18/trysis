@@ -77,8 +77,8 @@
                           </div>
                 
                           <div class="cell">
-                            <input type="password" class="input-field hidden" id="password" name="password" placeholder="New Password" readonly>
-                            <input type="password" class="input-field hidden-confirm" id="confirm_password" name="confirm_password" placeholder="Confirm Password" readonly>
+                            <input type="password" class="input-field hidden" id="password_<%= index %>" name="password" placeholder="New Password" readonly>
+                            <input type="password" class="input-field hidden-confirm" id="confirm_password_<%= index %>" name="confirm_password" placeholder="Confirm Password" readonly>
                           </div>
                           <div class="cell">
                             <select class="select-field" name="role" disabled>
@@ -104,7 +104,7 @@
                           <button type="button" class="edit" onclick="enableEditing(this)">
                               <img src="./assets/edit_icon_pencil.png" alt="Edit" class="edit-icon">
                           </button>
-                          <button type="submit" class="save-button hidden" onclick="return validatePassword();">Save</button>
+                          <button type="submit" class="save-button hidden" onclick="return validatePassword(<%= index %>);">Save</button>
                       </div>
                       </div>
                     </form>
@@ -135,12 +135,12 @@ function enableEditing(editButton) {
   editButton.classList.add('hidden');
   form.querySelector('button[type="submit"]').classList.remove('hidden');
   form.querySelector('input[type="password"]').classList.remove('hidden');
-  form.querySelector('input[id="confirm_password"]').classList.remove('hidden-confirm');
+  form.querySelector('input[name="confirm_password"]').classList.remove('hidden-confirm');
 }
 
-function validatePassword() {
-    const password = document.getElementById("password");
-    const confirm_password = document.getElementById("confirm_password");
+function validatePassword(index) {
+    const password = document.getElementById("password_" + index);
+    const confirm_password = document.getElementById("confirm_password_" + index);
     const modal = document.getElementById("myModal");
     const span = document.getElementsByClassName("close")[0];
 

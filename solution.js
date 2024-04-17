@@ -588,9 +588,85 @@ app.post("/update-account", async (req, res) => {
       
       // If there's only one active manager left, refuse to update
       if (activeManagersCount < 2) {
-        return res.status(400).send("Cannot deactivate the last two active manager.");
+        return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Error Page</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Cannot de-activate a manager if only 2 are left.</h1>
+                <button onclick="location.href='/manage'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
       }
     }
+
+    const userExists = await db.query("SELECT * FROM users WHERE username = $1 AND userid != $2", [username, userId]);
+    if (userExists.rows.length > 0) {
+      return res.status(400).send(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Username Duplicate</title>
+            <style>
+                body {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 100vh;
+                    margin: 0;
+                    background-color: #f8f9fa;
+                    font-family: Arial, sans-serif;
+                }
+                .container {
+                    text-align: center;
+                }
+                button {
+                    margin-top: 20px;
+                    padding: 10px 20px;
+                    font-size: 16px;
+                    cursor: pointer;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="container">
+                <h1>Username already exists.</h1>
+                <button onclick="location.href='/manage'">Go Back</button>
+            </div>
+        </body>
+        </html>
+      `);
+    }
+
     let updateFields = {
 
       username: username,
@@ -1349,7 +1425,42 @@ app.post("/register", upload.single('picture'), async (req, res) => {
 
     if (checkResult.rows.length > 0) {
       // User already exists, redirect to an appropriate page
-      res.redirect("/user-exists"); // Adjust as necessary
+      return res.status(400).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Error Page</title>
+          <style>
+              body {
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  height: 100vh;
+                  margin: 0;
+                  background-color: #f8f9fa;
+                  font-family: Arial, sans-serif;
+              }
+              .container {
+                  text-align: center;
+              }
+              button {
+                  margin-top: 20px;
+                  padding: 10px 20px;
+                  font-size: 16px;
+                  cursor: pointer;
+              }
+          </style>
+      </head>
+      <body>
+          <div class="container">
+              <h1>Username already exists.</h1>
+              <button onclick="location.href='/register'">Go Back</button>
+          </div>
+      </body>
+      </html>
+    `);
     } else {
       const hashedPassword = await bcrypt.hash(password, saltRounds);
       await db.query(
