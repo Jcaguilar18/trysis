@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('49 16 * * *', async () => {
+cron.schedule('53 17 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -517,37 +517,8 @@ app.get("/item", async (req, res) => {
     const roleOf = user?.role;
     const pictureUrl = user?.picture_url;
 
-    var itemOfQueryResult = await db.query(`
-    SELECT 
-    i.item_id,
-    i.classification_id,
-    i.material_name AS item_description,
-    i.clustercode,
-    COALESCE(l2.logs_available, 0) AS beginning_inventory,
-    COALESCE(SUM(l.incoming), 0) AS total_incoming,
-    COALESCE(SUM(l.outgoing), 0) AS total_outgoing,
-    i.available,
-    i.price,
-    i.description,
-    ROUND((i.available * i.price)::numeric, 2) AS value_of_raw_material_on_hand
-FROM item i
-LEFT JOIN logs l ON i.clustercode = l.logs_clustercode AND i.material_name = l.logs_material_name
-LEFT JOIN (
-    SELECT 
-        logs_material_name, 
-        logs_clustercode, 
-        logs_available 
-    FROM logs 
-    WHERE log_date < CURRENT_DATE
-    ORDER BY log_date DESC, log_id DESC 
-    LIMIT 1
-) l2 ON i.material_name = l2.logs_material_name AND i.clustercode = l2.logs_clustercode
-LEFT JOIN cluster c ON i.clustercode = c.clustercode
-WHERE c.status <> 'DESET'
-GROUP BY i.item_id, i.classification_id, i.material_name, i.clustercode, l2.logs_available, i.available, i.price, i.description
-ORDER BY MAX(l.log_id) DESC;
+    var itemOfQueryResult = await db.query("SELECT *, ROUND((available * price)::numeric, 2) AS value_of_raw_material_on_hand, material_name AS item_description FROM item");
 
-   `);
     var clusterquery = await db.query("SELECT * FROM cluster WHERE status != 'DESET'");
     var clusterquery1 = await db.query("SELECT * FROM cluster WHERE classification_id = 1 AND status != 'DESET'");
     var clusterquery2 = await db.query("SELECT * FROM cluster WHERE classification_id = 2 AND status != 'DESET'");
@@ -1065,6 +1036,44 @@ app.get("/dashboard", async (req, res) => {
       `);
       const inventorySubtotals = inventorySubtotalsResult.rows;
 
+      ////
+      const currentSubtotals = inventorySubtotalsResult.rows;
+      const latestBackupDateResult = await db.query(`
+        SELECT MAX(item_date) AS max_date FROM report
+      `);
+     
+      const latestBackupDate = latestBackupDateResult.rows[0].max_date;
+     
+
+      const backupSubtotalsResult = await db.query(`
+        SELECT classification_id, SUM(available * price) AS subtotal
+        FROM report
+        WHERE item_date = $1
+        GROUP BY classification_id
+      `, [latestBackupDate]);
+
+      //  console.log(backupSubtotalsResult);
+      const backupSubtotals = backupSubtotalsResult.rows;
+      console.log(backupSubtotals );
+      console.log("Latest backup date:", backupSubtotals);
+
+      const percentageChanges = currentSubtotals.map(current => {
+        const backup = backupSubtotals.find(b => b.classification_name === current.classification_name) || { subtotal: 0 };
+        const change = current.subtotal - backup.subtotal;
+        const percentageChange = (backup.subtotal !== 0) ? (change / backup.subtotal) * 100 : 0;
+        return {
+          classification_name: current.classification_name,
+          currentSubtotal: current.subtotal,
+          backupSubtotal: backup.subtotal || 0,
+          percentageChange: percentageChange.toFixed(2) // Fixed to 2 decimal places
+        };
+      });
+
+
+
+// console.log(percentageChanges);
+
+
       // Render the dashboard with all necessary data
       res.render("dashboard.ejs", {
         pictureUrl: './uploads/' + pictureUrl,  // Prepend the base directory
@@ -1072,6 +1081,7 @@ app.get("/dashboard", async (req, res) => {
         roleOf: roleOf,
         productUpdates: productUpdates,
         inventorySubtotals: inventorySubtotals,
+        percentageChanges: percentageChanges,
         // ... pass other necessary data as well
       });
 
