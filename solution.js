@@ -82,6 +82,7 @@ const db = new pg.Client({
 
 db.connect();
 
+
 app.get("/", (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
