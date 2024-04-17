@@ -84,7 +84,8 @@
 
                          
                         </div>
-                        <p class="amount-of-money">₱<%= subtotal.subtotal.toLocaleString() %></p>
+                        <p class="amount-of-money">₱<%= subtotal?.subtotal?.toLocaleString() ?? 'N/A' %></p>
+
                         <p>% <%= subtotal.percentageChange%></p>
                       </div>
                     <% }) %>
