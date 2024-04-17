@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('09 17 * * *', async () => {
+cron.schedule('50 18 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -241,54 +241,6 @@ WHERE item_date::DATE = $1 AND status = 'SET'
   }
 });
 
-app.post('/generate-bincard', async (req, res) => {
-  const { clusterCode } = req.body; // Capture the clusterCode from the form submission
-
-  try {
-    // Modify your query to select only items with the provided clusterCode
-    const bincardDataQuery = await db.query(`
-      SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
-      FROM item
-      WHERE clustercode = $1
-      ORDER BY material_name
-    `, [clusterCode]); // Use the clusterCode in the query
-
-    let bincards = {};
-
-    bincardDataQuery.rows.forEach(item => {
-      // Since we're filtering by clustercode, we know there's only one bincard
-      if (!bincards[clusterCode]) {
-        bincards[clusterCode] = { items: [] };
-      }
-
-      bincards[clusterCode].items.push({
-        name: item.material_name,
-        description: item.description,
-        beginningInventory: item.beginning_inventory,
-        totalIncoming: item.total_incoming,
-        totalOutgoing: item.total_outgoing,
-        available: item.available,
-        unitPrice: item.price,
-        totalValue: item.available * item.price
-      });
-    });
-
-    // Check if we actually have a bincard with that clusterCode
-    if (!bincards[clusterCode] || bincards[clusterCode].items.length === 0) {
-      return res.status(404).send('No bin card found for the provided cluster code.');
-    }
-
-    res.render('bincard.ejs', {
-      bincards: bincards, // This now only contains the bincard(s) for the provided clusterCode
-      currentUser: req.session.firstname + ' ' + req.session.lastname, 
-      currentRole: req.session.roleOf.toUpperCase(),
-    });
-  } catch (err) {
-    console.error('Error generating bin card:', err);
-    res.status(500).send('Internal Server Error');
-  }
-});
-
 
 import path from 'path';
 const uploadsDir = path.join(__dirname, 'uploads');
@@ -478,12 +430,22 @@ app.post('/generate-report', async (req, res) => {
     try {
       // Modify your query to select only items with the provided clusterCode
       const bincardDataQuery = await db.query(`
-        SELECT clustercode, material_name, description, beginning_inventory, total_incoming, total_outgoing, available, price
-        FROM item
-        WHERE clustercode = $1
-        ORDER BY material_name
-      `, [clusterCode]); // Use the clusterCode in the query
-  
+      SELECT 
+        i.clustercode, 
+        i.material_name, 
+        i.description, 
+        i.beginning_inventory, 
+        i.total_incoming, 
+        i.total_outgoing, 
+        i.available, 
+        i.price
+      FROM item i
+      INNER JOIN cluster c ON i.clustercode = c.clustercode
+      WHERE c.status = 'SET'
+      AND i.clustercode = $1
+      ORDER BY i.material_name
+    `, [clusterCode]);
+    
       let bincards = {};
   
       bincardDataQuery.rows.forEach(item => {
@@ -1278,44 +1240,44 @@ console.log(inventorySubtotalsWithChanges);
   }
 });
 
-app.get("/binCardPDF", async (req, res) => {
-  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-  res.setHeader("Pragma", "no-cache");
-  res.setHeader("Expires", "0");
+// app.get("/binCardPDF", async (req, res) => {
+//   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+//   res.setHeader("Pragma", "no-cache");
+//   res.setHeader("Expires", "0");
 
-  if (req.isAuthenticated()) {
-    try {
-      const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
-      const user = userResult.rows[0];
-      const roleOf = user?.role;
-      const pictureUrl = user?.picture_url;
+//   if (req.isAuthenticated()) {
+//     try {
+//       const userResult = await db.query("SELECT role, picture_url FROM users WHERE username = $1", [req.user.username]);
+//       const user = userResult.rows[0];
+//       const roleOf = user?.role;
+//       const pictureUrl = user?.picture_url;
 
-      const clustercode = req.query.clustercode; // Get the clustercode from the query parameters
-      const productUpdatesResult = await db.query(`
-        SELECT i.clustercode, c.description, i.material_name, i.available, i.price
-        FROM item i
-        INNER JOIN cluster c ON i.clustercode = c.clustercode
-        WHERE i.clustercode=$1
-      `, [clustercode]); // Use the clustercode in the query
-      const productUpdates = productUpdatesResult.rows;
-      const clusterDescription = productUpdates[0]?.description;
-      const clusterCode = productUpdates[0]?.clustercode;
+//       const clustercode = req.query.clustercode; // Get the clustercode from the query parameters
+//       const productUpdatesResult = await db.query(`
+//         SELECT i.clustercode, c.description, i.material_name, i.available, i.price
+//         FROM item i
+//         INNER JOIN cluster c ON i.clustercode = c.clustercode
+//         WHERE i.clustercode=$1
+//       `, [clustercode]); // Use the clustercode in the query
+//       const productUpdates = productUpdatesResult.rows;
+//       const clusterDescription = productUpdates[0]?.description;
+//       const clusterCode = productUpdates[0]?.clustercode;
 
-      res.render("binCardPDF.ejs", {
-        pictureUrl: './uploads/' + pictureUrl,
-        productUpdates: productUpdates,
-        roleOf: roleOf,
-        clusterDescription: clusterDescription,
-        clusterCode: clusterCode
-      });
-    } catch (err) {
-      console.error("Error accessing the dashboard:", err);
-      res.status(500).send("Internal Server Error");
-    }
-  } else {
-    res.redirect("/login");
-  }
-});
+//       res.render("binCardPDF.ejs", {
+//         pictureUrl: './uploads/' + pictureUrl,
+//         productUpdates: productUpdates,
+//         roleOf: roleOf,
+//         clusterDescription: clusterDescription,
+//         clusterCode: clusterCode
+//       });
+//     } catch (err) {
+//       console.error("Error accessing the dashboard:", err);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   } else {
+//     res.redirect("/login");
+//   }
+// });
 
 app.get("/generate-report-page", async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
