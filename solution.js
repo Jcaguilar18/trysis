@@ -321,6 +321,47 @@ app.post('/generate-report', async (req, res) => {
   const { startDate, endDate, clusterCode, reportType } = req.body;
 
   if (reportType === 'final') {
+  if (!startDate || !endDate) {
+    return res.status(400).send(`
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Error Page</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                background-color: #f8f9fa;
+                font-family: Arial, sans-serif;
+            }
+            .container {
+                text-align: center;
+            }
+            button {
+                margin-top: 20px;
+                padding: 10px 20px;
+                font-size: 16px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Dates cannot be left empty.</h1>
+            <button onclick="location.href='/generate-report-page'">Go Back</button>
+        </div>
+    </body>
+    </html>
+  `);
+  }
+}
+
+  if (reportType === 'final') {
     const currentUser = req.session.username;
     const currentRole =req.session.roleOf;
     const reportType ='notyet';
@@ -336,10 +377,46 @@ app.post('/generate-report', async (req, res) => {
     WHERE item_date::DATE = $1 AND status = 'SET'
     `, [endDate]);
     
-    
+    if (reportType === 'final') {
         if (reportQueryResult.rows.length === 0) {
-          return res.status(404).send('No report found for the selected date.');
+          return res.status(404).send(`
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>Error Page</title>
+              <style>
+                  body {
+                      display: flex;
+                      justify-content: center;
+                      align-items: center;
+                      height: 100vh;
+                      margin: 0;
+                      background-color: #f8f9fa;
+                      font-family: Arial, sans-serif;
+                  }
+                  .container {
+                      text-align: center;
+                  }
+                  button {
+                      margin-top: 20px;
+                      padding: 10px 20px;
+                      font-size: 16px;
+                      cursor: pointer;
+                  }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>No report found for the selected date.</h1>
+                  <button onclick="location.href='/generate-report-page'">Go Back</button>
+              </div>
+          </body>
+          </html>
+        `);
         }
+      }
     
         let aggregatedData = {};
         reportQueryResult.rows.forEach(item => {
