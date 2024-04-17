@@ -83,10 +83,18 @@ const db = new pg.Client({
 db.connect();
 
 app.get("/", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   res.render("login.ejs");
 });
 
 app.get("/login", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   res.render("login.ejs");
 });
 
@@ -159,6 +167,10 @@ const generatePDF = (data) => {
 
 // Route handler for report generation
 app.post("/generate-report-page", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { startDate } = req.body;
   const { endDate } = req.body;
   const currentUser = req.session.username;
@@ -266,10 +278,18 @@ app.use('/uploads', express.static('uploads'));
 
 
 app.get("/register", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   res.render("register.ejs");
 });
 
 app.post('/generate-report', async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { startDate, endDate, clusterCode, reportType } = req.body;
 
   if (reportType === 'final') {
@@ -650,6 +670,10 @@ app.get("/manage", async (req, res) => {
 });
 
 app.post("/update-account", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { userId, username, firstname, lastname, password, role, status } = req.body;
   let logDescription = 'Account updated: '; // Initialize log description
 
@@ -797,6 +821,10 @@ app.post("/update-account", async (req, res) => {
 
 
 app.post('/delete-item', async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { item_id } = req.body;
   try {
     await db.query('DELETE FROM item WHERE item_id = $1', [item_id]);
@@ -811,6 +839,10 @@ app.post('/delete-item', async (req, res) => {
 
 
 app.get('/add-item', (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const clcode = req.query.clustercode;
   const clusterDescription = req.query.cluster_description;
   console.log(clcode);
@@ -819,6 +851,10 @@ app.get('/add-item', (req, res) => {
 
 
 app.get('/update-item', async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const itemId = req.query.item_id;
   console.log(itemId);
   res.render('update-item.ejs', { itemId });
@@ -858,6 +894,10 @@ app.get("/stock", async (req, res) => {
 });
 
 app.get("/bin", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   var clustercode = req.query.clustercode;
   var itemOfQueryResult = await db.query(`
     SELECT item.*, cluster.description as cluster_description 
@@ -871,6 +911,10 @@ app.get("/bin", async (req, res) => {
 
 
 app.get("/add-cluster", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { classificationId, cluster } = req.query; // Use req.query for GET requests
   console.log('Received classificationId:', classificationId);
   console.log('Received classificationId:', cluster);
@@ -882,11 +926,19 @@ app.get("/add-cluster", (req, res) => {
 
 
 app.get("/update-cluster", (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   res.render("update-cluster.ejs");
 });
 
 // Route to handle form submission for adding an item
 app.post("/add-item", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { materialName, clcode, price} = req.body;
   console.log(clcode);
   try {
@@ -999,7 +1051,10 @@ app.post("/add-item", async (req, res) => {
 
 app.post("/update-item", async (req, res) => {
   // Destructure the itemId, materialName, and price from the request body
-  
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
 
   const { itemId, materialName, price } = req.body;
   console.log('AAAAAAAAAAAAAAAAAAAAAAAAAAAA');
@@ -1061,6 +1116,9 @@ app.post("/update-item", async (req, res) => {
 
 app.post("/delete-item", async (req, res) => {
   const { materialName } = req.body;
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
 
   try {
     const materialQueryResult = await db.query("SELECT material_name FROM item WHERE material_name = $1", [materialName]);
@@ -1100,6 +1158,10 @@ app.post("/delete-item", async (req, res) => {
 
 
 app.post("/add-cluster", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   try {
       // Extract data from the request body
       
@@ -1178,6 +1240,10 @@ app.post("/add-cluster", async (req, res) => {
 });
 
 app.post("/update-cluster", async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const { classification_id, code, description, status } = req.body;
 
   try {
@@ -1610,6 +1676,10 @@ app.post('/addstock', async (req, res) => {
 });
 
 app.post("/register", upload.single('picture'), async (req, res) => {
+  res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+  res.setHeader("Pragma", "no-cache");
+  res.setHeader("Expires", "0");
+
   const newUsername = req.body.username; // New user's username
   const password = req.body.password;
   const role = req.body.roles;
