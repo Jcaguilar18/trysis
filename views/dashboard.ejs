@@ -81,8 +81,11 @@
                       <div class="classification-box">
                         <div class="classification-title">
                           <p class="classification-sub-total"><%= subtotal.classification_name %> SUB-TOTAL</p>
+
+                         
                         </div>
                         <p class="amount-of-money">₱<%= subtotal.subtotal.toLocaleString() %></p>
+                        <p>% <%= subtotal.percentageChange%></p>
                       </div>
                     <% }) %>
 

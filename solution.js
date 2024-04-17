@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('53 17 * * *', async () => {
+cron.schedule('09 17 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
@@ -335,7 +335,7 @@ app.post('/generate-report', async (req, res) => {
     FROM report
     WHERE item_date::DATE = $1 AND status = 'SET'
     `, [endDate]);
-        //console.log(reportQueryResult);
+    
     
         if (reportQueryResult.rows.length === 0) {
           return res.status(404).send('No report found for the selected date.');
@@ -1050,43 +1050,59 @@ app.get("/dashboard", async (req, res) => {
         GROUP BY classification.classification_name
       `);
       const inventorySubtotals = inventorySubtotalsResult.rows;
-
+console.log("Current:", inventorySubtotals);
       ////
       const currentSubtotals = inventorySubtotalsResult.rows;
       const latestBackupDateResult = await db.query(`
         SELECT MAX(item_date) AS max_date FROM report
       `);
-     
-      const latestBackupDate = latestBackupDateResult.rows[0].max_date;
-     console.log(latestBackupDate);
-
+  
+    const latestBackupDate = latestBackupDateResult.rows[0].max_date;
       const backupSubtotalsResult = await db.query(`
-        SELECT *
+      SELECT classification_id, SUM(available * price) AS subtotal
         FROM report
-        WHERE item_date = $1
+    WHERE item_date::DATE = $1
+    GROUP BY classification_id
       `, [latestBackupDate]);
 
-      //  console.log(backupSubtotalsResult);
+      
+
+      
+
+     
       const backupSubtotals = backupSubtotalsResult.rows;
       console.log(backupSubtotals );
-      console.log("Latest backup date:", backupSubtotals);
+      //console.log("Latest backup date:", backupSubtotals);
 
-      const percentageChanges = currentSubtotals.map(current => {
-        const backup = backupSubtotals.find(b => b.classification_name === current.classification_name) || { subtotal: 0 };
-        const change = current.subtotal - backup.subtotal;
-        const percentageChange = (backup.subtotal !== 0) ? (change / backup.subtotal) * 100 : 0;
-        return {
-          classification_name: current.classification_name,
-          currentSubtotal: current.subtotal,
-          backupSubtotal: backup.subtotal || 0,
-          percentageChange: percentageChange.toFixed(2) // Fixed to 2 decimal places
-        };
-      });
+    
 
+      const classificationMapping = {
+        '1': 'Fabrication',
+        '2': 'Firepro',
+        '3': 'Electrical'
+      };
 
+//console.log(percentageChanges);
 
-// console.log(percentageChanges);
+ // Map current subtotals to include percentage change
+ const inventorySubtotalsWithChanges = inventorySubtotals.map(current => {
+  // Find the backup subtotal using the classificationMapping
+  const backupSubtotal = backupSubtotals.find(backup => 
+    classificationMapping[backup.classification_id.toString()] === current.classification_name
+  );
 
+  let percentageChange = 0;
+  // Check if we have a matching backupSubtotal and it's not zero to avoid division by zero
+  if (backupSubtotal && backupSubtotal.subtotal !== 0) {
+    percentageChange = ((current.subtotal - backupSubtotal.subtotal) / backupSubtotal.subtotal) * 100;
+  }
+
+  return {
+    ...current,
+    percentageChange: percentageChange.toFixed(2)  // Keep two decimals
+  };
+});
+console.log(inventorySubtotalsWithChanges);
 
       // Render the dashboard with all necessary data
       res.render("dashboard.ejs", {
@@ -1094,8 +1110,10 @@ app.get("/dashboard", async (req, res) => {
         productUpdates: productUpdates,
         roleOf: roleOf,
         productUpdates: productUpdates,
-        inventorySubtotals: inventorySubtotals,
-        percentageChanges: percentageChanges,
+        inventorySubtotals: inventorySubtotalsWithChanges,
+        
+        
+        
         // ... pass other necessary data as well
       });
 
