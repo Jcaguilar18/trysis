@@ -627,7 +627,7 @@ app.get("/logs", ensureAuthenticated,checkRole(['manager']), async (req, res) =>
 });
 
 
-app.get("/item", ensureAuthenticated,checkRole(['manager', 'warehouse']),async (req, res) => {
+app.get("/item", ensureAuthenticated,checkRole(['manager', 'warehouse', 'engineer']),async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
