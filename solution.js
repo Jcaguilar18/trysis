@@ -1296,6 +1296,7 @@ app.post("/update-cluster", ensureAuthenticated, async (req, res) => {
             [currentUser.username, logDescription, currentUser.picture_url] // Use the current user's picture_url
         );
     }
+    
 
     // Redirect back to the original page after updating the item
     res.redirect("/item");
