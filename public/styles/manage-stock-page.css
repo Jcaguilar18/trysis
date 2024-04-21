@@ -396,3 +396,10 @@ button img {
   background-color: #555555; /* Button color when hovered */
   color: #f2f2f2; /* Text color when hovered */
 }
+
+/*****************************Animation*****************************************/
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

@@ -51,6 +51,9 @@
                 <p class="date-text"><%= currentMonthDay.split(' ')[1] %></p> <!-- Display the day -->
             </div>
             <div class="table-section" style="position: relative; padding-top: 0px;">
+                <div id="loadingSpinner" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                    <div style="border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite;"></div>
+                </div>
                 <table id = "itemTable">
                     <thead style="position: sticky; top: 0; background-color: white;">
                         <tr>
@@ -173,26 +176,43 @@ clickedButton.classList.add('active');
     }
 }
 
-function searchTable() {
-    // Declare variables
-    var input, filter, table, tr, td, i, txtValue;
-    input = document.getElementsByClassName("search-input")[0];
-    filter = input.value.toUpperCase();
-    table = document.getElementById("itemTable");
-    tr = table.getElementsByTagName("tr");
+var searchTimeout; // Declare this outside of your function
 
-    // Loop through all table rows, and hide those who don't match the search query
-    for (i = 1; i < tr.length; i++) {
-        td = tr[i].getElementsByTagName("td")[1];
-        if (td) {
-            txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+function searchTable() {
+    // Show the loading spinner
+    document.getElementById('loadingSpinner').style.display = 'block';
+
+    // Clear the timeout if it's already set. This prevents the previous search from executing if the user is still typing
+    clearTimeout(searchTimeout);
+
+    // Set a timeout to perform the search 3 seconds (3000 milliseconds) from now
+    searchTimeout = setTimeout(function() {
+        // Declare variables
+        var input, filter, table, tr, td, i, txtValue;
+        input = document.getElementsByClassName("search-input")[0];
+        filter = input.value.toUpperCase();
+        table = document.getElementById("itemTable");
+        tr = table.getElementsByTagName("tr");
+
+        // Loop through all table rows, and hide those who don't match the search query
+        for (i = 1; i < tr.length; i++) {
+            var tdCode = tr[i].getElementsByTagName("td")[1]; // Code column
+            var tdMaterialName = tr[i].getElementsByTagName("td")[3]; // Material Name column
+
+            var txtValueCode = tdCode.textContent || tdCode.innerText;
+            var txtValueMaterialName = tdMaterialName.textContent || tdMaterialName.innerText;
+
+            // Check if the search query matches either the code or the material name
+            if (txtValueCode.toUpperCase().indexOf(filter) > -1 || txtValueMaterialName.toUpperCase().indexOf(filter) > -1) {
                 tr[i].style.display = "";
             } else {
                 tr[i].style.display = "none";
             }
         }
-    }
+
+        // Hide the loading spinner
+        document.getElementById('loadingSpinner').style.display = 'none';
+    }, 3000); // 3000 milliseconds = 3 seconds
 }
 
     </script>
