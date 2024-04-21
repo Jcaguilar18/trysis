@@ -229,7 +229,6 @@
             </div>
             <% if (cluster4 && cluster4.length > 0) { %>
                 <% cluster4.forEach(cluster => { %>
-                  
                   <form action="/update-cluster" method="POST" class="table">
                     <div class="entry">
                       <!--TASK: Save Changes Once Changed, Handle When Left Blank-->
@@ -252,7 +251,7 @@
         <div class="add-section">
           <form action="/add-cluster" method="GET">
             <input type="hidden" name="classificationId" value="0"> <!-- Initialized with 0, but will be updated by JS -->
-            <button type="submit" class="add-button">
+            <button type="button" class="add-button" onclick="openAddClusterModal(); myModal.style.display = 'none';">
               <img class="add-cluster-icon" src="./assets/additionicon-1.png" alt="Add Cluster"/>
             </button>
           </form>
@@ -266,6 +265,27 @@
         </div>
     </div>
 </div>  
+</div>
+
+<div id="addClusterModal" class="modal">
+  <div class="modal-content">
+    <span class="close">×</span>
+    <div class="modal-content2">
+      <div class="upper-section-modal">
+        <button type="button" class="back-button" onclick="addClusterModal.style.display = 'none';">&lt;Back</button>
+      </div>
+      <form action="/add-cluster" method="POST">
+        <div class="upper-table-part">
+          <p class="upper-table-part-text">Code:</p>
+          <input type="text" id="clustercode" name="clustercode" placeholder="Search code..." required> 
+          <p class="upper-table-part-text">Material:</p> 
+          <input type="text" id="description" name="description" placeholder="Search material..." required>
+          <input type="hidden"  id="classificationid" name="classificationid">
+          <button type="submit" class="add-button">Add Cluster</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 <!-- editItemModal() -->
@@ -455,15 +475,21 @@ function filterTable(id) {
     }
 }
 
+// var globalClassificationId = 0;
+// document.getElementById('classificationid').value = classification_id;
+
+
 // Get the modal
 var modal = document.getElementById("myModal");
 var modal2 = document.getElementById("myModal2");
 var binCardModal = document.getElementById("binCardModalArea");
+var addClusterModal = document.getElementById('addClusterModal');
 
 // Get the <span> element that closes the modal
-var span = document.getElementsByClassName("close")[0];
-var span2 = document.getElementsByClassName("close")[1];
-var binCardSpan = document.getElementsByClassName("close")[3];
+  var span = modal.querySelector(".close");
+var span2 = modal2.querySelector(".close");
+var binCardSpan = binCardModal.querySelector(".close");
+var addClusterSpan = addClusterModal.querySelector(".close");
 
 // When the user clicks on <span> (x), close the modal
 span.onclick = function() {
@@ -478,19 +504,26 @@ binCardSpan.onclick = function() {
 binCardModal.style.display = "none";
 }
 
+addClusterSpan.onclick = function() {
+  addClusterModal.style.display = "none";
+}
+
 // When the user clicks anywhere outside of the modal, close it
 window.onclick = function(event) {
-    if (event.target == modal) {
-        modal.style.display = "none";
-    } if (event.target == modal2) {
-        modal2.style.display = "none";
-    } if (event.target == binCardModal) {
-        binCardModal.style.display = "none";
-    }
+  if (event.target == modal) {
+    modal.style.display = "none";
+  } else if (event.target == modal2) {
+    modal2.style.display = "none";
+  } else if (event.target == binCardModal) {
+    binCardModal.style.display = "none";
+  } else if (event.target == addClusterModal) {
+    addClusterModal.style.display = "none";
+  }
 }
 
 // Function to open the modal and filter items based on the clustercode
 function openModal(classification_id) {
+  globalClassificationId = classification_id;
   mamamo = classification_id; // Update mamamo with the classificationId
     document.querySelector('input[name="classificationId"]').value = mamamo;
 // Filter the items based on the clustercode
@@ -498,6 +531,7 @@ function openModal(classification_id) {
 /* var items = $('#myModal tbody tr').filter(function() {
     return $(this).data('clustercode') === clustercode;
 }); */
+
 var items = $('#myModal .entry').filter(function() {
   return $(this).find('#cluster_cell:first-child').text().trim() === classification_id; });
 
@@ -510,6 +544,13 @@ items.show();
 
 // Show the modal
 modal.style.display = "block";
+}
+
+function openAddClusterModal(classification_id) {
+  var classification_id = globalClassificationId;
+  mamamo2 = classification_id; // Update mamamo with the classificationId
+  document.querySelector('input[name="classificationid"]').value = globalClassificationId;
+  addClusterModal.style.display = "block";
 }
 
 function editItemModal(clustercode, cluster_description) {
