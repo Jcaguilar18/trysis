@@ -1146,7 +1146,7 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 .modal-content2-database {
   /* background-color: blue; */
   background-color: #3b2f36;
-  margin: 10% 0% 3% 20%; /* top right bottom left */
+  margin: 10% 0% 3% 25%; /* top right bottom left */
   padding: 20px;
   border: 1px solid #888;
   width: 45%; /* Could be more or less, depending on screen size */
