@@ -956,12 +956,12 @@ app.post("/add-item", ensureAuthenticated, async (req, res) => {
   res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
   res.setHeader("Pragma", "no-cache");
   res.setHeader("Expires", "0");
-
-  const { materialName, clcode, price} = req.body;
-  console.log(clcode);
+  /* console.log('openAddItemModal function has been called with clustercode:', clustercode); */
+  const { materialName, price, clustercode} = req.body;
+  console.log('openAddItemModal function has been called with clustercode:', clustercode);
   try {
     // Get the classification_id based on the provided clustercode
-    const classificationQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clcode]);
+    const classificationQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clustercode]);
     if (classificationQueryResult.rows.length === 0) {
       return res.status(400).send(`
         <!DOCTYPE html>
@@ -993,7 +993,7 @@ app.post("/add-item", ensureAuthenticated, async (req, res) => {
         </head>
         <body>
             <div class="container">
-                <h1>The cluster code ${clcode} is invalid.</h1>
+                <h1>The cluster code ${clustercode} is invalid.</h1>
                 <button onclick="location.href='/item'">Go Back</button>
             </div>
         </body>
@@ -1046,7 +1046,7 @@ app.post("/add-item", ensureAuthenticated, async (req, res) => {
     // Insert the new item
     await db.query(
       "INSERT INTO item (classification_id, material_name, clustercode, price, description, beginning_inventory, total_incoming, total_outgoing, available) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)",
-      [classificationId, materialName, clcode, price, clusterDescription, '0', '0', '0','0']
+      [classificationId, materialName, clustercode, price, clusterDescription, '0', '0', '0','0']
     );
   
     if (req.isAuthenticated()) {
@@ -1055,7 +1055,7 @@ app.post("/add-item", ensureAuthenticated, async (req, res) => {
       //console.log(userPictureUrl);
       await db.query(
         "INSERT INTO logs (username, description, trans_type, log_date, picture, dailyProdUpdate, logs_clustercode, logs_material_name) VALUES ($1, $2, 'Added', CURRENT_DATE, $3, 'Yes', $4, $5)",
-        [req.user.username, logDescription, userPictureUrl, clcode, materialName]
+        [req.user.username, logDescription, userPictureUrl, clustercode, materialName]
       );
     }
 
