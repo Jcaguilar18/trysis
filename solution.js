@@ -959,6 +959,8 @@ app.post("/add-item", ensureAuthenticated, async (req, res) => {
   /* console.log('openAddItemModal function has been called with clustercode:', clustercode); */
   const { materialName, price, clustercode} = req.body;
   console.log('openAddItemModal function has been called with clustercode:', clustercode);
+  console.log(materialName);
+  console.log(price);
   try {
     // Get the classification_id based on the provided clustercode
     const classificationQueryResult = await db.query("SELECT classification_id, description FROM cluster WHERE clustercode = $1", [clustercode]);

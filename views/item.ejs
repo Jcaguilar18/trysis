@@ -303,7 +303,7 @@
         <label for="price" class="modal-form-text">Price:</label>
         <input type="text" class="form-control" id="price" name="price" required>
       </div>
-      <input type="hidden" id="clustercode"  name="clustercode">
+      <input type="hidden" id="clustercodeAddItem"  name="clustercode" value="VV">
       <button type="submit" class="modal-form-button">Add Item</button>
     </form>
   </div>
@@ -577,15 +577,18 @@ function openAddClusterModal(classification_id) {
   addClusterModal.style.display = "block";
 }
 
-function openAddItemModal(clustercode) {
-  var clustercode = globalClusterCode;
-  document.querySelector('input[name="clustercode"]').value = clustercode; // Anomaly
+function openAddItemModal() {
+  var clustercodeForItem = globalClusterCode;
+  console.log('globalClusterCode in OpenAddItemModal:', clustercodeForItem);
+  document.getElementById('clustercodeAddItem').value = clustercodeForItem; // Anomaly
+  console.log('Current clustercode is: ', document.getElementById('clustercodeAddItem').value);
   addItemModal.style.display = "block";
 }
 
 function editItemModal(clustercode, cluster_description) {
     // Filter the items based on the clustercode
     globalClusterCode = clustercode;
+    console.log('globalClusterCode in editItemModal:', globalClusterCode);
     var items = $('.modal-table-part .table-row').filter(function() {
         return $(this).find('.table-cell:first-child').text().trim() === clustercode;
     });
