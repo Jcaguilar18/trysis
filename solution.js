@@ -283,13 +283,30 @@ function ensureAuthenticated(req, res, next) {
 function checkRole(roles) {
   return function(req, res, next) {
       if (req.isAuthenticated() && roles.includes(req.user.role)) {
-        console.log(req.user.role);
+          console.log(req.user.role);
           return next();
       }
-      // Optionally, you could log this attempt or notify the user they don't have access
-      res.redirect('/login');
+      
+      // Send an HTML page that automatically navigates back
+      res.send(`
+          <html>
+          <head>
+              <title>Access Denied</title>
+              <script type="text/javascript">
+                  alert('You do not have permission to access this page.');
+                  window.history.back();
+              </script>
+          </head>
+          <body>
+              <h1>Access Denied</h1>
+              <p>You will be redirected back to the previous page.</p>
+          </body>
+          </html>
+      `);
   }
 }
+
+
 const upload = multer({ storage: storage });
 app.use('/uploads', ensureAuthenticated, express.static('uploads'));
 // ... (rest of your express app logic)
