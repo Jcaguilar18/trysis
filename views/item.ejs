@@ -54,6 +54,9 @@
                     <% } %>
                   </div>
                   <div class="tables-area-left" style="position: relative;">
+                    <div id="loadingSpinner" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                      <div style="border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite;"></div>
+                  </div>
                     <table id="itemTable" class="item-catalog-table">
                       <thead style="position: sticky; top: 0; background-color: white;">
                         <tr>
@@ -99,6 +102,9 @@
                     </div>
                     <div class="tables-area-upper-right" style="position: relative;">
                       <table id="itemTable3" class="item-catalog-table">
+                                            <div id="loadingSpinner2" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                      <div style="border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite;"></div>
+                  </div>
                         <thead style="position: sticky; top: 0; background-color: white;">
                           <tr>
                             <th>CODE</th>
@@ -143,6 +149,9 @@
                     </div>
                     <div class="tables-area-lower-right" style="position: relative;">
                       <table id="itemTable4" class="item-catalog-table">
+                        <div id="loadingSpinner3" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                          <div style="border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite;"></div>
+                      </div>
                         <thead style="position: sticky; top: 0; background-color: white;">
                           <tr>
                             <th>CODE</th>
@@ -177,6 +186,9 @@
               </div>
               <div class="table-container" style="position: relative;">
               <table id="itemTable2" class="item-catalog-table2">
+                <div id="loadingSpinner4" style="display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+                  <div style="border: 16px solid #f3f3f3; border-top: 16px solid #3498db; border-radius: 50%; width: 120px; height: 120px; animation: spin 2s linear infinite;"></div>
+              </div>
                 <thead style="position: sticky; top: 0; background-color: white;">
                   <tr>
                     <th>CODE</th>
@@ -713,92 +725,157 @@ function saveChanges() {
 // Add your code here to save changes
 }
 
-function myFunction() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById('myInput');
-  filter = input.value.toUpperCase();
-  table = document.getElementById("itemTable");
-  tr = table.getElementsByTagName('tr');
+var myFunctionTimeout;
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
+function myFunction() {
+  // Show the loading spinner
+  document.getElementById('loadingSpinner').style.display = 'block';
+
+  // Clear the timeout if it's already set. This prevents the previous search from executing if the user is still typing
+  clearTimeout(myFunctionTimeout);
+
+  // Set a timeout to perform the search 1 second (1000 milliseconds) from now
+  myFunctionTimeout = setTimeout(function() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('myInput');
+    filter = input.value.toUpperCase();
+    table = document.getElementById("itemTable");
+    tr = table.getElementsByTagName('tr');
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
+      var tdDescription = tr[i].getElementsByTagName("td")[1]; // Description column
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        var txtValueDescription = tdDescription.textContent || tdDescription.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValueDescription.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
       }
     }
-  }
+
+    // Hide the loading spinner
+    document.getElementById('loadingSpinner').style.display = 'none';
+  }, 1000); // 1000 milliseconds = 1 second
 }
+
+
+var myFunction2Timeout;
 
 function myFunction2() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById('myInput2');
-  filter = input.value.toUpperCase();
-  table = document.getElementById("itemTable3");
-  tr = table.getElementsByTagName('tr');
+  // Show the loading spinner
+  document.getElementById('loadingSpinner2').style.display = 'block';
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
+  // Clear the timeout if it's already set. This prevents the previous search from executing if the user is still typing
+  clearTimeout(myFunction2Timeout);
+
+  // Set a timeout to perform the search 1 second (1000 milliseconds) from now
+  myFunction2Timeout = setTimeout(function() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('myInput2');
+    filter = input.value.toUpperCase();
+    table = document.getElementById("itemTable3");
+    tr = table.getElementsByTagName('tr');
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
+      var tdDescription = tr[i].getElementsByTagName("td")[1]; // Description column
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        var txtValueDescription = tdDescription.textContent || tdDescription.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValueDescription.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
       }
     }
-  }
+
+    // Hide the loading spinner
+    document.getElementById('loadingSpinner2').style.display = 'none';
+  }, 1000); // 1000 milliseconds = 1 second
 }
+
+var myFunction3Timeout;
 
 function myFunction3() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById('myInput3');
-  filter = input.value.toUpperCase();
-  table = document.getElementById("itemTable4");
-  tr = table.getElementsByTagName('tr');
+  // Show the loading spinner
+  document.getElementById('loadingSpinner3').style.display = 'block';
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
+  // Clear the timeout if it's already set. This prevents the previous search from executing if the user is still typing
+  clearTimeout(myFunction3Timeout);
+
+  // Set a timeout to perform the search 1 second (1000 milliseconds) from now
+  myFunction3Timeout = setTimeout(function() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('myInput3');
+    filter = input.value.toUpperCase();
+    table = document.getElementById("itemTable4");
+    tr = table.getElementsByTagName('tr');
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
+      var tdDescription = tr[i].getElementsByTagName("td")[1]; // Description column
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        var txtValueDescription = tdDescription.textContent || tdDescription.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValueDescription.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
       }
     }
-  }
+
+    // Hide the loading spinner
+    document.getElementById('loadingSpinner3').style.display = 'none';
+  }, 1000); // 1000 milliseconds = 1 second
 }
 
-function myFunction4() {
-  // Declare variables
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById('myInput4');
-  filter = input.value.toUpperCase();
-  table = document.getElementById("itemTable2");
-  tr = table.getElementsByTagName('tr');
+var myFunction4Timeout;
 
-  // Loop through all table rows, and hide those who don't match the search query
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
+function myFunction4() {
+  // Show the loading spinner
+  document.getElementById('loadingSpinner4').style.display = 'block';
+
+  // Clear the timeout if it's already set. This prevents the previous search from executing if the user is still typing
+  clearTimeout(myFunction4Timeout);
+
+  // Set a timeout to perform the search 1 second (1000 milliseconds) from now
+  myFunction4Timeout = setTimeout(function() {
+    // Declare variables
+    var input, filter, table, tr, td, i, txtValue;
+    input = document.getElementById('myInput4');
+    filter = input.value.toUpperCase();
+    table = document.getElementById("itemTable2");
+    tr = table.getElementsByTagName('tr');
+
+    // Loop through all table rows, and hide those who don't match the search query
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0]; // Get the first column (CODE)
+      var tdDescription = tr[i].getElementsByTagName("td")[1]; // Description column
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        var txtValueDescription = tdDescription.textContent || tdDescription.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1 || txtValueDescription.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
       }
     }
-  }
+
+    // Hide the loading spinner
+    document.getElementById('loadingSpinner4').style.display = 'none';
+  }, 1000); // 1000 milliseconds = 1 second
 }
 
 function updateIcon(value) {
