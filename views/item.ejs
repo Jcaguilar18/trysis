@@ -309,6 +309,27 @@
   </div>
 </div>
 
+<div id="updateItemModal" class="modal">
+  <div class="modal-content2-database">
+    <div class="upper-section-modal-database">
+      <button type="button" class="back-button" onclick="addItemModal.style.display = 'none';">&lt;Back</button>
+    </div>
+    <form action="/update-item" method="POST" class="modal-form">
+      <h1>Update Item</h1>
+      <div class="form-group">
+        <label for="materialName" class="modal-form-text">New Material Name:</label>
+        <input type="text" class="form-control" id="materialName" name="materialName" required>
+      </div>
+      <div class="form-group">
+        <label for="price" class="modal-form-text">New Price:</label>
+        <input type="text" class="form-control" id="price" name="price" required>
+      </div>
+      <input type="hidden" name="itemId" id="itemIDUpdate">
+      <button type="submit" class="modal-form-button">Update Item</button>
+    </form>
+  </div>
+</div>
+
 <!-- editItemModal() -->
 <div id="myModal2" class="modal">
   <!-- <form id="addItemForm" action="/add-item" method="GET"> -->
@@ -344,15 +365,15 @@
           <div class="table-cell"><%= item.clustercode %></div>
           <div class="table-cell"><%= item.item_description %></div>
           <div class="table-cell">
-            <form action="/update-item" method="GET">
+           <!-- <form action="/update-item" method="GET"> -->
               <input type="hidden" name="item_id" value="<%= item.item_id %>">
-              <button type="submit" style="border: none; background: none; padding: 0;">
+              <button onclick="openUpdateItemModal('<%= item.item_id %>'); myModal2.style.display = 'none';" style="border: none; background: none; padding: 0;">
                   <img src="./assets/edit_icon_pencil.png" alt="Edit">
               </button>
               <button onclick="deleteItem(<%= item.item_id %>, this, event)">
                 <i class="fa fa-trash"></i>
               </button>
-          </form>
+          <!-- </form> -->
               <!-- <button onclick="deleteItem('<%= item.item_id %>', this)">
               <img src="./assets/trash_icon.png" alt="Delete">
           </button> -->
@@ -506,9 +527,10 @@ var modal2 = document.getElementById("myModal2");
 var binCardModal = document.getElementById("binCardModalArea");
 var addClusterModal = document.getElementById('addClusterModal');
 var addItemModal = document.getElementById('addItemModal');
+var updateItemModal = document.getElementById('updateItemModal');
 
 // Get the <span> element that closes the modal
-  var span = modal.querySelector(".close");
+var span = modal.querySelector(".close");
 var span2 = modal2.querySelector(".close");
 var binCardSpan = binCardModal.querySelector(".close");
 var addClusterSpan = addClusterModal.querySelector(".close");
@@ -583,6 +605,14 @@ function openAddItemModal() {
   document.getElementById('clustercodeAddItem').value = clustercodeForItem; // Anomaly
   console.log('Current clustercode is: ', document.getElementById('clustercodeAddItem').value);
   addItemModal.style.display = "block";
+}
+
+function openUpdateItemModal(itemid) {
+  // var itemid = globalItemId;
+  console.log('globalItemId in openUpdateItemModal:', itemid);
+  document.getElementById('itemIDUpdate').value = itemid; // Anomaly
+  // console.log('Current clustercode is: ', document.getElementById('clustercodeAddItem').value);
+  updateItemModal.style.display = "block";
 }
 
 function editItemModal(clustercode, cluster_description) {
