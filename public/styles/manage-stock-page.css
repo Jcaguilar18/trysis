@@ -351,9 +351,10 @@ button:hover {
 
 #itemTable th, #itemTable td {
   text-align: center; /* Align text to the center */
-  padding: 15px; /* Increase this value to add more space */
+  padding: 5px; /* Decrease this value to reduce space */
   border-bottom: 3px solid #000; /* Remove borders */
   white-space: nowrap; /* Prevent word wrap */
+  font-size: 0.8em; /* Decrease this value to reduce text size */
 }
 
 #itemTable th {
@@ -371,6 +372,7 @@ button:hover {
   width: 50px; 
   border:  3px solid rgb(214, 208, 208);
   text-align: center;
+  font-size: 0.8em; /* Decrease this value to reduce text size */
 }
 
 button img {
@@ -379,16 +381,16 @@ button img {
 }
 
 .save-button {
-  background-color: #191919; /* Button color */
-  color: #ffffff; /* Text color */
-  padding: 10px 20px; /* Button size */
+  background-color: #191919; 
+  color: #ffffff; 
+  padding: 5px 10px; /* Decrease these values to reduce button size */
   border: none;
-  border-radius: 5px; /* Rounded corners */
+  border-radius: 5px; 
   text-align: center;
   text-decoration: none;
   display: inline-block;
-  font-size: 16px;
-  transition-duration: 0.4s; /* Transition effect duration */
+  font-size: 0.8em; /* Decrease this value to reduce text size */
+  transition-duration: 0.4s; 
   cursor: pointer;
 }
 

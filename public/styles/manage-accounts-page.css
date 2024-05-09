@@ -99,12 +99,14 @@ body {
   .web-page .bottom-page-part .manage-accounts-header .table-area {
     box-sizing: border-box;
     padding: 2rem 4.4rem 2rem 6.5rem;
-    width: 100%;
+    width: 102rem;
+    height: 50rem;
     align-items: flex-end;
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
     overflow: auto;
+    /* background-color: #4712f5; */
   }
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .new-user-button {
@@ -132,7 +134,8 @@ body {
   }
 
   .web-page .bottom-page-part .manage-accounts-header .table-area .users-table {
-    width: 82rem;
+    margin-right: 0rem;
+    width: 86rem;
     height: 22rem;
     background-color: white;
     flex-shrink: 0;

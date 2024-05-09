@@ -602,30 +602,32 @@ background-color: #E1E1E1; /* #E1E1E1 for even rows */
 /******************************************************************************************/
 
 .table-container {
-  width: 86rem; /* Same width as the table */
-  height: 25rem; /* Adjust this value to fit your needs */
+  width: 95rem; /* Same width as the table */
+  height: 26.5rem; /* Adjust this value to fit your needs */
   overflow-y: auto; /* Add vertical scrollbars when the content overflows */
   overflow-x: hidden; /* Prevent horizontal scrolling */
+  /* background-color: #00bf63; */
 }
 
 .web-page .bottom-page-part .table-container .item-catalog-table2 {
   margin: 0rem 5rem 0rem 9rem;
-  width: calc(100% - 10.4rem);
-  height: 25rem;
+  width: 75rem;
+  height: 26.5rem;
   background-color: #9cb2c2;
   flex-shrink: 0;
   overflow: auto;
 }
 
 #itemTable2 {
-  width: 86rem; /* Make the table take up the full width of its container */
+  width: 84.5rem; /* Make the table take up the full width of its container */
   border-collapse: collapse; /* Collapse borders to avoid double borders */
   display: none;
+  border: 2px solid #000; /* Add a black border around the table */
 }
 
-#itemTable2 th, #itemTable td {
+#itemTable2 th, #itemTable2 td {
   text-align: left; /* Align text to the left */
-  padding: 8px; /* Add some padding */
+  padding: 10px; /* Add some padding */
   border: none; /* Remove all borders */
 }
 
