@@ -312,17 +312,18 @@
 <div id="updateItemModal" class="modal">
   <div class="modal-content2-database">
     <div class="upper-section-modal-database">
-      <button type="button" class="back-button" onclick="addItemModal.style.display = 'none';">&lt;Back</button>
+      <button type="button" class="back-button" onclick="updateItemModal.style.display = 'none';">&lt;Back</button>
+
     </div>
     <form action="/update-item" method="POST" class="modal-form">
       <h1>Update Item</h1>
       <div class="form-group">
         <label for="materialName" class="modal-form-text">New Material Name:</label>
-        <input type="text" class="form-control" id="materialName" name="materialName" required>
+        <input type="text" class="form-control" id="materialName" name="materialName">
       </div>
       <div class="form-group">
         <label for="price" class="modal-form-text">New Price:</label>
-        <input type="text" class="form-control" id="price" name="price" required>
+        <input type="text" class="form-control" id="price" name="price">
       </div>
       <input type="hidden" name="itemId" id="itemIDUpdate">
       <button type="submit" class="modal-form-button">Update Item</button>
