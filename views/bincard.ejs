@@ -4,35 +4,58 @@
   <meta charset="UTF-8">
   <title>Bin Cards</title>
   <style>
-    body {
-      font-family: 'Arial', sans-serif;
-      padding: 20px;
-    }
-    .bin-card-container {
-      page-break-after: always;
-    }
-    .bin-card-container:last-child {
-      page-break-after: avoid;
-    }
-    .bin-card-title {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .bin-card-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 20px;
-    }
-    .bin-card-table th,
-    .bin-card-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: left;
-    }
-    .bin-card-table th {
-      background-color: #f2f2f2;
-    }
-    .signature-block {
+ body {
+  font-family: 'Arial', sans-serif;
+  padding: 10px;
+  margin: 0;
+}
+.bin-card-container {
+  page-break-inside: avoid; /* Prevents breaks within a card */
+  padding-bottom: 20px; /* Reduced bottom padding */
+  padding-top: 10px; /* Consistent top padding */
+}
+.bin-card-container:first-of-type {
+  page-break-before: avoid; /* Avoids breaking before the first container */
+}
+.bin-card-footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+  .signature-block, .page-number {
+    margin-top: 20px;
+  }
+
+  .bin-card-container:last-child {
+    page-break-after: avoid;
+  }
+  .bin-card-title {
+  text-align: center;
+  margin: 0 0 10px 0; /* Reduced or removed bottom margin */
+}
+
+.bin-card-table {
+  width: 100%; /* Full width to utilize page space */
+  max-width: 100%; /* Ensures it doesn't overflow */
+  border-collapse: collapse;
+  table-layout: fixed; /* Helps in maintaining uniform column sizing */
+}
+
+.bin-card-table th, .bin-card-table td {
+  border: 1px solid #ddd;
+  padding: 4px; /* Slightly increased padding for better legibility */
+  text-align: left;
+  overflow: hidden; /* Keeps content within the cell */
+  white-space: normal; /* Allows text wrapping */
+  text-overflow: ellipsis; /* Adds an ellipsis to clipped text */
+}
+
+  .bin-card-table th {
+    background-color: #f2f2f2;
+  }
+
+  .signature-block {
         text-align: center;
         margin-top: 60px;
         
@@ -71,101 +94,144 @@
         margin-top: 10px;
         margin-bottom: 0px;
       }
-    .print-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  /* Set a max-width for the buttons */
-  max-width: 200px; /* Adjust this value as needed */
-  /* Auto margins to center the buttons */
-  margin: 0 auto;
-  display: block;
-  /* Add some margin to the bottom of each button for spacing */
-  margin-bottom: 10px;
-}
+  .print-button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    max-width: 200px;
+    margin: 0 auto;
+    display: block;
+    margin-bottom: 10px;
+  }
 
-  </style>
+  @media print {
+  .print-button {
+    display: none;
+  }
+
+  body, html {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Ensures no scrolling on print */
+  }
+}
+</style>
+
   <script>var bincards = <%- JSON.stringify(bincards) %>;</script>
   
    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
+
 <body>
-  <div id="all-bins"> <!-- Wrapper for all bin-card-container elements -->
-    <% Object.keys(bincards).forEach(function(clusterCode) { %>
-      <div class="bin-card-container">
-        <div class="bin-card-title">
-          <h1>Inventory Bin Card</h1>
-          <h2>Cluster Code: <%= clusterCode %></h2>
-          <p id="generatedOn"></p>
-        </div>
-        <table class="bin-card-table">
-          <thead>
-            <tr>
-              <th>Name of Material</th>
-              <th>Description</th>
-              <th>Beginning Inventory</th>
-              <th>Total Incoming</th>
-              <th>Total Outgoing</th>
-              <th>Available</th>
-              <th>Unit Price</th>
-              <th>Total Value</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% bincards[clusterCode].items.forEach(function(item) { %>
+  <div id="all-bins">
+    
+    <% Object.keys(bincards).forEach(function(clusterCode) {
+      var items = bincards[clusterCode].items;
+      var firstPage = true;
+      var limit = 6; // Limit for the first page and potentially the last page
+      var numberOfItemsPerPage = 6; // Normal number of items per page after the first
+      for (var i = 0; i < items.length; i += limit) {
+        var isLastPage = (items.length - i <= numberOfItemsPerPage) && (i !== 0); // Check if it's potentially the last page
+        limit = firstPage ? 6 : numberOfItemsPerPage; // Set limit to 6 for the first page and 9 for others
+        if (isLastPage && (items.length - i <= 6)) {
+          limit = 6; // Set limit to 6 if the remaining items are 6 or fewer
+        }
+    %>
+    
+        <div class="bin-card-container">
+          <div class="bin-card-title">
+            <h2>Bin Card Cluster Code: <%= clusterCode %></h2>
+            <p>Generated on: <%= new Date().toLocaleDateString('en-US', {
+              year: 'numeric', month: 'long', day: 'numeric', 
+              hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+            }) %></p>
+          </div>
+          <table class="bin-card-table">
+            <thead>
               <tr>
-                <td><%= item.description %></td>
-                <td><%= item.name %></td>
-                <td><%= item.beginningInventory %></td>
-                <td><%= item.totalIncoming %></td>
-                <td><%= item.totalOutgoing %></td>
-                <td><%= item.available %></td>
-                <td>₱<%= item.unitPrice.toFixed(2) %></td>
-                <td>₱<%= item.totalValue.toFixed(2) %></td>
+                <th>Name of Material</th>
+                <th>Description</th>
+                <th>Beginning Inventory</th>
+                <th>Total Incoming</th>
+                <th>Total Outgoing</th>
+                <th>Available</th>
+                <th>Unit Price</th>
+                <th>Total Value</th>
               </tr>
-            <% }); %>
-          </tbody>
-        </table>
-        <div class="signature-block">
-          <div class="prepared-by-label">Prepared by:</div>
-          <div class="signature-line"></div>
-          <div class="name-role">
-            <%= currentUser %>
-            <div class="role"><%= currentRole %></div>
+            </thead>
+            <tbody>
+              <% for (var j = i; j < i + limit && j < items.length; j++) {
+                var item = items[j]; %>
+                <tr>
+                  <td><%= item.description %></td>
+                  <td><%= item.name %></td>
+                  <td><%= item.beginningInventory %></td>
+                  <td><%= item.totalIncoming %></td>
+                  <td><%= item.totalOutgoing %></td>
+                  <td><%= item.available %></td>
+                  <td>₱<%= item.unitPrice.toFixed(2) %></td>
+                  <td>₱<%= item.totalValue.toFixed(2) %></td>
+                </tr>
+              <% } %>
+            </tbody>
+          </table>
+          <div class="bin-card-footer">
+            <div class="signature-block">
+              <div class="prepared-by-label">Prepared by:</div>
+              <div class="signature-line"></div>
+              <div class="name-role">
+                <%= currentUser %>
+                <div class="role"><%= currentRole %></div>
+              </div>
+              <div class="page-number">Page <span class="current-page"></span> of <span class="total-pages"></span></div>
+            </div>
           </div>
         </div>
-        <footer>
-          
-        </footer>
-      </div>
-    <% }); %>
+        <% firstPage = false; %>
+    <% } }); %>
   </div>
-  <button onclick="window.downloadPDF();" class="print-button">Print Bin Cards</button>
+  
+  <button onclick="downloadPDF();" class="print-button">Download Bin Cards as PDF</button>
   <button onclick="downloadCSV();" class="print-button">Download Bin Cards as CSV</button>
 
   <script>
-    function downloadPDF() {
-      if (typeof html2pdf === 'undefined') {
-        console.error('html2pdf library is not loaded!');
-        return;
-      }
-      
-      var element = document.getElementById('all-bins'); // Now targeting the wrapper
-      var opt = {
-        margin:       [1, 0.5],
-        filename:     'InventoryFinalReport.pdf',
-        image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2 },
-        jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
-      };
-      
-      html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdfObj) {
-        // Optional: further manipulation of the PDF
-      }).save();
-    }
+    document.addEventListener('DOMContentLoaded', function () {
+  const now = new Date();
+  const formattedDateTime = now.toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric', 
+    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true
+  });
+  document.querySelectorAll('.bin-card-container').forEach(container => {
+    container.querySelector('p').textContent = 'Generated on: ' + formattedDateTime;
+  });
+
+  // Adjust page numbers if necessary
+  const adjustPageNumbers = () => {
+    const containers = document.querySelectorAll('.bin-card-container');
+    containers.forEach((container, index) => {
+      container.querySelector('.current-page').textContent = index + 1;
+      container.querySelector('.total-pages').textContent = containers.length;
+    });
+  };
+  adjustPageNumbers();
+});
+function downloadPDF() {
+  var element = document.getElementById('all-bins'); // Targeting the wrapper for PDF content
+  var opt = {
+    margin:       1,
+    filename:     'InventoryBinCards.pdf',
+    image:        { type: 'jpeg', quality: 0.98 },
+    html2canvas:  { scale: 2 },
+    jsPDF:        { unit: 'in', format: 'letter', orientation: 'portrait' }
+  };
+
+  // Use html2pdf to create the PDF
+  html2pdf().set(opt).from(element).save();
+}
     function downloadCSV() {
     let csvContent = "data:text/csv;charset=utf-8,";
     // Adding the header row
