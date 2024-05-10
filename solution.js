@@ -8,7 +8,7 @@ import session from "express-session";
 import env from "dotenv";
 import cron from 'node-cron';
 // Schedule the task to run at 11:59 PM every day
-cron.schedule('55 11 * * *', async () => {
+cron.schedule('55 23 * * *', async () => {
   try {
     // Begin transaction
     await db.query('BEGIN');
