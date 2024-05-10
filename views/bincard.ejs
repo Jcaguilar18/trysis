@@ -8,12 +8,16 @@
       font-family: 'Arial', sans-serif;
       padding: 20px;
     }
-    .bin-card-container {
-      page-break-after: always;
-    }
-    .bin-card-container:last-child {
-      page-break-after: avoid;
-    }
+    @media print {
+  .bin-card-container {
+    page-break-inside: avoid; /* Avoid breaking inside a container */
+    page-break-after: always; /* Force break after each container */
+  }
+  .bin-card-container:last-child {
+    page-break-after: avoid; /* Avoid break after the last element */
+  }
+}
+
     .bin-card-title {
       text-align: center;
       margin-bottom: 20px;
@@ -32,69 +36,33 @@
     .bin-card-table th {
       background-color: #f2f2f2;
     }
-    .signature-block {
-        text-align: center;
-        margin-top: 60px;
-        
-      }
-      .prepared-by {
-        margin-top: 20px; /* Increased space below 'Prepared by:' */
-        display: block;
-      }
-      .prepared-by-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-end;
-        margin-top: 60px;
-      }
-      .signature-line {
-        width: 200px; /* Adjust width as needed */
-        border-top: 1px solid black;
-        margin: 20px auto 0; /* Center the line */
-      }
-      .signature {
-        text-align: center;
-        width: 200px;
-      }
-      .role {
-        font-size: 0.8em;
-        font-style: italic;
-        display: block;
-        margin-top: 2px;
-      }
-      .prepared-by-label {
-        margin-bottom: 50px; /* Adjust as needed */
-      }
-      .name-role {
-        text-align: center;
-        display: block;
-        margin-top: 10px;
-        margin-bottom: 0px;
-      }
+    .footer {
+      text-align: center;
+      margin-top: 20px; /* Ensure footer is always at the bottom of the content */
+    }
     .print-button {
-  background-color: #4CAF50;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  cursor: pointer;
-  text-align: center;
-  /* Set a max-width for the buttons */
-  max-width: 200px; /* Adjust this value as needed */
-  /* Auto margins to center the buttons */
-  margin: 0 auto;
-  display: block;
-  /* Add some margin to the bottom of each button for spacing */
-  margin-bottom: 10px;
-}
-
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      max-width: 200px;
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+    .signature-block, .prepared-by-label, .signature-line, .name-role, .role {
+      text-align: center;
+    }
   </style>
   <script>var bincards = <%- JSON.stringify(bincards) %>;</script>
-  
-   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-  <div id="all-bins"> <!-- Wrapper for all bin-card-container elements -->
-    <% Object.keys(bincards).forEach(function(clusterCode) { %>
+  <div id="all-bins">
+    <% let totalPages = Object.keys(bincards).length; %>
+    <% Object.keys(bincards).forEach(function(clusterCode, index) { %>
       <div class="bin-card-container">
         <div class="bin-card-title">
           <h1>Inventory Bin Card</h1>
@@ -129,24 +97,31 @@
             <% }); %>
           </tbody>
         </table>
-        <div class="signature-block">
-          <div class="prepared-by-label">Prepared by:</div>
-          <div class="signature-line"></div>
-          <div class="name-role">
-            <%= currentUser %>
-            <div class="role"><%= currentRole %></div>
-          </div>
-        </div>
-        <footer>
-          
-        </footer>
+        <div class="footer">Page <%= index + 1 %> of <%= totalPages %></div>
       </div>
     <% }); %>
   </div>
   <button onclick="window.downloadPDF();" class="print-button">Print Bin Cards</button>
   <button onclick="downloadCSV();" class="print-button">Download Bin Cards as CSV</button>
-
   <script>
+     function setupPagination() {
+    const binCardContainers = document.querySelectorAll('.bin-card-container');
+    let totalPages = binCardContainers.length; // Get total number of pages
+    binCardContainers.forEach((container, index) => {
+      // Append a footer to each container if not already present
+      let footer = container.querySelector('.footer');
+      if (!footer) {
+        footer = document.createElement('div');
+        footer.className = 'footer';
+        container.appendChild(footer);
+      }
+      footer.textContent = `Page ${index + 1} of ${totalPages}`;
+    });
+  }
+
+  // Run setupPagination right before printing
+  window.onbeforeprint = setupPagination;
+  document.addEventListener('DOMContentLoaded', setupPagination); // Also run when the document loads
     function downloadPDF() {
       if (typeof html2pdf === 'undefined') {
         console.error('html2pdf library is not loaded!');
