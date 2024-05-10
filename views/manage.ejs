@@ -51,7 +51,7 @@
             <div class="manage-accounts-header">
                 <div class="manage-accounts-text-bar">Manage Accounts</div>
                 <div class="table-area">
-                  <a href="/register" class="new-user-button">New User</a>
+                  <a onclick="openRegisterModal();" class="new-user-button">New User</a>
                   <div class="users-table">
                     <div class="row-header">
                         <div class="cell-header">USERNAME</div>
@@ -121,9 +121,61 @@
               </div>
             </div>
 
+            <div id="registerModal" class="modal">
+              <div class="modal-content2-database">
+                <div class="upper-section-modal-database">
+                  <button type="button" class="back-button" onclick="registerModal.style.display = 'none';">&lt;Back</button>
+                </div>
+                <form action="/register" method="POST" enctype="multipart/form-data" class="modal-form">
+                  <h1>Add User</h1>
+                  <div class="form-group">
+                    <label for="firstname" class="modal-form-text">First Name:</label>
+                    <input type="text" class="form-control" id="firstname" name="firstname" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="lastname" class="modal-form-text">Last Name:</label>
+                    <input type="text" class="form-control" id="lastname" name="lastname" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="username" class="modal-form-text">Username:</label>
+                    <input type="text" class="form-control" id="username" name="username" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="modal-form-text">Password:</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                  </div>
+                  <div class="form-group">
+                    <label for="picture" class="modal-form-text">Picture:</label>
+                    <input type="file" class="form-control" id="picture" name="picture" accept="image/*" required>
+                  </div>
+                  <div>
+                    <h2>Roles</h2>
+                    <input type="radio" id="manager" name="roles" value="manager" checked>
+                    <label for="manager" class="modal-form-text">Manager</label><br>
+                    <input type="radio" id="company" name="roles" value="company">
+                    <label for="company" class="modal-form-text">Company</label><br>
+                    <input type="radio" id="warehouse" name="roles" value="warehouse">
+                    <label for="warehouse" class="modal-form-text">Warehouse</label><br>
+                    <input type="radio" id="hrstaff" name="roles" value="hr staff">
+                    <label for="hrstaff" class="modal-form-text">HR Staff</label><br>
+                    <input type="radio" id="engineer" name="roles" value="engineer">
+                    <label for="engineer" class="modal-form-text">Engineer</label>
+                  </div>
+                  <input type="hidden" id="status" name="status" value="active">
+                  <button type="submit" class="modal-form-button">Submit</button>
+                </form>
+              </div>
+            </div>
+
         </div>
     </div>
     <script>
+
+var registerModal = document.getElementById('registerModal');
+
+function openRegisterModal() {
+  registerModal.style.display = "block";
+}
 
 
 function enableEditing(editButton) {
