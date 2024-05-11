@@ -122,6 +122,8 @@
       
       <% const classifications = { '1': 'Fabrication', '2': 'Firepro', '3': 'Electrical' }; %>
       <% let pageNumber = 1; %>
+      <% let totalSections = Object.keys(classifications).length; %>
+      <%totalSections++ %>
       <% Object.keys(classifications).forEach(function(classificationId) { %>
         <% const filteredItems = reportData.filter(item => item.classification_id.toString() === classificationId); %>
         <% if (filteredItems.length > 0) { %>
@@ -154,7 +156,7 @@
                 <%= currentUser %>
                 <div class="role"><%= currentRole %></div>
               </div>
-              <div class="page-number">Page <%= pageNumber++ %> of <%= pageNumber %></div>
+              <div class="page-number">Page <%= pageNumber++ %> of <%= totalSections %></div>
             </div>
           </div>
         </div>
@@ -189,9 +191,9 @@
             <div class="signature-line"></div>
             <div class="name-role">
               <%= currentUser %>
-              <div class="role"><%= currentRole %></div>
+              <div class="role"><%= currentRole %></div>  
             </div>
-            <div class="page-number">Page <%= pageNumber++ %> of <%= pageNumber-1 %></div>
+            <div class="page-number">Page <%= pageNumber++ %> of <%= totalSections %></div>
           </div>
         </div>
       </div>
