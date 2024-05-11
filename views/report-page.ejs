@@ -27,6 +27,9 @@
       .report-table th {
         background-color: #f2f2f2;
       }
+      .report-section {
+        page-break-after: always; /* Ensure each section is printed on a new page */
+      }
       .report-footer {
         text-align: center;
         margin-top: 40px;
@@ -110,18 +113,20 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
 </head>
 <body>
-    <div class="report-container" id="report">
+    <div id="report">
       <div class="report-title">
         <h1>Inventory Final Report</h1>
         <p id="generatedOn"></p>
           <p>Report Period: <%= start %> - <%= marker %></p>
       </div>
       
-  
       <% const classifications = { '1': 'Fabrication', '2': 'Firepro', '3': 'Electrical' }; %>
+      <% let pageNumber = 1; %>
       <% Object.keys(classifications).forEach(function(classificationId) { %>
         <% const filteredItems = reportData.filter(item => item.classification_id.toString() === classificationId); %>
         <% if (filteredItems.length > 0) { %>
+          <div class="report-section">
+          
           <h2><%= classifications[classificationId] %></h2>
           <table class="report-table">
             <thead>
@@ -141,8 +146,21 @@
               <% }); %>
             </tbody>
           </table>
+          <div class="report-footer">
+            <div class="signature-block">
+              <div class="prepared-by-label">Prepared by:</div>
+              <div class="signature-line"></div>
+              <div class="name-role">
+                <%= currentUser %>
+                <div class="role"><%= currentRole %></div>
+              </div>
+              <div class="page-number">Page <%= pageNumber++ %> of <%= pageNumber %></div>
+            </div>
+          </div>
+        </div>
         <% } %>
       <% }); %>
+
       <div class="summary-section">
         <h2>Summary Report</h2>
         <table class="report-table">
@@ -165,25 +183,18 @@
             </tr>
           </tbody>
         </table>
-      </div>
-      
-      
-      
-      <div class="report-footer">
-        <div class="signature-block">
-          <div class="prepared-by-label">Prepared by:</div>
-          <div class="signature-line"></div>
-          <div class="name-role">
-            <%= currentUser %>
-            <div class="role"><%= currentRole %></div>
+        <div class="report-footer">
+          <div class="signature-block">
+            <div class="prepared-by-label">Prepared by:</div>
+            <div class="signature-line"></div>
+            <div class="name-role">
+              <%= currentUser %>
+              <div class="role"><%= currentRole %></div>
+            </div>
+            <div class="page-number">Page <%= pageNumber++ %> of <%= pageNumber-1 %></div>
           </div>
-          
-
-
-
-          <div class="page-number">Page <span class="current-page"></span> of <span class="total-pages"></span></div>
         </div>
-    </div>
+      </div>
     </div>
     <button type="button" class="print-button" onclick="downloadPDF();">Download PDF</button>
     <button onclick="downloadCSV();" class="print-button">Download CSV</button>
