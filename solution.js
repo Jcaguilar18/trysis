@@ -293,7 +293,7 @@ function checkRole(roles) {
           <head>
               <title>Access Denied</title>
               <script type="text/javascript">
-                  alert('You do not have permission to access this page.');
+                  alert('Page not found.');
                   window.history.back();
               </script>
           </head>

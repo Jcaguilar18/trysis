@@ -136,7 +136,7 @@
       var numberOfItemsPerPage = 6; // Normal number of items per page after the first
       for (var i = 0; i < items.length; i += limit) {
         var isLastPage = (items.length - i <= numberOfItemsPerPage) && (i !== 0); // Check if it's potentially the last page
-        limit = firstPage ? 6 : numberOfItemsPerPage; // Set limit to 6 for the first page and 9 for others
+        c = firstPage ? 6 : numberOfItemsPerPage; // Set limit to 6 for the first page and 9 for others
         if (isLastPage && (items.length - i <= 6)) {
           limit = 6; // Set limit to 6 if the remaining items are 6 or fewer
         }
